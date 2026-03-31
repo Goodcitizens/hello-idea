@@ -2,10 +2,15 @@
 
 import { useMemo, useState } from 'react';
 
+const bg = '#e8e4da';
+const card = '#f4f1ea';
+const inner = '#efebe3';
+const border = '1px solid rgba(0,0,0,0.10)';
+
 const pageStyle = {
   minHeight: '100vh',
-  padding: '24px 20px 40px',
-  background: '#e9e5dc',
+  padding: '22px 18px 34px',
+  background: bg,
 };
 
 const wrapStyle = {
@@ -15,18 +20,18 @@ const wrapStyle = {
 
 const topNoteStyle = {
   margin: 0,
-  fontSize: 12,
-  letterSpacing: '0.18em',
+  fontSize: 11,
+  letterSpacing: '0.22em',
   textTransform: 'uppercase',
-  opacity: 0.55,
+  opacity: 0.52,
 };
 
 const introStyle = {
-  margin: '10px 0 18px',
-  maxWidth: 760,
+  margin: '10px 0 22px',
+  maxWidth: 980,
   fontSize: 16,
-  lineHeight: 1.6,
-  color: 'rgba(0,0,0,0.68)',
+  lineHeight: 1.55,
+  color: 'rgba(0,0,0,0.70)',
 };
 
 const grid3Style = {
@@ -35,49 +40,50 @@ const grid3Style = {
   gap: 18,
 };
 
-const inputCardStyle = {
-  background: '#f5f2eb',
-  border: '1px solid rgba(0,0,0,0.08)',
-  borderRadius: 22,
+const cardStyle = {
+  background: card,
+  border,
+  borderRadius: 20,
   padding: 18,
 };
 
 const outputCardStyle = {
-  background: '#f5f2eb',
-  border: '1px solid rgba(0,0,0,0.08)',
-  borderRadius: 22,
+  background: card,
+  border,
+  borderRadius: 20,
   padding: 18,
-  minHeight: 220,
+  minHeight: 215,
 };
 
 const textareaStyle = {
   width: '100%',
-  minHeight: 270,
+  minHeight: 292,
   resize: 'vertical',
   borderRadius: 18,
-  border: '1px solid rgba(0,0,0,0.12)',
-  background: '#f1ede6',
+  border,
+  background: inner,
   padding: 16,
   outline: 'none',
   fontSize: 16,
-  lineHeight: 1.5,
+  lineHeight: 1.55,
+  color: '#111',
 };
 
 const outputBoxStyle = {
-  background: '#f1ede6',
+  background: inner,
   borderRadius: 18,
   padding: 16,
   lineHeight: 1.65,
   whiteSpace: 'pre-wrap',
-  minHeight: 110,
+  minHeight: 118,
 };
 
 const buttonStyle = {
   border: 'none',
   borderRadius: 999,
   padding: '9px 16px',
-  background: '#111111',
-  color: '#ffffff',
+  background: '#121212',
+  color: '#fff',
   cursor: 'pointer',
   fontWeight: 700,
   fontSize: 15,
@@ -86,31 +92,31 @@ const buttonStyle = {
 
 const smallLabelStyle = {
   margin: 0,
-  fontSize: 12,
-  letterSpacing: '0.18em',
+  fontSize: 11,
+  letterSpacing: '0.22em',
   textTransform: 'uppercase',
-  opacity: 0.45,
+  opacity: 0.42,
 };
 
-const titleStyle = {
+const sectionTitleStyle = {
   margin: 0,
-  fontSize: 24,
-  lineHeight: 1.05,
+  fontSize: 28,
+  lineHeight: 1.02,
+  fontWeight: 700,
 };
+
+function escapeRegExp(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
 
 function extractSection(text, heading, nextHeadings) {
   if (!text) return '';
-
-  const escapedHeading = heading.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  const nextPattern = nextHeadings
-    .map((h) => h.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
-    .join('|');
-
+  const headingPattern = escapeRegExp(heading);
+  const nextPattern = nextHeadings.map(escapeRegExp).join('|');
   const regex = new RegExp(
-    `${escapedHeading}\\s*\\n([\\s\\S]*?)(?=\\n(?:${nextPattern})\\s*\\n|$)`,
+    `${headingPattern}\\s*\\n([\\s\\S]*?)(?=\\n(?:${nextPattern})\\s*\\n|$)`,
     'i'
   );
-
   const match = text.match(regex);
   return match ? match[1].trim() : '';
 }
@@ -134,18 +140,15 @@ function parseIdeaOutput(text) {
       headings.filter((h) => h !== heading)
     );
 
-  const idea = get('The Idea');
-  const purpose = get('The Purpose');
-
-  const nextPrompt =
-    get('Helpful Questions') ||
-    get('Reflection and Update Step') ||
-    get('The 24:1 Rule');
-
   return {
-    idea,
-    purpose,
-    nextPrompt,
+    idea: get('The Idea'),
+    purpose: get('The Purpose'),
+    whoItsFor: get('Who It’s For'),
+    different: get('What Makes It Different'),
+    helpfulQuestions: get('Helpful Questions'),
+    writeItDown: get('Write It Down'),
+    reflection: get('Reflection and Update Step'),
+    twentyFourOne: get('The 24:1 Rule'),
     full: text,
   };
 }
@@ -220,9 +223,9 @@ export default function HelloIdeaClient() {
         </p>
 
         <div style={grid3Style}>
-          <section style={inputCardStyle}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', gap: 12, marginBottom: 14 }}>
-              <h2 style={titleStyle}>Your idea</h2>
+          <section style={cardStyle}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', gap: 14, alignItems: 'start', marginBottom: 14 }}>
+              <h2 style={sectionTitleStyle}>Your idea</h2>
               <button style={buttonStyle} onClick={handleIdeaSubmit} disabled={loadingIdea}>
                 {loadingIdea ? '...' : 'Go'}
               </button>
@@ -231,13 +234,13 @@ export default function HelloIdeaClient() {
               style={textareaStyle}
               value={idea}
               onChange={(e) => setIdea(e.target.value)}
-              placeholder="Write here. Messy is fine. Tip: include who it’s for and why it helps."
+              placeholder="Write here. Messy is fine. Tip: include who its for and why helps."
             />
           </section>
 
-          <section style={inputCardStyle}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', gap: 12, marginBottom: 14 }}>
-              <h2 style={titleStyle}>Want to change or add anything?</h2>
+          <section style={cardStyle}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', gap: 14, alignItems: 'start', marginBottom: 14 }}>
+              <h2 style={sectionTitleStyle}>Want to change or add anything?</h2>
               <button style={buttonStyle} onClick={handleIdeaSubmit} disabled={loadingIdea}>
                 {loadingIdea ? '...' : 'Go'}
               </button>
@@ -250,9 +253,9 @@ export default function HelloIdeaClient() {
             />
           </section>
 
-          <section style={inputCardStyle}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', gap: 12, marginBottom: 14 }}>
-              <h2 style={titleStyle}>Stuck? Get new perspective</h2>
+          <section style={cardStyle}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', gap: 14, alignItems: 'start', marginBottom: 14 }}>
+              <h2 style={sectionTitleStyle}>Stuck? Get new perspective</h2>
               <button style={buttonStyle} onClick={handlePerspectiveSubmit} disabled={loadingPerspective}>
                 {loadingPerspective ? '...' : 'Go'}
               </button>
@@ -284,7 +287,7 @@ export default function HelloIdeaClient() {
         <div style={{ ...grid3Style, marginTop: 18 }}>
           <section style={outputCardStyle}>
             <p style={smallLabelStyle}>Output</p>
-            <h3 style={{ margin: '8px 0 14px', fontSize: 22 }}>Your idea</h3>
+            <h3 style={{ margin: '10px 0 14px', fontSize: 22 }}>Your idea</h3>
             <div style={outputBoxStyle}>
               {parsed.idea || 'Your clarified idea will appear here.'}
             </div>
@@ -292,7 +295,7 @@ export default function HelloIdeaClient() {
 
           <section style={outputCardStyle}>
             <p style={smallLabelStyle}>Output</p>
-            <h3 style={{ margin: '8px 0 14px', fontSize: 22 }}>Your purpose</h3>
+            <h3 style={{ margin: '10px 0 14px', fontSize: 22 }}>Your purpose</h3>
             <div style={outputBoxStyle}>
               {parsed.purpose || 'Your purpose will appear here.'}
             </div>
@@ -300,16 +303,34 @@ export default function HelloIdeaClient() {
 
           <section style={outputCardStyle}>
             <p style={smallLabelStyle}>Keep going</p>
-            <h3 style={{ margin: '8px 0 14px', fontSize: 22 }}>Next prompt</h3>
+            <h3 style={{ margin: '10px 0 14px', fontSize: 22 }}>The 24:1 Rule</h3>
             <div style={outputBoxStyle}>
-              {parsed.nextPrompt || 'Your next question or prompt will appear here.'}
+              {parsed.twentyFourOne || 'What is the one thing you could do today that 24 hours from now you will thank yourself for?'}
+            </div>
+          </section>
+        </div>
+
+        <div style={{ ...grid3Style, marginTop: 18 }}>
+          <section style={{ ...outputCardStyle, gridColumn: '1 / span 2' }}>
+            <p style={smallLabelStyle}>Keep going</p>
+            <h3 style={{ margin: '10px 0 14px', fontSize: 22 }}>Helpful questions</h3>
+            <div style={{ ...outputBoxStyle, minHeight: 140 }}>
+              {parsed.helpfulQuestions || 'Helpful questions will appear here.'}
+            </div>
+          </section>
+
+          <section style={outputCardStyle}>
+            <p style={smallLabelStyle}>Keep going</p>
+            <h3 style={{ margin: '10px 0 14px', fontSize: 22 }}>Write it down</h3>
+            <div style={{ ...outputBoxStyle, minHeight: 140 }}>
+              {parsed.writeItDown || 'The write-it-down section will appear here.'}
             </div>
           </section>
         </div>
 
         <section style={{ ...outputCardStyle, marginTop: 18 }}>
           <p style={smallLabelStyle}>Output</p>
-          <h3 style={{ margin: '8px 0 14px', fontSize: 22 }}>Fresh perspective</h3>
+          <h3 style={{ margin: '10px 0 14px', fontSize: 22 }}>Fresh perspective</h3>
           <div style={{ ...outputBoxStyle, minHeight: 140 }}>
             {perspective || 'Fresh perspective will appear here when you get stuck.'}
           </div>
@@ -317,7 +338,7 @@ export default function HelloIdeaClient() {
 
         <div
           style={{
-            ...inputCardStyle,
+            ...cardStyle,
             marginTop: 18,
             color: 'rgba(0,0,0,0.68)',
             lineHeight: 1.7,
