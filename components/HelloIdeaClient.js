@@ -1,35 +1,154 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
-const panelStyle = {
-  background: '#ffffff',
+const pageStyle = {
+  minHeight: '100vh',
+  padding: '24px 20px 40px',
+  background: '#e9e5dc',
+};
+
+const wrapStyle = {
+  maxWidth: 1280,
+  margin: '0 auto',
+};
+
+const topNoteStyle = {
+  margin: 0,
+  fontSize: 12,
+  letterSpacing: '0.18em',
+  textTransform: 'uppercase',
+  opacity: 0.55,
+};
+
+const introStyle = {
+  margin: '10px 0 18px',
+  maxWidth: 760,
+  fontSize: 16,
+  lineHeight: 1.6,
+  color: 'rgba(0,0,0,0.68)',
+};
+
+const grid3Style = {
+  display: 'grid',
+  gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
+  gap: 18,
+};
+
+const inputCardStyle = {
+  background: '#f5f2eb',
   border: '1px solid rgba(0,0,0,0.08)',
-  borderRadius: 24,
-  padding: 20,
-  boxShadow: '0 6px 20px rgba(0,0,0,0.04)',
+  borderRadius: 22,
+  padding: 18,
+};
+
+const outputCardStyle = {
+  background: '#f5f2eb',
+  border: '1px solid rgba(0,0,0,0.08)',
+  borderRadius: 22,
+  padding: 18,
+  minHeight: 220,
 };
 
 const textareaStyle = {
   width: '100%',
-  minHeight: 260,
+  minHeight: 270,
   resize: 'vertical',
   borderRadius: 18,
-  border: '1px solid rgba(0,0,0,0.1)',
-  background: '#fcfaf6',
+  border: '1px solid rgba(0,0,0,0.12)',
+  background: '#f1ede6',
   padding: 16,
   outline: 'none',
+  fontSize: 16,
+  lineHeight: 1.5,
+};
+
+const outputBoxStyle = {
+  background: '#f1ede6',
+  borderRadius: 18,
+  padding: 16,
+  lineHeight: 1.65,
+  whiteSpace: 'pre-wrap',
+  minHeight: 110,
 };
 
 const buttonStyle = {
   border: 'none',
   borderRadius: 999,
-  padding: '10px 18px',
-  background: '#171717',
-  color: '#fff',
+  padding: '9px 16px',
+  background: '#111111',
+  color: '#ffffff',
   cursor: 'pointer',
-  fontWeight: 600,
+  fontWeight: 700,
+  fontSize: 15,
+  minWidth: 64,
 };
+
+const smallLabelStyle = {
+  margin: 0,
+  fontSize: 12,
+  letterSpacing: '0.18em',
+  textTransform: 'uppercase',
+  opacity: 0.45,
+};
+
+const titleStyle = {
+  margin: 0,
+  fontSize: 24,
+  lineHeight: 1.05,
+};
+
+function extractSection(text, heading, nextHeadings) {
+  if (!text) return '';
+
+  const escapedHeading = heading.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const nextPattern = nextHeadings
+    .map((h) => h.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
+    .join('|');
+
+  const regex = new RegExp(
+    `${escapedHeading}\\s*\\n([\\s\\S]*?)(?=\\n(?:${nextPattern})\\s*\\n|$)`,
+    'i'
+  );
+
+  const match = text.match(regex);
+  return match ? match[1].trim() : '';
+}
+
+function parseIdeaOutput(text) {
+  const headings = [
+    'The Idea',
+    'The Purpose',
+    'Who It’s For',
+    'What Makes It Different',
+    'Helpful Questions',
+    'Write It Down',
+    'Reflection and Update Step',
+    'The 24:1 Rule',
+  ];
+
+  const get = (heading) =>
+    extractSection(
+      text,
+      heading,
+      headings.filter((h) => h !== heading)
+    );
+
+  const idea = get('The Idea');
+  const purpose = get('The Purpose');
+
+  const nextPrompt =
+    get('Helpful Questions') ||
+    get('Reflection and Update Step') ||
+    get('The 24:1 Rule');
+
+  return {
+    idea,
+    purpose,
+    nextPrompt,
+    full: text,
+  };
+}
 
 export default function HelloIdeaClient() {
   const [idea, setIdea] = useState('');
@@ -40,6 +159,8 @@ export default function HelloIdeaClient() {
   const [loadingIdea, setLoadingIdea] = useState(false);
   const [loadingPerspective, setLoadingPerspective] = useState(false);
   const [error, setError] = useState('');
+
+  const parsed = useMemo(() => parseIdeaOutput(output), [output]);
 
   async function handleIdeaSubmit() {
     setLoadingIdea(true);
@@ -73,8 +194,8 @@ export default function HelloIdeaClient() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           mode: 'perspective',
-          idea: output,
-          purpose: '',
+          idea: parsed.idea || output,
+          purpose: parsed.purpose || '',
           stuck,
         }),
       });
@@ -91,26 +212,19 @@ export default function HelloIdeaClient() {
   }
 
   return (
-    <main style={{ minHeight: '100vh', padding: '32px 20px' }}>
-      <div style={{ maxWidth: 1180, margin: '0 auto' }}>
-        <div style={{ marginBottom: 28 }}>
-          <p style={{ margin: 0, letterSpacing: '0.18em', textTransform: 'uppercase', fontSize: 12, opacity: 0.55 }}>
-            hello idea
-          </p>
-          <h1 style={{ margin: '10px 0 12px', fontSize: 'clamp(36px, 6vw, 68px)', lineHeight: 1, maxWidth: 860 }}>
-            Get your idea out of your head.
-          </h1>
-          <p style={{ margin: 0, maxWidth: 760, fontSize: 18, lineHeight: 1.6, opacity: 0.7 }}>
-            Write it messy. We’ll help make it clearer, surface the purpose, and give you a fresh perspective when you get stuck.
-          </p>
-        </div>
+    <main style={pageStyle}>
+      <div style={wrapStyle}>
+        <p style={topNoteStyle}>hello idea</p>
+        <p style={introStyle}>
+          Write it messy. We’ll help make it clearer, surface the purpose, and give you a fresh perspective when you get stuck.
+        </p>
 
-        <div style={{ display: 'grid', gap: 20, gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))' }}>
-          <section style={panelStyle}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 14 }}>
-              <h2 style={{ margin: 0, fontSize: 24 }}>Your idea</h2>
+        <div style={grid3Style}>
+          <section style={inputCardStyle}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', gap: 12, marginBottom: 14 }}>
+              <h2 style={titleStyle}>Your idea</h2>
               <button style={buttonStyle} onClick={handleIdeaSubmit} disabled={loadingIdea}>
-                {loadingIdea ? 'Working...' : 'Go'}
+                {loadingIdea ? '...' : 'Go'}
               </button>
             </div>
             <textarea
@@ -121,11 +235,11 @@ export default function HelloIdeaClient() {
             />
           </section>
 
-          <section style={panelStyle}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 14 }}>
-              <h2 style={{ margin: 0, fontSize: 24 }}>Want to change or add anything?</h2>
+          <section style={inputCardStyle}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', gap: 12, marginBottom: 14 }}>
+              <h2 style={titleStyle}>Want to change or add anything?</h2>
               <button style={buttonStyle} onClick={handleIdeaSubmit} disabled={loadingIdea}>
-                {loadingIdea ? 'Working...' : 'Go'}
+                {loadingIdea ? '...' : 'Go'}
               </button>
             </div>
             <textarea
@@ -136,50 +250,80 @@ export default function HelloIdeaClient() {
             />
           </section>
 
-          <section style={panelStyle}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 14 }}>
-              <h2 style={{ margin: 0, fontSize: 24 }}>Stuck? Get new perspective</h2>
+          <section style={inputCardStyle}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', gap: 12, marginBottom: 14 }}>
+              <h2 style={titleStyle}>Stuck? Get new perspective</h2>
               <button style={buttonStyle} onClick={handlePerspectiveSubmit} disabled={loadingPerspective}>
-                {loadingPerspective ? 'Working...' : 'Go'}
+                {loadingPerspective ? '...' : 'Go'}
               </button>
             </div>
             <textarea
               style={textareaStyle}
               value={stuck}
               onChange={(e) => setStuck(e.target.value)}
-              placeholder="Copy and paste the words from Your Idea and Your Purpose. Hit Go. Then add where you feel stuck."
+              placeholder="Copy and paste the words from Your Idea & Your Purpose. Hit ‘Go’. Then add where you feel stuck."
             />
           </section>
         </div>
 
         {error ? (
-          <div style={{ marginTop: 18, color: '#8a1f11', background: '#fff1ef', border: '1px solid #f3c6bf', borderRadius: 16, padding: 14 }}>
+          <div
+            style={{
+              marginTop: 16,
+              color: '#8a1f11',
+              background: '#fff1ef',
+              border: '1px solid #f3c6bf',
+              borderRadius: 16,
+              padding: 14,
+            }}
+          >
             {error}
           </div>
         ) : null}
 
-        {output ? (
-          <section style={{ ...panelStyle, marginTop: 20 }}>
-            <p style={{ margin: 0, fontSize: 12, textTransform: 'uppercase', letterSpacing: '0.18em', opacity: 0.5 }}>Output</p>
-            <h3 style={{ margin: '10px 0 14px', fontSize: 26 }}>Your idea</h3>
-            <div style={{ background: '#fcfaf6', borderRadius: 18, padding: 18, lineHeight: 1.7, whiteSpace: 'pre-wrap' }}>
-              {output}
+        <div style={{ ...grid3Style, marginTop: 18 }}>
+          <section style={outputCardStyle}>
+            <p style={smallLabelStyle}>Output</p>
+            <h3 style={{ margin: '8px 0 14px', fontSize: 22 }}>Your idea</h3>
+            <div style={outputBoxStyle}>
+              {parsed.idea || 'Your clarified idea will appear here.'}
             </div>
           </section>
-        ) : null}
 
-        {perspective ? (
-          <section style={{ ...panelStyle, marginTop: 20 }}>
-            <p style={{ margin: 0, fontSize: 12, textTransform: 'uppercase', letterSpacing: '0.18em', opacity: 0.5 }}>Output</p>
-            <h3 style={{ margin: '10px 0 14px', fontSize: 26 }}>Fresh perspective</h3>
-            <div style={{ background: '#fcfaf6', borderRadius: 18, padding: 18, lineHeight: 1.7, whiteSpace: 'pre-wrap' }}>
-              {perspective}
+          <section style={outputCardStyle}>
+            <p style={smallLabelStyle}>Output</p>
+            <h3 style={{ margin: '8px 0 14px', fontSize: 22 }}>Your purpose</h3>
+            <div style={outputBoxStyle}>
+              {parsed.purpose || 'Your purpose will appear here.'}
             </div>
           </section>
-        ) : null}
 
-        <div style={{ ...panelStyle, marginTop: 20, lineHeight: 1.7, color: 'rgba(0,0,0,0.65)' }}>
-          Keep it simple. Write down anything you like. Copy the words into your notebook so you’ve got them when you need them.
+          <section style={outputCardStyle}>
+            <p style={smallLabelStyle}>Keep going</p>
+            <h3 style={{ margin: '8px 0 14px', fontSize: 22 }}>Next prompt</h3>
+            <div style={outputBoxStyle}>
+              {parsed.nextPrompt || 'Your next question or prompt will appear here.'}
+            </div>
+          </section>
+        </div>
+
+        <section style={{ ...outputCardStyle, marginTop: 18 }}>
+          <p style={smallLabelStyle}>Output</p>
+          <h3 style={{ margin: '8px 0 14px', fontSize: 22 }}>Fresh perspective</h3>
+          <div style={{ ...outputBoxStyle, minHeight: 140 }}>
+            {perspective || 'Fresh perspective will appear here when you get stuck.'}
+          </div>
+        </section>
+
+        <div
+          style={{
+            ...inputCardStyle,
+            marginTop: 18,
+            color: 'rgba(0,0,0,0.68)',
+            lineHeight: 1.7,
+          }}
+        >
+          Keep it simple. Write down anything you like. Copy the words from Your Idea & Your Purpose into your notebook so you’ve got them when you need them.
         </div>
       </div>
     </main>
