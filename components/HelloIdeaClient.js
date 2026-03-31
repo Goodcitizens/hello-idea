@@ -75,6 +75,14 @@ const helperStyle = {
   color: 'rgba(0,0,0,0.72)',
 };
 
+// ✅ TRUST LINE STYLE
+const trustStyle = {
+  marginTop: 8,
+  fontSize: 11,
+  lineHeight: 1.4,
+  color: 'rgba(0,0,0,0.55)',
+};
+
 export default function HelloIdeaClient() {
   const [sourceIdea, setSourceIdea] = useState('');
   const [ideaBox, setIdeaBox] = useState('');
@@ -152,12 +160,19 @@ export default function HelloIdeaClient() {
 
         <section>
           <h2 style={labelStyle}>Your idea</h2>
+
           <textarea
             style={bigBoxStyle}
             value={ideaBox}
             onChange={handleTopBoxChange}
             placeholder="Write here. Messy is fine. Tip: include who its for and why helps."
           />
+
+          {/* ✅ TRUST LINE HERE */}
+          <p style={trustStyle}>
+            No logins. No storage. Your idea stays yours.
+          </p>
+
           <div style={buttonWrapStyle}>
             <button style={buttonStyle} onClick={handleIdeaSubmit} disabled={loadingIdea}>
               {loadingIdea ? '...' : 'Go'}
