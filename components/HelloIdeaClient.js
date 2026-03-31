@@ -6,11 +6,27 @@ const pageStyle = {
   minHeight: '100vh',
   background: '#f1ff89',
   padding: '70px 20px 90px',
+  position: 'relative',
 };
 
 const wrapStyle = {
   maxWidth: 540,
   margin: '0 auto',
+};
+
+const poweredStyle = {
+  position: 'absolute',
+  top: 16,
+  right: 20,
+  fontSize: 11,
+  color: 'rgba(0,0,0,0.6)',
+};
+
+const linkStyle = {
+  color: '#000',
+  textDecoration: 'none',
+  borderBottom: '1px solid rgba(0,0,0,0.6)',
+  paddingBottom: 1,
 };
 
 const labelStyle = {
@@ -66,7 +82,6 @@ const buttonStyle = {
   cursor: 'pointer',
   fontWeight: 700,
   fontSize: 18,
-  lineHeight: 1,
 };
 
 const helperStyle = {
@@ -153,6 +168,18 @@ export default function HelloIdeaClient() {
 
   return (
     <main style={pageStyle}>
+      <div style={poweredStyle}>
+        Powered by{' '}
+        <a
+          href="https://www.goodcitizens.com.au/"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={linkStyle}
+        >
+          Good Citizens
+        </a>
+      </div>
+
       <div style={wrapStyle}>
         <p style={helperStyle}>
           Write it messy. We’ll help make it clearer, surface the purpose, and give you a fresh perspective when you get stuck.
