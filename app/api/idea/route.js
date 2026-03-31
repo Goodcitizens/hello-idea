@@ -1,7 +1,5 @@
 import OpenAI from 'openai';
 
-const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
-
 function jsonResponse(body, status = 200) {
   return new Response(JSON.stringify(body), {
     status,
@@ -20,6 +18,8 @@ export async function POST(request) {
     if (!process.env.OPENAI_MODEL) {
       return jsonResponse({ error: 'Missing OPENAI_MODEL in environment variables.' }, 500);
     }
+
+    const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
     if (mode === 'idea') {
       const input = `Original idea:\n${idea}\n\nExtra detail or change:\n${change}`;
