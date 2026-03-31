@@ -22,8 +22,8 @@ const labelStyle = {
 
 const textareaBaseStyle = {
   width: '100%',
-  borderRadius: 24,
-  border: '1.5px solid rgba(0,0,0,0.25)',
+  borderRadius: 6,
+  border: 'none',
   background: '#f3f3f3',
   padding: '18px 22px',
   outline: 'none',
@@ -32,6 +32,7 @@ const textareaBaseStyle = {
   lineHeight: 1.55,
   color: '#111',
   boxSizing: 'border-box',
+  boxShadow: '0 1px 2px rgba(0,0,0,0.08)',
 };
 
 const bigBoxStyle = {
@@ -75,7 +76,6 @@ const helperStyle = {
   color: 'rgba(0,0,0,0.72)',
 };
 
-// ✅ TRUST LINE STYLE
 const trustStyle = {
   marginTop: 8,
   fontSize: 11,
@@ -168,7 +168,6 @@ export default function HelloIdeaClient() {
             placeholder="Write here. Messy is fine. Tip: include who its for and why helps."
           />
 
-          {/* ✅ TRUST LINE HERE */}
           <p style={trustStyle}>
             No logins. No storage. Your idea stays yours.
           </p>
