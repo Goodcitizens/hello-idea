@@ -31,21 +31,11 @@ const buttonStyle = {
   fontWeight: 600,
 };
 
-const promptIdeas = [
-  'What is the smallest next step you can do in the next 24 hours?',
-  'What part of this idea matters most to the person it is for?',
-  'What have you assumed that may not actually need to be true?',
-  'If you had to test this with almost no money, what would you do first?',
-  'What is the problem inside the idea that needs solving next?'
-];
-
 export default function HelloIdeaClient() {
   const [idea, setIdea] = useState('');
   const [change, setChange] = useState('');
   const [stuck, setStuck] = useState('');
-  const [yourIdea, setYourIdea] = useState('Your clarified idea will appear here.');
-  const [yourPurpose, setYourPurpose] = useState('Your purpose will appear here.');
-  const [nextPrompt, setNextPrompt] = useState('Your next question or prompt will appear here.');
+  const [output, setOutput] = useState('Your structured idea will appear here.');
   const [perspective, setPerspective] = useState('Fresh perspective will appear here when you get stuck.');
   const [loadingIdea, setLoadingIdea] = useState(false);
   const [loadingPerspective, setLoadingPerspective] = useState(false);
@@ -65,9 +55,7 @@ export default function HelloIdeaClient() {
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || 'Something went wrong');
 
-      setYourIdea(data.yourIdea);
-      setYourPurpose(data.yourPurpose);
-      setNextPrompt(data.nextPrompt || promptIdeas[Math.floor(Math.random() * promptIdeas.length)]);
+      setOutput(data.output);
     } catch (err) {
       setError(err.message || 'Something went wrong');
     } finally {
@@ -83,14 +71,13 @@ export default function HelloIdeaClient() {
       const response = await fetch('/api/idea', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ mode: 'perspective', idea: yourIdea, purpose: yourPurpose, stuck }),
+        body: JSON.stringify({ mode: 'perspective', idea: output, purpose: '', stuck }),
       });
 
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || 'Something went wrong');
 
-      setPerspective(data.perspective);
-      setNextPrompt(data.nextPrompt || nextPrompt);
+      setPerspective(data.output);
     } catch (err) {
       setError(err.message || 'Something went wrong');
     } finally {
@@ -111,60 +98,71 @@ export default function HelloIdeaClient() {
 
         <div style={{ display: 'grid', gap: 20, gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))' }}>
           <section style={panelStyle}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, alignItems: 'center', marginBottom: 14 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 14 }}>
               <h2 style={{ margin: 0, fontSize: 24 }}>Your idea</h2>
-              <button style={buttonStyle} onClick={handleIdeaSubmit} disabled={loadingIdea}>{loadingIdea ? 'Working...' : 'Go'}</button>
+              <button style={buttonStyle} onClick={handleIdeaSubmit} disabled={loadingIdea}>
+                {loadingIdea ? 'Working...' : 'Go'}
+              </button>
             </div>
-            <textarea style={textareaStyle} value={idea} onChange={(e) => setIdea(e.target.value)} placeholder="Write here. Messy is fine. Tip: include who it’s for and why it helps." />
+            <textarea
+              style={textareaStyle}
+              value={idea}
+              onChange={(e) => setIdea(e.target.value)}
+              placeholder="Write here. Messy is fine."
+            />
           </section>
 
           <section style={panelStyle}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, alignItems: 'center', marginBottom: 14 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 14 }}>
               <h2 style={{ margin: 0, fontSize: 24 }}>Want to change or add anything?</h2>
-              <button style={buttonStyle} onClick={handleIdeaSubmit} disabled={loadingIdea}>{loadingIdea ? 'Working...' : 'Go'}</button>
+              <button style={buttonStyle} onClick={handleIdeaSubmit} disabled={loadingIdea}>
+                {loadingIdea ? 'Working...' : 'Go'}
+              </button>
             </div>
-            <textarea style={textareaStyle} value={change} onChange={(e) => setChange(e.target.value)} placeholder="I forgot to mention..." />
+            <textarea
+              style={textareaStyle}
+              value={change}
+              onChange={(e) => setChange(e.target.value)}
+              placeholder="Add or change anything"
+            />
           </section>
 
           <section style={panelStyle}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, alignItems: 'center', marginBottom: 14 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 14 }}>
               <h2 style={{ margin: 0, fontSize: 24 }}>Stuck? Get new perspective</h2>
-              <button style={buttonStyle} onClick={handlePerspectiveSubmit} disabled={loadingPerspective}>{loadingPerspective ? 'Working...' : 'Go'}</button>
+              <button style={buttonStyle} onClick={handlePerspectiveSubmit} disabled={loadingPerspective}>
+                {loadingPerspective ? 'Working...' : 'Go'}
+              </button>
             </div>
-            <textarea style={textareaStyle} value={stuck} onChange={(e) => setStuck(e.target.value)} placeholder="Copy and paste the words from Your Idea and Your Purpose. Hit Go. Then add where you feel stuck." />
+            <textarea
+              style={textareaStyle}
+              value={stuck}
+              onChange={(e) => setStuck(e.target.value)}
+              placeholder="Where are you stuck?"
+            />
           </section>
         </div>
 
-        {error ? (
-          <div style={{ marginTop: 18, color: '#8a1f11', background: '#fff1ef', border: '1px solid #f3c6bf', borderRadius: 16, padding: 14 }}>
+        {error && (
+          <div style={{ marginTop: 18, color: '#8a1f11', background: '#fff1ef', borderRadius: 16, padding: 14 }}>
             {error}
           </div>
-        ) : null}
+        )}
 
-        <div style={{ display: 'grid', gap: 20, gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', marginTop: 20 }}>
+        <div style={{ marginTop: 20 }}>
           <section style={panelStyle}>
-            <p style={{ margin: 0, fontSize: 12, textTransform: 'uppercase', letterSpacing: '0.18em', opacity: 0.5 }}>Output</p>
-            <h3 style={{ margin: '10px 0 14px', fontSize: 26 }}>Your idea</h3>
-            <div style={{ background: '#fcfaf6', borderRadius: 18, padding: 18, lineHeight: 1.7, whiteSpace: 'pre-wrap' }}>{yourIdea}</div>
+            <h3 style={{ marginBottom: 12 }}>Your idea (PPP)</h3>
+            <div style={{ whiteSpace: 'pre-wrap', lineHeight: 1.7 }}>{output}</div>
           </section>
 
-          <section style={panelStyle}>
-            <p style={{ margin: 0, fontSize: 12, textTransform: 'uppercase', letterSpacing: '0.18em', opacity: 0.5 }}>Output</p>
-            <h3 style={{ margin: '10px 0 14px', fontSize: 26 }}>Your purpose</h3>
-            <div style={{ background: '#fcfaf6', borderRadius: 18, padding: 18, lineHeight: 1.7, whiteSpace: 'pre-wrap' }}>{yourPurpose}</div>
-          </section>
-
-          <section style={{ ...panelStyle, gridColumn: '1 / -1' }}>
-            <p style={{ margin: 0, fontSize: 12, textTransform: 'uppercase', letterSpacing: '0.18em', opacity: 0.5 }}>Keep going</p>
-            <h3 style={{ margin: '10px 0 14px', fontSize: 26 }}>Next prompt</h3>
-            <div style={{ background: '#fcfaf6', borderRadius: 18, padding: 18, lineHeight: 1.7, whiteSpace: 'pre-wrap', marginBottom: 14 }}>{nextPrompt}</div>
-            <h3 style={{ margin: '0 0 14px', fontSize: 26 }}>Fresh perspective</h3>
-            <div style={{ background: '#fcfaf6', borderRadius: 18, padding: 18, lineHeight: 1.7, whiteSpace: 'pre-wrap' }}>{perspective}</div>
+          <section style={{ ...panelStyle, marginTop: 20 }}>
+            <h3 style={{ marginBottom: 12 }}>Fresh perspective</h3>
+            <div style={{ whiteSpace: 'pre-wrap', lineHeight: 1.7 }}>{perspective}</div>
           </section>
         </div>
 
-        <div style={{ ...panelStyle, marginTop: 20, lineHeight: 1.7, color: 'rgba(0,0,0,0.65)' }}>
-          Keep it simple. Write down anything you like. Copy the words from Your Idea and Your Purpose into your notebook so you’ve got them when you need them.
+        <div style={{ ...panelStyle, marginTop: 20 }}>
+          Keep it simple. Write anything down. Then keep building.
         </div>
       </div>
     </main>
