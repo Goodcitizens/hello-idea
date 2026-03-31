@@ -79,7 +79,7 @@ Rules:
 - Reflection and Update Step must include:
   Do you think this is a true reflection of your idea?
   Would you like to add or change anything?
-  If so, just write it in the “Ask anything” box below.
+  If so, just write it in the box below and we’ll update your idea.
 - The 24:1 Rule must include:
   What is the one thing you could do today that 24 hours from now you will thank yourself for?
 - The 24:1 Rule must always provide at least 3 simple example actions.
