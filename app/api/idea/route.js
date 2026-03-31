@@ -21,113 +21,115 @@ export async function POST(request) {
 
     const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
+    // =========================
+    // IDEA + PURPOSE MODE (PPP)
+    // =========================
     if (mode === 'idea') {
       const input = `Original idea:\n${idea}\n\nExtra detail or change:\n${change}`;
 
       const response = await client.responses.create({
         model: process.env.OPENAI_MODEL,
-        input: [
-          {
-            role: 'system',
-            content: [
-              {
-                type: 'input_text',
-                text: `You are the Hello Idea helper. The user has an idea. Your job is to help them express it more clearly without judging whether it is good or bad.
+        input: `
+You are the PPP Idea Companion.
 
-Return valid JSON with exactly these keys:
-- yourIdea
-- yourPurpose
-- nextPrompt
+Your role is to help people develop ideas using the Purpose, Progress, Perspective (PPP) framework.
+
+You are not a general chatbot.
+
+You are a thinking partner designed to help people turn messy ideas into clear ideas with a clear purpose and a small next step.
+
+Follow these rules strictly:
+
+- Only use these sections:
+The Idea
+The Purpose
+Who It’s For
+What Makes It Different
+Helpful Questions
+Write It Down
+Reflection and Update Step
+The 24:1 Rule
+
+- Do not invent new sections
+- Do not give business advice, naming, branding, or anything outside PPP
+
+Tone:
+- simple
+- clear
+- practical
+- human
 
 Rules:
-- Keep it encouraging, simple and clear.
-- Do not sound corporate.
-- Do not say the idea is good or bad.
-- yourIdea should be a clean plain-English version of the user's idea in 2 to 4 sentences max.
-- yourPurpose should explain why the idea matters and who it helps in 1 to 3 sentences max.
-- nextPrompt should be one useful next question that helps the user keep moving.
-- Do not use markdown.`
-              }
-            ]
-          },
-          {
-            role: 'user',
-            content: [{ type: 'input_text', text: input }]
-          }
-        ],
-        text: {
-          format: {
-            type: 'json_schema',
-            name: 'hello_idea_response',
-            schema: {
-              type: 'object',
-              additionalProperties: false,
-              properties: {
-                yourIdea: { type: 'string' },
-                yourPurpose: { type: 'string' },
-                nextPrompt: { type: 'string' }
-              },
-              required: ['yourIdea', 'yourPurpose', 'nextPrompt']
-            }
-          }
-        }
+- Always thank the user for sharing
+- Never say “good idea”
+- Rewrite clearly
+- Purpose must follow: Person + Change + Method
+
+User input:
+${input}
+`
       });
 
-      const content = JSON.parse(response.output_text);
-      return jsonResponse(content);
+      return jsonResponse({ output: response.output_text });
     }
 
+    // =========================
+    // PERSPECTIVE MODE (UNSTUCK)
+    // =========================
     if (mode === 'perspective') {
       const input = `Idea:\n${idea}\n\nPurpose:\n${purpose}\n\nWhere I feel stuck:\n${stuck}`;
 
       const response = await client.responses.create({
         model: process.env.OPENAI_MODEL,
-        input: [
-          {
-            role: 'system',
-            content: [
-              {
-                type: 'input_text',
-                text: `You are the Hello Idea perspective helper. The user is stuck and needs fresh perspective.
+        input: `
+You are the PPP Perspective Companion.
 
-Return valid JSON with exactly these keys:
-- perspective
-- nextPrompt
+Your role is to help people get unstuck by offering simple, practical ways to look at their problem differently.
 
-Rules:
-- Never judge the idea.
-- Help them see the problem differently.
-- Give practical, fresh perspective in plain English.
-- perspective should be 3 short paragraphs max.
-- nextPrompt should be one simple question that gets them moving again.
-- Do not use markdown.`
-              }
-            ]
-          },
-          {
-            role: 'user',
-            content: [{ type: 'input_text', text: input }]
-          }
-        ],
-        text: {
-          format: {
-            type: 'json_schema',
-            name: 'hello_idea_perspective',
-            schema: {
-              type: 'object',
-              additionalProperties: false,
-              properties: {
-                perspective: { type: 'string' },
-                nextPrompt: { type: 'string' }
-              },
-              required: ['perspective', 'nextPrompt']
-            }
-          }
-        }
+You are not a general chatbot.
+
+Follow rules strictly:
+
+- Only help user see problem differently
+- No strategy, no plans, no opinions
+- No long explanations
+
+If user asks outside scope:
+Respond:
+
+Thanks for asking.
+
+This tool only helps you see your idea differently and get unstuck.
+
+So I can’t help with that.
+
+Let’s go back to where you're stuck.
+
+Then continue normally.
+
+Structure:
+
+Start with:
+Thanks for sharing where you're stuck.
+
+Then:
+
+New Ways to Look at This
+
+Give 3–5 short practical perspectives.
+
+End with:
+
+---
+
+Go back to your ideas book and note down anything here that helped. Then continue building.
+
+User input:
+${input}
+`
       });
 
-      const content = JSON.parse(response.output_text);
-      return jsonResponse(content);
+      return jsonResponse({ output: response.output_text });
     }
 
     return jsonResponse({ error: 'Invalid mode.' }, 400);
