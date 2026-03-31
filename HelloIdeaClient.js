@@ -35,8 +35,8 @@ export default function HelloIdeaClient() {
   const [idea, setIdea] = useState('');
   const [change, setChange] = useState('');
   const [stuck, setStuck] = useState('');
-  const [output, setOutput] = useState('Your structured idea will appear here.');
-  const [perspective, setPerspective] = useState('Fresh perspective will appear here when you get stuck.');
+  const [output, setOutput] = useState('');
+  const [perspective, setPerspective] = useState('');
   const [loadingIdea, setLoadingIdea] = useState(false);
   const [loadingPerspective, setLoadingPerspective] = useState(false);
   const [error, setError] = useState('');
@@ -71,7 +71,12 @@ export default function HelloIdeaClient() {
       const response = await fetch('/api/idea', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ mode: 'perspective', idea: output, purpose: '', stuck }),
+        body: JSON.stringify({
+          mode: 'perspective',
+          idea: output,
+          purpose: '',
+          stuck,
+        }),
       });
 
       const data = await response.json();
@@ -89,8 +94,12 @@ export default function HelloIdeaClient() {
     <main style={{ minHeight: '100vh', padding: '32px 20px' }}>
       <div style={{ maxWidth: 1180, margin: '0 auto' }}>
         <div style={{ marginBottom: 28 }}>
-          <p style={{ margin: 0, letterSpacing: '0.18em', textTransform: 'uppercase', fontSize: 12, opacity: 0.55 }}>hello idea</p>
-          <h1 style={{ margin: '10px 0 12px', fontSize: 'clamp(36px, 6vw, 68px)', lineHeight: 1, maxWidth: 860 }}>Get your idea out of your head.</h1>
+          <p style={{ margin: 0, letterSpacing: '0.18em', textTransform: 'uppercase', fontSize: 12, opacity: 0.55 }}>
+            hello idea
+          </p>
+          <h1 style={{ margin: '10px 0 12px', fontSize: 'clamp(36px, 6vw, 68px)', lineHeight: 1, maxWidth: 860 }}>
+            Get your idea out of your head.
+          </h1>
           <p style={{ margin: 0, maxWidth: 760, fontSize: 18, lineHeight: 1.6, opacity: 0.7 }}>
             Write it messy. We’ll help make it clearer, surface the purpose, and give you a fresh perspective when you get stuck.
           </p>
@@ -149,17 +158,25 @@ export default function HelloIdeaClient() {
           </div>
         )}
 
-        <div style={{ marginTop: 20 }}>
-          <section style={panelStyle}>
-            <h3 style={{ marginBottom: 12 }}>Your idea (PPP)</h3>
-            <div style={{ whiteSpace: 'pre-wrap', lineHeight: 1.7 }}>{output}</div>
+        {/* OUTPUT */}
+        {output && (
+          <section style={{ ...panelStyle, marginTop: 20 }}>
+            <h3 style={{ marginBottom: 12 }}>Your idea</h3>
+            <div style={{ whiteSpace: 'pre-wrap', lineHeight: 1.7 }}>
+              {output}
+            </div>
           </section>
+        )}
 
+        {/* PERSPECTIVE */}
+        {perspective && (
           <section style={{ ...panelStyle, marginTop: 20 }}>
             <h3 style={{ marginBottom: 12 }}>Fresh perspective</h3>
-            <div style={{ whiteSpace: 'pre-wrap', lineHeight: 1.7 }}>{perspective}</div>
+            <div style={{ whiteSpace: 'pre-wrap', lineHeight: 1.7 }}>
+              {perspective}
+            </div>
           </section>
-        </div>
+        )}
 
         <div style={{ ...panelStyle, marginTop: 20 }}>
           Keep it simple. Write anything down. Then keep building.
