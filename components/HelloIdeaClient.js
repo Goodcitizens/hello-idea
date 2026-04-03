@@ -19,8 +19,8 @@ const styles = {
   },
 sideLabel: {
   position: 'fixed',
-  left: 14,
-  top: 305,
+  left: 40,
+  top: 40,
   fontSize: 12,
   fontWeight: 700,
   lineHeight: '12px',
