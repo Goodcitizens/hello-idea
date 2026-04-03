@@ -163,7 +163,7 @@ export default function HelloIdeaClient() {
   const [loadingIdea, setLoadingIdea] = useState(false);
   const [loadingPerspective, setLoadingPerspective] = useState(false);
   const [error, setError] = useState('');
-
+const [hoveredButton, setHoveredButton] = useState(null);
   async function handleIdeaGo() {
     setLoadingIdea(true);
     setError('');
