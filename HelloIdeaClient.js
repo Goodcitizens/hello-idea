@@ -2,41 +2,185 @@
 
 import { useState } from 'react';
 
-const panelStyle = {
-  background: '#ffffff',
-  border: '1px solid rgba(0,0,0,0.08)',
-  borderRadius: 24,
-  padding: 20,
-  boxShadow: '0 6px 20px rgba(0,0,0,0.04)',
+const styles = {
+  page: {
+    minHeight: '100vh',
+    background: '#F1FF89',
+    display: 'flex',
+    justifyContent: 'center',
+    overflowX: 'auto',
+    fontFamily: 'Arial, Helvetica, sans-serif',
+  },
+  frame: {
+    position: 'relative',
+    width: 1440,
+    minHeight: 1024,
+    background: '#F1FF89',
+  },
+  sideLabel: {
+    position: 'absolute',
+    left: 28,
+    top: 420,
+    transform: 'rotate(-90deg)',
+    transformOrigin: 'left top',
+    fontSize: 12,
+    fontWeight: 700,
+    lineHeight: '12px',
+    color: '#000000',
+    whiteSpace: 'nowrap',
+  },
+  poweredWrap: {
+    position: 'absolute',
+    left: 1170,
+    top: 209,
+    fontSize: 12,
+    lineHeight: '12px',
+    color: '#000000',
+    whiteSpace: 'nowrap',
+  },
+  poweredLink: {
+    color: '#000000',
+    textDecoration: 'underline',
+    fontWeight: 700,
+  },
+  label: {
+    position: 'absolute',
+    margin: 0,
+    fontSize: 12,
+    fontWeight: 700,
+    lineHeight: '12px',
+    color: '#000000',
+  },
+  box: {
+    position: 'absolute',
+    background: '#F2F2F2',
+    border: '1px solid #000000',
+    boxSizing: 'border-box',
+    padding: '8px 10px',
+    outline: 'none',
+    resize: 'none',
+    fontFamily: 'Arial, Helvetica, sans-serif',
+    fontSize: 12,
+    lineHeight: '16px',
+    color: '#000000',
+    overflow: 'auto',
+  },
+  saveNote: {
+    position: 'absolute',
+    left: 509,
+    top: 858,
+    width: 171,
+    textAlign: 'center',
+    fontSize: 12,
+    fontWeight: 700,
+    lineHeight: '16px',
+    color: '#000000',
+    margin: 0,
+  },
+  error: {
+    position: 'absolute',
+    left: 164,
+    top: 960,
+    width: 1030,
+    padding: '8px 10px',
+    boxSizing: 'border-box',
+    border: '1px solid #F0B8AE',
+    background: '#FFF1EF',
+    color: '#8A1F11',
+    fontSize: 12,
+    lineHeight: '16px',
+  },
 };
 
-const textareaStyle = {
-  width: '100%',
-  minHeight: 260,
-  resize: 'vertical',
-  borderRadius: 18,
-  border: '1px solid rgba(0,0,0,0.1)',
-  background: '#fcfaf6',
-  padding: 16,
-  outline: 'none',
-};
+function buildIdeaText(data) {
+  const parts = [];
 
-const buttonStyle = {
-  border: 'none',
-  borderRadius: 999,
-  padding: '10px 18px',
-  background: '#171717',
-  color: '#fff',
-  cursor: 'pointer',
-  fontWeight: 600,
-};
+  if (data?.idea?.idea) {
+    parts.push(`The Idea\n${data.idea.idea}`);
+  }
+
+  if (data?.idea?.whoFor) {
+    parts.push(`\nWho it's for\n${data.idea.whoFor}`);
+  }
+
+  if (data?.idea?.different) {
+    parts.push(`\nWhat makes it different\n${data.idea.different}`);
+  }
+
+  if (data?.idea?.questions) {
+    const questions = data.idea.questions
+      .split('\n')
+      .map((line) => line.trim())
+      .filter(Boolean)
+      .join('\n');
+    parts.push(`\nHelpful questions\n${questions}`);
+  }
+
+  if (data?.idea?.instructions) {
+    parts.push(`\nWrite down instructions\n${data.idea.instructions}`);
+  }
+
+  return parts.join('\n');
+}
+
+function buildProgressLines(progress) {
+  return (progress || '')
+    .split('\n')
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .filter(
+      (line) =>
+        line.toLowerCase() !==
+        'what is the one thing you could do today that 24 hours from now you will thank yourself for?'
+    );
+}
+
+function GoButton({ left, top, onClick, disabled, children = 'Go' }) {
+  const [hovered, setHovered] = useState(false);
+
+  return (
+    <button
+      onClick={onClick}
+      disabled={disabled}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        position: 'absolute',
+        left,
+        top,
+        width: 76,
+        height: 31,
+        borderRadius: 20,
+        border: 'none',
+        background: hovered && !disabled ? '#FF7A72' : '#FA625F',
+        color: '#FFF59B',
+        fontFamily: 'Arial, Helvetica, sans-serif',
+        fontSize: 12,
+        fontWeight: 700,
+        lineHeight: '12px',
+        cursor: disabled ? 'default' : 'pointer',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 0,
+        boxShadow: hovered && !disabled ? '0 4px 10px rgba(0,0,0,0.12)' : 'none',
+        transform: hovered && !disabled ? 'translateY(-1px)' : 'translateY(0)',
+        transition: 'background 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease',
+        opacity: disabled ? 0.8 : 1,
+      }}
+    >
+      {children}
+    </button>
+  );
+}
 
 export default function HelloIdeaClient() {
-  const [idea, setIdea] = useState('');
-  const [change, setChange] = useState('');
-  const [stuck, setStuck] = useState('');
-  const [output, setOutput] = useState('');
-  const [perspective, setPerspective] = useState('');
+  const [ideaInput, setIdeaInput] = useState('');
+  const [ideaBox, setIdeaBox] = useState('');
+  const [changeBox, setChangeBox] = useState('');
+  const [purposeBox, setPurposeBox] = useState('');
+  const [progressLines, setProgressLines] = useState([]);
+  const [perspectiveBox, setPerspectiveBox] = useState('');
   const [loadingIdea, setLoadingIdea] = useState(false);
   const [loadingPerspective, setLoadingPerspective] = useState(false);
   const [error, setError] = useState('');
@@ -49,13 +193,23 @@ export default function HelloIdeaClient() {
       const response = await fetch('/api/idea', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ mode: 'idea', idea, change }),
+        body: JSON.stringify({
+          mode: 'idea',
+          idea: ideaInput || ideaBox,
+          change: changeBox,
+        }),
       });
 
       const data = await response.json();
-      if (!response.ok) throw new Error(data.error || 'Something went wrong');
 
-      setOutput(data.output);
+      if (!response.ok) {
+        throw new Error(data?.error || 'Something went wrong');
+      }
+
+      setIdeaBox(buildIdeaText(data));
+      setIdeaInput('');
+      setPurposeBox(data?.purpose || '');
+      setProgressLines(buildProgressLines(data?.progress || ''));
     } catch (err) {
       setError(err.message || 'Something went wrong');
     } finally {
@@ -73,16 +227,19 @@ export default function HelloIdeaClient() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           mode: 'perspective',
-          idea: output,
-          purpose: '',
-          stuck,
+          idea: ideaBox || ideaInput,
+          purpose: purposeBox,
+          stuck: perspectiveBox,
         }),
       });
 
       const data = await response.json();
-      if (!response.ok) throw new Error(data.error || 'Something went wrong');
 
-      setPerspective(data.output);
+      if (!response.ok) {
+        throw new Error(data?.error || 'Something went wrong');
+      }
+
+      setPerspectiveBox(data?.output || '');
     } catch (err) {
       setError(err.message || 'Something went wrong');
     } finally {
@@ -91,97 +248,131 @@ export default function HelloIdeaClient() {
   }
 
   return (
-    <main style={{ minHeight: '100vh', padding: '32px 20px' }}>
-      <div style={{ maxWidth: 1180, margin: '0 auto' }}>
-        <div style={{ marginBottom: 28 }}>
-          <p style={{ margin: 0, letterSpacing: '0.18em', textTransform: 'uppercase', fontSize: 12, opacity: 0.55 }}>
-            hello idea
-          </p>
-          <h1 style={{ margin: '10px 0 12px', fontSize: 'clamp(36px, 6vw, 68px)', lineHeight: 1, maxWidth: 860 }}>
-            Get your idea out of your head.
-          </h1>
-          <p style={{ margin: 0, maxWidth: 760, fontSize: 18, lineHeight: 1.6, opacity: 0.7 }}>
-            Write it messy. We’ll help make it clearer, surface the purpose, and give you a fresh perspective when you get stuck.
-          </p>
+    <div style={styles.page}>
+      <div style={styles.frame}>
+        <div style={styles.sideLabel}>Purpose+Progress+Perspective = Idea</div>
+
+        <div style={styles.poweredWrap}>
+          Powered by{' '}
+          <a
+            href="https://www.goodcitizens.com.au/"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={styles.poweredLink}
+          >
+            Good Citizens
+          </a>
         </div>
 
-        <div style={{ display: 'grid', gap: 20, gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))' }}>
-          <section style={panelStyle}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 14 }}>
-              <h2 style={{ margin: 0, fontSize: 24 }}>Your idea</h2>
-              <button style={buttonStyle} onClick={handleIdeaSubmit} disabled={loadingIdea}>
-                {loadingIdea ? 'Working...' : 'Go'}
-              </button>
-            </div>
-            <textarea
-              style={textareaStyle}
-              value={idea}
-              onChange={(e) => setIdea(e.target.value)}
-              placeholder="Write here. Messy is fine."
-            />
-          </section>
+        <p style={{ ...styles.label, left: 171, top: 378 }}>Your idea</p>
+        <textarea
+          style={{
+            ...styles.box,
+            left: 164,
+            top: 395,
+            width: 510,
+            height: 225,
+          }}
+          placeholder="Type your idea. Messy is fine. Who is it for? How does it help?"
+          value={ideaBox || ideaInput}
+          onChange={(e) => {
+            const value = e.target.value;
+            setIdeaInput(value);
+            setIdeaBox(value);
+          }}
+        />
 
-          <section style={panelStyle}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 14 }}>
-              <h2 style={{ margin: 0, fontSize: 24 }}>Want to change or add anything?</h2>
-              <button style={buttonStyle} onClick={handleIdeaSubmit} disabled={loadingIdea}>
-                {loadingIdea ? 'Working...' : 'Go'}
-              </button>
-            </div>
-            <textarea
-              style={textareaStyle}
-              value={change}
-              onChange={(e) => setChange(e.target.value)}
-              placeholder="Add or change anything"
-            />
-          </section>
+        <p style={{ ...styles.label, left: 692, top: 378 }}>Want to change or add anything?</p>
+        <textarea
+          style={{
+            ...styles.box,
+            left: 684,
+            top: 395,
+            width: 510,
+            height: 225,
+          }}
+          placeholder="Add or change anything here."
+          value={changeBox}
+          onChange={(e) => setChangeBox(e.target.value)}
+        />
 
-          <section style={panelStyle}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 14 }}>
-              <h2 style={{ margin: 0, fontSize: 24 }}>Stuck? Get new perspective</h2>
-              <button style={buttonStyle} onClick={handlePerspectiveSubmit} disabled={loadingPerspective}>
-                {loadingPerspective ? 'Working...' : 'Go'}
-              </button>
-            </div>
-            <textarea
-              style={textareaStyle}
-              value={stuck}
-              onChange={(e) => setStuck(e.target.value)}
-              placeholder="Where are you stuck?"
-            />
-          </section>
-        </div>
+        <GoButton left={599} top={635} onClick={handleIdeaSubmit} disabled={loadingIdea}>
+          {loadingIdea ? '...' : 'Go'}
+        </GoButton>
 
-        {error && (
-          <div style={{ marginTop: 18, color: '#8a1f11', background: '#fff1ef', borderRadius: 16, padding: 14 }}>
-            {error}
+        <GoButton left={1118} top={635} onClick={handleIdeaSubmit} disabled={loadingIdea}>
+          {loadingIdea ? '...' : 'Go'}
+        </GoButton>
+
+        <p style={{ ...styles.label, left: 171, top: 708 }}>Purpose (Reason for doing it)</p>
+        <textarea
+          readOnly
+          style={{
+            ...styles.box,
+            left: 164,
+            top: 726,
+            width: 330,
+            height: 222,
+          }}
+          value={purposeBox}
+        />
+
+        <p style={{ ...styles.label, left: 515, top: 708 }}>
+          Progress (Every small step forward is a win)
+        </p>
+        <div
+          style={{
+            ...styles.box,
+            left: 509,
+            top: 726,
+            width: 330,
+            height: 222,
+            whiteSpace: 'pre-wrap',
+          }}
+        >
+          <div style={{ marginBottom: 12 }}>
+            What is the one thing you could do today that 24 hours from now you will thank yourself for?
           </div>
-        )}
 
-        {/* OUTPUT */}
-        {output && (
-          <section style={{ ...panelStyle, marginTop: 20 }}>
-            <h3 style={{ marginBottom: 12 }}>Your idea</h3>
-            <div style={{ whiteSpace: 'pre-wrap', lineHeight: 1.7 }}>
-              {output}
+          {progressLines.map((line, index) => (
+            <div key={index} style={{ marginBottom: 4 }}>
+              {line}
             </div>
-          </section>
-        )}
-
-        {/* PERSPECTIVE */}
-        {perspective && (
-          <section style={{ ...panelStyle, marginTop: 20 }}>
-            <h3 style={{ marginBottom: 12 }}>Fresh perspective</h3>
-            <div style={{ whiteSpace: 'pre-wrap', lineHeight: 1.7 }}>
-              {perspective}
-            </div>
-          </section>
-        )}
-
-        <div style={{ ...panelStyle, marginTop: 20 }}>
-          Keep it simple. Write anything down. Then keep building.
+          ))}
         </div>
+
+        <p style={{ ...styles.label, left: 861, top: 708 }}>
+          Perspective (See your problem with fresh eyes)
+        </p>
+        <textarea
+          style={{
+            ...styles.box,
+            left: 856,
+            top: 726,
+            width: 338,
+            height: 222,
+            color: perspectiveBox ? '#000000' : '#6B6B6B',
+          }}
+          placeholder={`Stuck? Paste your idea and purpose words here.
+Tell me the problem.`}
+          value={perspectiveBox}
+          onChange={(e) => setPerspectiveBox(e.target.value)}
+        />
+
+        <GoButton left={1118} top={962} onClick={handlePerspectiveSubmit} disabled={loadingPerspective}>
+          {loadingPerspective ? '...' : 'Go'}
+        </GoButton>
+
+        <p style={styles.saveNote}>
+          Don’t lose this.
+          <br />
+          When you close or refresh, it’s gone.
+          <br />
+          Write it down or copy it now.
+        </p>
+
+        {error ? <div style={styles.error}>{error}</div> : null}
       </div>
-    </main>
+    </div>
   );
 }
