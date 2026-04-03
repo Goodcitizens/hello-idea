@@ -17,7 +17,7 @@ const styles = {
     minHeight: 1024,
     background: '#F1FF89',
   },
-  sideLabel: {
+sideLabel: {
   position: 'absolute',
   left: 40,
   top: 40,
