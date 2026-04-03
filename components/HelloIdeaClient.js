@@ -109,65 +109,20 @@ const styles = {
   },
 };
 
-function buildIdeaText(data) {
-  const ideaText =
-    data?.yourIdea ||
-    data?.idea?.idea ||
-    data?.idea ||
-    '';
+function buildProgressText(data) {
+  const intro =
+    '24:1 means this: what is one thing you can do today that 24 hours from now your future self will thank you for?';
 
-  const purposeText =
-    data?.yourPurpose ||
-    data?.purpose ||
-    data?.idea?.purpose ||
-    '';
+  const progressText =
+    data?.progress || '';
 
-  const nextPromptText =
-    data?.nextPrompt ||
-    data?.idea?.reflection ||
-    '';
+  const cleaned = String(progressText)
+    .split('\n')
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .join('\n');
 
-  const whoForText =
-    data?.idea?.whoFor || '';
-
-  const differentText =
-    data?.idea?.different || '';
-
-  const questionsText = data?.idea?.questions || '';
-
-  const instructionsText = data?.idea?.instructions || '';
-
-  const parts = [];
-
-  if (ideaText) {
-    parts.push(`The Idea\n${ideaText}`);
-  }
-
-  if (purposeText) {
-    parts.push(`\nThe Purpose\n${purposeText}`);
-  }
-
-  if (whoForText) {
-    parts.push(`\nWho It's For\n${whoForText}`);
-  }
-
-  if (differentText) {
-    parts.push(`\nWhat Makes It Different\n${differentText}`);
-  }
-
-  if (questionsText) {
-    parts.push(`\nHelpful questions\n${questionsText}`);
-  }
-
-  if (instructionsText) {
-    parts.push(`\nWrite down instructions\n${instructionsText}`);
-  }
-
-  if (nextPromptText) {
-    parts.push(`\n${nextPromptText}`);
-  }
-
-  return parts.join('\n');
+  return cleaned ? `${intro}\n\n${cleaned}` : intro;
 }
 
 function buildPurposeText(data) {
