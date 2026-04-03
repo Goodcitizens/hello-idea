@@ -20,7 +20,7 @@ const styles = {
   sideLabel: {
     position: 'absolute',
     left: 28,
-    top: 420,
+    top: 417,
     transform: 'rotate(-90deg)',
     transformOrigin: 'left top',
     fontSize: 12,
@@ -53,7 +53,7 @@ const styles = {
   },
   box: {
     position: 'absolute',
-    background: '#F2F2F2',
+    background: '#FFFFFF',
     border: '1px solid #000000',
     boxSizing: 'border-box',
     padding: '8px 10px',
@@ -67,9 +67,9 @@ const styles = {
   },
   saveNote: {
     position: 'absolute',
-    left: 509,
-    top: 858,
-    width: 171,
+    left: 576,
+    top: 986,
+    width: 366,
     textAlign: 'center',
     fontSize: 12,
     fontWeight: 700,
@@ -79,9 +79,9 @@ const styles = {
   },
   error: {
     position: 'absolute',
-    left: 164,
-    top: 960,
-    width: 1030,
+    left: 193,
+    top: 930,
+    width: 902,
     padding: '8px 10px',
     boxSizing: 'border-box',
     border: '1px solid #F0B8AE',
@@ -92,7 +92,7 @@ const styles = {
   },
 };
 
-function buildIdeaText(data) {
+function formatIdeaBox(data) {
   const parts = [];
 
   if (data?.idea?.idea) {
@@ -175,7 +175,7 @@ function GoButton({ left, top, onClick, disabled, children = 'Go' }) {
 }
 
 export default function HelloIdeaClient() {
-  const [ideaInput, setIdeaInput] = useState('');
+  const [rawIdeaInput, setRawIdeaInput] = useState('');
   const [ideaBox, setIdeaBox] = useState('');
   const [changeBox, setChangeBox] = useState('');
   const [purposeBox, setPurposeBox] = useState('');
@@ -185,17 +185,19 @@ export default function HelloIdeaClient() {
   const [loadingPerspective, setLoadingPerspective] = useState(false);
   const [error, setError] = useState('');
 
-  async function handleIdeaSubmit() {
+  async function handleIdeaGo() {
     setLoadingIdea(true);
     setError('');
 
     try {
       const response = await fetch('/api/idea', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify({
           mode: 'idea',
-          idea: ideaInput || ideaBox,
+          idea: rawIdeaInput || ideaBox,
           change: changeBox,
         }),
       });
@@ -206,8 +208,7 @@ export default function HelloIdeaClient() {
         throw new Error(data?.error || 'Something went wrong');
       }
 
-      setIdeaBox(buildIdeaText(data));
-      setIdeaInput('');
+      setIdeaBox(formatIdeaBox(data));
       setPurposeBox(data?.purpose || '');
       setProgressLines(buildProgressLines(data?.progress || ''));
     } catch (err) {
@@ -217,17 +218,19 @@ export default function HelloIdeaClient() {
     }
   }
 
-  async function handlePerspectiveSubmit() {
+  async function handlePerspectiveGo() {
     setLoadingPerspective(true);
     setError('');
 
     try {
       const response = await fetch('/api/idea', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify({
           mode: 'perspective',
-          idea: ideaBox || ideaInput,
+          idea: ideaBox || rawIdeaInput,
           purpose: purposeBox,
           stuck: perspectiveBox,
         }),
@@ -264,31 +267,31 @@ export default function HelloIdeaClient() {
           </a>
         </div>
 
-        <p style={{ ...styles.label, left: 171, top: 378 }}>Your idea</p>
+        <p style={{ ...styles.label, left: 202, top: 364 }}>Your idea</p>
         <textarea
           style={{
             ...styles.box,
-            left: 164,
-            top: 395,
-            width: 510,
+            left: 193,
+            top: 389,
+            width: 518,
             height: 225,
           }}
           placeholder="Type your idea. Messy is fine. Who is it for? How does it help?"
-          value={ideaBox || ideaInput}
+          value={ideaBox || rawIdeaInput}
           onChange={(e) => {
             const value = e.target.value;
-            setIdeaInput(value);
+            setRawIdeaInput(value);
             setIdeaBox(value);
           }}
         />
 
-        <p style={{ ...styles.label, left: 692, top: 378 }}>Want to change or add anything?</p>
+        <p style={{ ...styles.label, left: 738, top: 364 }}>Want to change or add anything?</p>
         <textarea
           style={{
             ...styles.box,
-            left: 684,
-            top: 395,
-            width: 510,
+            left: 729,
+            top: 389,
+            width: 518,
             height: 225,
           }}
           placeholder="Add or change anything here."
@@ -296,41 +299,39 @@ export default function HelloIdeaClient() {
           onChange={(e) => setChangeBox(e.target.value)}
         />
 
-        <GoButton left={599} top={635} onClick={handleIdeaSubmit} disabled={loadingIdea}>
+        <GoButton left={635} top={628} onClick={handleIdeaGo} disabled={loadingIdea}>
           {loadingIdea ? '...' : 'Go'}
         </GoButton>
 
-        <GoButton left={1118} top={635} onClick={handleIdeaSubmit} disabled={loadingIdea}>
+        <GoButton left={1171} top={628} onClick={handleIdeaGo} disabled={loadingIdea}>
           {loadingIdea ? '...' : 'Go'}
         </GoButton>
 
-        <p style={{ ...styles.label, left: 171, top: 708 }}>Purpose (Reason for doing it)</p>
+        <p style={{ ...styles.label, left: 202, top: 735 }}>Purpose (Reason for doing it)</p>
         <textarea
           readOnly
           style={{
             ...styles.box,
-            left: 164,
-            top: 726,
-            width: 330,
-            height: 222,
+            left: 193,
+            top: 761,
+            width: 366,
+            height: 211,
           }}
           value={purposeBox}
         />
 
-        <p style={{ ...styles.label, left: 515, top: 708 }}>
-          Progress (Every small step forward is a win)
-        </p>
+        <p style={{ ...styles.label, left: 582, top: 735 }}>Progress (Every small step forward is a win)</p>
         <div
           style={{
             ...styles.box,
-            left: 509,
-            top: 726,
-            width: 330,
-            height: 222,
+            left: 576,
+            top: 761,
+            width: 366,
+            height: 211,
             whiteSpace: 'pre-wrap',
           }}
         >
-          <div style={{ marginBottom: 12 }}>
+          <div style={{ marginBottom: 10 }}>
             What is the one thing you could do today that 24 hours from now you will thank yourself for?
           </div>
 
@@ -341,16 +342,14 @@ export default function HelloIdeaClient() {
           ))}
         </div>
 
-        <p style={{ ...styles.label, left: 861, top: 708 }}>
-          Perspective (See your problem with fresh eyes)
-        </p>
+        <p style={{ ...styles.label, left: 962, top: 735 }}>Perspective (See your problem with fresh eyes)</p>
         <textarea
           style={{
             ...styles.box,
-            left: 856,
-            top: 726,
-            width: 338,
-            height: 222,
+            left: 956,
+            top: 761,
+            width: 366,
+            height: 211,
             color: perspectiveBox ? '#000000' : '#6B6B6B',
           }}
           placeholder={`Stuck? Paste your idea and purpose words here.
@@ -359,7 +358,7 @@ Tell me the problem.`}
           onChange={(e) => setPerspectiveBox(e.target.value)}
         />
 
-        <GoButton left={1118} top={962} onClick={handlePerspectiveSubmit} disabled={loadingPerspective}>
+        <GoButton left={1246} top={987} onClick={handlePerspectiveGo} disabled={loadingPerspective}>
           {loadingPerspective ? '...' : 'Go'}
         </GoButton>
 
