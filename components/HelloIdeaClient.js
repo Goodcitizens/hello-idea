@@ -127,35 +127,8 @@ function buildIdeaText(data) {
   return parts.join('\n');
 }
 
-function HoverButton({
-  left,
-  top,
-  hoverKey,
-  hoveredButton,
-  setHoveredButton,
-  onClick,
-  disabled,
-  children,
-}) {
-  return (
-    <button
-      type="button"
-      style={{
-        ...styles.button,
-        left,
-        top,
-        background: hoveredButton === hoverKey ? '#5FFAB2' : '#FA625F',
-        cursor: disabled ? 'default' : 'pointer',
-        opacity: disabled ? 0.8 : 1,
-      }}
-      onMouseEnter={() => setHoveredButton(hoverKey)}
-      onMouseLeave={() => setHoveredButton(null)}
-      onClick={onClick}
-      disabled={disabled}
-    >
-      {children}
-    </button>
-  );
+function buildProgressText() {
+  return '';
 }
 
 export default function HelloIdeaClient() {
@@ -195,7 +168,7 @@ export default function HelloIdeaClient() {
 
       setIdeaBox(buildIdeaText(data));
       setPurposeBox(data?.yourPurpose || '');
-      setProgressBox('');
+      setProgressBox(buildProgressText());
     } catch (err) {
       setError(err.message || 'Something went wrong');
     } finally {
@@ -285,29 +258,37 @@ export default function HelloIdeaClient() {
           onChange={(e) => setChangeBox(e.target.value)}
         />
 
-        <HoverButton
-          left={659}
-          top={635}
-          hoverKey="idea-left"
-          hoveredButton={hoveredButton}
-          setHoveredButton={setHoveredButton}
+        <button
+          style={{
+            ...styles.button,
+            left: 659,
+            top: 635,
+            background: hoveredButton === 'idea-left' ? '#5FFAB2' : '#FA625F',
+          }}
+          onMouseEnter={() => setHoveredButton('idea-left')}
+          onMouseLeave={() => setHoveredButton(null)}
           onClick={handleIdeaGo}
           disabled={loadingIdea}
+          type="button"
         >
           {loadingIdea ? '...' : 'Go'}
-        </HoverButton>
+        </button>
 
-        <HoverButton
-          left={1179}
-          top={635}
-          hoverKey="idea-right"
-          hoveredButton={hoveredButton}
-          setHoveredButton={setHoveredButton}
+        <button
+          style={{
+            ...styles.button,
+            left: 1179,
+            top: 635,
+            background: hoveredButton === 'idea-right' ? '#5FFAB2' : '#FA625F',
+          }}
+          onMouseEnter={() => setHoveredButton('idea-right')}
+          onMouseLeave={() => setHoveredButton(null)}
           onClick={handleIdeaGo}
           disabled={loadingIdea}
+          type="button"
         >
           {loadingIdea ? '...' : 'Go'}
-        </HoverButton>
+        </button>
 
         <p style={{ ...styles.label, left: 231, top: 708 }}>Purpose (Reason for doing it)</p>
         <textarea
@@ -350,17 +331,21 @@ export default function HelloIdeaClient() {
           onChange={(e) => setPerspectiveBox(e.target.value)}
         />
 
-        <HoverButton
-          left={1179}
-          top={962}
-          hoverKey="perspective"
-          hoveredButton={hoveredButton}
-          setHoveredButton={setHoveredButton}
+        <button
+          style={{
+            ...styles.button,
+            left: 1179,
+            top: 962,
+            background: hoveredButton === 'perspective' ? '#5FFAB2' : '#FA625F',
+          }}
+          onMouseEnter={() => setHoveredButton('perspective')}
+          onMouseLeave={() => setHoveredButton(null)}
           onClick={handlePerspectiveGo}
           disabled={loadingPerspective}
+          type="button"
         >
           {loadingPerspective ? '...' : 'Go'}
-        </HoverButton>
+        </button>
 
         <p style={styles.saveNote}>
           Don’t lose this.
