@@ -23,12 +23,10 @@ sideLabel: {
   top: 40,
   fontSize: 12,
   fontWeight: 700,
-  lineHeight: '12px',
   color: '#000000',
-  transform: 'rotate(-90deg)',
+  transform: 'rotate(-90deg) translateX(-100%)',
   transformOrigin: 'top left',
   whiteSpace: 'nowrap',
-  zIndex: 20,
 },
   poweredWrap: {
   position: 'fixed',
