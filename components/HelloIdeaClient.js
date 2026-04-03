@@ -96,10 +96,10 @@ const styles = {
   },
   error: {
     position: 'absolute',
-    left: 230,
-    top: 930,
-    width: 1080,
-    padding: '8px 10px',
+    left: 224,
+    top: 640,
+    width: 1030,
+    padding: '10px 12px',
     boxSizing: 'border-box',
     border: '1px solid #F0B8AE',
     background: '#FFF1EF',
@@ -110,25 +110,77 @@ const styles = {
 };
 
 function buildIdeaText(data) {
+  const ideaText =
+    data?.yourIdea ||
+    data?.idea?.idea ||
+    data?.idea ||
+    '';
+
+  const purposeText =
+    data?.yourPurpose ||
+    data?.purpose ||
+    data?.idea?.purpose ||
+    '';
+
+  const nextPromptText =
+    data?.nextPrompt ||
+    data?.idea?.reflection ||
+    '';
+
+  const whoForText =
+    data?.idea?.whoFor || '';
+
+  const differentText =
+    data?.idea?.different || '';
+
+  const questionsText = data?.idea?.questions || '';
+
+  const instructionsText = data?.idea?.instructions || '';
+
   const parts = [];
 
-  if (data?.yourIdea) {
-    parts.push(`The Idea\n${data.yourIdea}`);
+  if (ideaText) {
+    parts.push(`The Idea\n${ideaText}`);
   }
 
-  if (data?.yourPurpose) {
-    parts.push(`\nThe Purpose\n${data.yourPurpose}`);
+  if (purposeText) {
+    parts.push(`\nThe Purpose\n${purposeText}`);
   }
 
-  if (data?.nextPrompt) {
-    parts.push(`\n${data.nextPrompt}`);
+  if (whoForText) {
+    parts.push(`\nWho It's For\n${whoForText}`);
+  }
+
+  if (differentText) {
+    parts.push(`\nWhat Makes It Different\n${differentText}`);
+  }
+
+  if (questionsText) {
+    parts.push(`\nHelpful questions\n${questionsText}`);
+  }
+
+  if (instructionsText) {
+    parts.push(`\nWrite down instructions\n${instructionsText}`);
+  }
+
+  if (nextPromptText) {
+    parts.push(`\n${nextPromptText}`);
   }
 
   return parts.join('\n');
 }
 
-function buildProgressText() {
+function buildPurposeText(data) {
+  return data?.yourPurpose || data?.purpose || '';
+}
+
+function buildProgressText(data) {
+  if (typeof data?.progress === 'string') return data.progress;
   return '';
+}
+
+function buildPerspectiveText(data) {
+  return data?.perspective || data?.output || '';
 }
 
 export default function HelloIdeaClient() {
@@ -166,9 +218,13 @@ export default function HelloIdeaClient() {
         throw new Error(data?.error || 'Something went wrong');
       }
 
-      setIdeaBox(buildIdeaText(data));
-      setPurposeBox(data?.yourPurpose || '');
-      setProgressBox(buildProgressText());
+      const builtIdea = buildIdeaText(data);
+      const builtPurpose = buildPurposeText(data);
+      const builtProgress = buildProgressText(data);
+
+      setIdeaBox(builtIdea || rawIdeaInput || '');
+      setPurposeBox(builtPurpose);
+      setProgressBox(builtProgress);
     } catch (err) {
       setError(err.message || 'Something went wrong');
     } finally {
@@ -200,7 +256,7 @@ export default function HelloIdeaClient() {
         throw new Error(data?.error || 'Something went wrong');
       }
 
-      setPerspectiveBox(data?.perspective || '');
+      setPerspectiveBox(buildPerspectiveText(data));
     } catch (err) {
       setError(err.message || 'Something went wrong');
     } finally {
