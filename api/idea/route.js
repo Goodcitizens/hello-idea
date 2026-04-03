@@ -50,7 +50,7 @@ Rules:
 - yourPurpose should explain why the idea matters and who it helps in 1 to 3 sentences max.
 - nextPrompt must be this exact text and nothing else:
 
-Time to write down the below in your note book
+Time to write down the below in your notebook
 
 - The Idea
 - The Purpose
