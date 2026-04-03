@@ -17,25 +17,25 @@ const styles = {
     minHeight: 1024,
     background: '#F1FF89',
   },
-sideLabel: {
-  position: 'fixed',
-  left: 38,
-  top: 40,
-  fontSize: 12,
-  fontWeight: 500,
-  color: '#000000',
-  transform: 'rotate(-90deg) translateX(-100%)',
-  transformOrigin: 'top left',
-  whiteSpace: 'nowrap',
-},
+  sideLabel: {
+    position: 'fixed',
+    left: 38,
+    top: 40,
+    fontSize: 12,
+    fontWeight: 500,
+    color: '#000000',
+    transform: 'rotate(-90deg) translateX(-100%)',
+    transformOrigin: 'top left',
+    whiteSpace: 'nowrap',
+  },
   poweredWrap: {
-  position: 'fixed',
-  right: 40,
-  top: 40,
-  fontSize: 12,
-  color: '#000000',
-  whiteSpace: 'nowrap',
-},
+    position: 'fixed',
+    right: 40,
+    top: 40,
+    fontSize: 12,
+    color: '#000000',
+    whiteSpace: 'nowrap',
+  },
   poweredLink: {
     color: '#000000',
     textDecoration: 'underline',
@@ -82,20 +82,20 @@ sideLabel: {
     padding: 0,
   },
   saveNote: {
-  position: 'absolute',
-  left: 576,
-  top: 986,
-  width: 366,
-  textAlign: 'center',
-  fontSize: 12,
-  fontWeight: 700,
-  lineHeight: '16px',
-  color: '#000000',
-  margin: 0,
-},
+    position: 'absolute',
+    left: 636,
+    top: 986,
+    width: 366,
+    textAlign: 'center',
+    fontSize: 12,
+    fontWeight: 700,
+    lineHeight: '16px',
+    color: '#000000',
+    margin: 0,
+  },
   error: {
     position: 'absolute',
-    left: 170,
+    left: 230,
     top: 930,
     width: 1080,
     padding: '8px 10px',
@@ -245,11 +245,11 @@ export default function HelloIdeaClient() {
           </a>
         </div>
 
-        <p style={{ ...styles.label, left: 171, top: 378 }}>Your idea</p>
+        <p style={{ ...styles.label, left: 231, top: 378 }}>Your idea</p>
         <textarea
           style={{
             ...styles.box,
-            left: 164,
+            left: 224,
             top: 395,
             width: 510,
             height: 225,
@@ -264,11 +264,11 @@ export default function HelloIdeaClient() {
           }}
         />
 
-        <p style={{ ...styles.label, left: 692, top: 378 }}>Want to change or add anything?</p>
+        <p style={{ ...styles.label, left: 752, top: 378 }}>Want to change or add anything?</p>
         <textarea
           style={{
             ...styles.box,
-            left: 684,
+            left: 744,
             top: 395,
             width: 510,
             height: 225,
@@ -279,7 +279,7 @@ export default function HelloIdeaClient() {
         />
 
         <button
-          style={{ ...styles.button, left: 599, top: 635 }}
+          style={{ ...styles.button, left: 659, top: 635 }}
           onClick={handleIdeaGo}
           disabled={loadingIdea}
         >
@@ -287,19 +287,19 @@ export default function HelloIdeaClient() {
         </button>
 
         <button
-          style={{ ...styles.button, left: 1119, top: 635 }}
+          style={{ ...styles.button, left: 1179, top: 635 }}
           onClick={handleIdeaGo}
           disabled={loadingIdea}
         >
           {loadingIdea ? '...' : 'Go'}
         </button>
 
-        <p style={{ ...styles.label, left: 171, top: 708 }}>Purpose (Reason for doing it)</p>
+        <p style={{ ...styles.label, left: 231, top: 708 }}>Purpose (Reason for doing it)</p>
         <textarea
           readOnly
           style={{
             ...styles.box,
-            left: 164,
+            left: 224,
             top: 726,
             width: 330,
             height: 222,
@@ -307,12 +307,12 @@ export default function HelloIdeaClient() {
           value={purposeBox}
         />
 
-        <p style={{ ...styles.label, left: 515, top: 708 }}>Progress (Every small step forward is a win)</p>
+        <p style={{ ...styles.label, left: 575, top: 708 }}>Progress (Every small step forward is a win)</p>
         <textarea
           readOnly
           style={{
             ...styles.box,
-            left: 509,
+            left: 569,
             top: 726,
             width: 330,
             height: 222,
@@ -320,11 +320,11 @@ export default function HelloIdeaClient() {
           value={progressBox}
         />
 
-        <p style={{ ...styles.label, left: 861, top: 708 }}>Perspective (See your problem with fresh eyes)</p>
+        <p style={{ ...styles.label, left: 921, top: 708 }}>Perspective (See your problem with fresh eyes)</p>
         <textarea
           style={{
             ...styles.box,
-            left: 856,
+            left: 916,
             top: 726,
             width: 338,
             height: 222,
@@ -337,7 +337,7 @@ Tell me the problem."
         />
 
         <button
-          style={{ ...styles.button, left: 1119, top: 962 }}
+          style={{ ...styles.button, left: 1179, top: 962 }}
           onClick={handlePerspectiveGo}
           disabled={loadingPerspective}
         >
