@@ -21,18 +21,18 @@ export async function POST(request) {
       return jsonResponse({ error: 'Missing OPENAI_MODEL in environment variables.' }, 500);
     }
 
-    if (mode === 'idea') {
-      const input = `Original idea:\n${idea}\n\nExtra detail or change:\n${change}`;
+if (mode === 'idea') {
+  const input = `Original idea:\n${idea}\n\nExtra detail or change:\n${change}`;
 
-      const response = await client.responses.create({
-        model: process.env.OPENAI_MODEL,
-        input: [
+  const response = await client.responses.create({
+    model: process.env.OPENAI_MODEL,
+    input: [
+      {
+        role: 'system',
+        content: [
           {
-            role: 'system',
-            content: [
-              {
-                type: 'input_text',
-                text: `You are the Hello Idea helper. The user has an idea. Your job is to help them express it more clearly without judging whether it is good or bad.
+            type: 'input_text',
+            text: `You are the Hello Idea helper. The user has an idea. Your job is to help them express it more clearly without judging whether it is good or bad.
 
 Return valid JSON with exactly these keys:
 - yourIdea
@@ -43,39 +43,50 @@ Rules:
 - Keep it encouraging, simple and clear.
 - Do not sound corporate.
 - Do not say the idea is good or bad.
+- Do not give steps, instructions, actions, recommendations, or suggestions.
+- Do not write a numbered list.
+- Do not tell the user what to do next.
 - yourIdea should be a clean plain-English version of the user's idea in 2 to 4 sentences max.
 - yourPurpose should explain why the idea matters and who it helps in 1 to 3 sentences max.
-- nextPrompt should be one useful next question that helps the user keep moving.
-- Do not use markdown.`
-              }
-            ]
-          },
-          {
-            role: 'user',
-            content: [{ type: 'input_text', text: input }]
-          }
-        ],
-        text: {
-          format: {
-            type: 'json_schema',
-            name: 'hello_idea_response',
-            schema: {
-              type: 'object',
-              additionalProperties: false,
-              properties: {
-                yourIdea: { type: 'string' },
-                yourPurpose: { type: 'string' },
-                nextPrompt: { type: 'string' }
-              },
-              required: ['yourIdea', 'yourPurpose', 'nextPrompt']
-            }
-          }
-        }
-      });
+- nextPrompt must be this exact text and nothing else:
 
-      const content = JSON.parse(response.output_text);
-      return jsonResponse(content);
+Time to write down the below in your note book
+
+- The Idea
+- The Purpose
+- Who It’s For
+- What Makes It Different
+
+- Do not use markdown.`
+          }
+        ]
+      },
+      {
+        role: 'user',
+        content: [{ type: 'input_text', text: input }]
+      }
+    ],
+    text: {
+      format: {
+        type: 'json_schema',
+        name: 'hello_idea_response',
+        schema: {
+          type: 'object',
+          additionalProperties: false,
+          properties: {
+            yourIdea: { type: 'string' },
+            yourPurpose: { type: 'string' },
+            nextPrompt: { type: 'string' }
+          },
+          required: ['yourIdea', 'yourPurpose', 'nextPrompt']
+        }
+      }
     }
+  });
+
+  const content = JSON.parse(response.output_text);
+  return jsonResponse(content);
+}
 
     if (mode === 'perspective') {
       const input = `Idea:\n${idea}\n\nPurpose:\n${purpose}\n\nWhere I feel stuck:\n${stuck}`;
