@@ -352,12 +352,19 @@ Tell me the problem."
         />
 
         <button
-          style={{ ...styles.button, left: 1179, top: 962 }}
-          onClick={handlePerspectiveGo}
-          disabled={loadingPerspective}
-        >
-          {loadingPerspective ? '...' : 'Go'}
-        </button>
+  style={{
+    ...styles.button,
+    left: 1179,
+    top: 962,
+    background: hoveredButton === 'perspective' ? '#5FFAB2' : '#FA625F',
+  }}
+  onMouseEnter={() => setHoveredButton('perspective')}
+  onMouseLeave={() => setHoveredButton(null)}
+  onClick={handlePerspectiveGo}
+  disabled={loadingPerspective}
+>
+  {loadingPerspective ? '...' : 'Go'}
+</button>
 
         <p style={styles.saveNote}>
           Don’t lose this.
