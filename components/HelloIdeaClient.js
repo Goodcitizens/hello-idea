@@ -280,20 +280,34 @@ const [hoveredButton, setHoveredButton] = useState(null);
         />
 
         <button
-          style={{ ...styles.button, left: 659, top: 635 }}
-          onClick={handleIdeaGo}
-          disabled={loadingIdea}
-        >
-          {loadingIdea ? '...' : 'Go'}
-        </button>
+  style={{
+    ...styles.button,
+    left: 1179,
+    top: 635,
+    background: hoveredButton === 'idea-right' ? '#5FFAB2' : '#FA625F',
+  }}
+  onMouseEnter={() => setHoveredButton('idea-right')}
+  onMouseLeave={() => setHoveredButton(null)}
+  onClick={handleIdeaGo}
+  disabled={loadingIdea}
+>
+  {loadingIdea ? '...' : 'Go'}
+</button>
 
         <button
-          style={{ ...styles.button, left: 1179, top: 635 }}
-          onClick={handleIdeaGo}
-          disabled={loadingIdea}
-        >
-          {loadingIdea ? '...' : 'Go'}
-        </button>
+  style={{
+    ...styles.button,
+    left: 1179,
+    top: 635,
+    background: hoveredButton === 'idea-right' ? '#5FFAB2' : '#FA625F',
+  }}
+  onMouseEnter={() => setHoveredButton('idea-right')}
+  onMouseLeave={() => setHoveredButton(null)}
+  onClick={handleIdeaGo}
+  disabled={loadingIdea}
+>
+  {loadingIdea ? '...' : 'Go'}
+</button>
 
         <p style={{ ...styles.label, left: 231, top: 708 }}>Purpose (Reason for doing it)</p>
         <textarea
