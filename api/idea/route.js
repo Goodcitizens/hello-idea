@@ -43,9 +43,20 @@ Rules:
 - Keep it encouraging, simple and clear.
 - Do not sound corporate.
 - Do not say the idea is good or bad.
+- Do not give steps, instructions, actions, recommendations, or suggestions.
+- Do not write a numbered list.
+- Do not tell the user what to do next.
 - yourIdea should be a clean plain-English version of the user's idea in 2 to 4 sentences max.
 - yourPurpose should explain why the idea matters and who it helps in 1 to 3 sentences max.
-- nextPrompt should be one useful next question that helps the user keep moving.
+- nextPrompt must be this exact text and nothing else:
+
+Time to write down the below in your note book
+
+- The Idea
+- The Purpose
+- Who It’s For
+- What Makes It Different
+
 - Do not use markdown.`
               }
             ]
