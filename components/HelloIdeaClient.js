@@ -282,11 +282,11 @@ const [hoveredButton, setHoveredButton] = useState(null);
         <button
   style={{
     ...styles.button,
-    left: 1179,
+    left: 659,
     top: 635,
-    background: hoveredButton === 'idea-right' ? '#5FFAB2' : '#FA625F',
+    background: hoveredButton === 'idea-left' ? '#5FFAB2' : '#FA625F',
   }}
-  onMouseEnter={() => setHoveredButton('idea-right')}
+  onMouseEnter={() => setHoveredButton('idea-left')}
   onMouseLeave={() => setHoveredButton(null)}
   onClick={handleIdeaGo}
   disabled={loadingIdea}
@@ -294,7 +294,7 @@ const [hoveredButton, setHoveredButton] = useState(null);
   {loadingIdea ? '...' : 'Go'}
 </button>
 
-        <button
+<button
   style={{
     ...styles.button,
     left: 1179,
