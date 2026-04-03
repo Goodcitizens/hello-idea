@@ -109,12 +109,54 @@ const styles = {
   },
 };
 
+function buildIdeaText(data) {
+  const ideaText =
+    data?.yourIdea ||
+    data?.idea?.idea ||
+    data?.idea ||
+    '';
+
+  const whoForText = data?.idea?.whoFor || '';
+  const differentText = data?.idea?.different || '';
+  const questionsText = data?.idea?.questions || '';
+
+  const parts = [];
+
+  if (ideaText) {
+    parts.push(`The Idea\n${ideaText}`);
+  }
+
+  if (whoForText) {
+    parts.push(`\nWho It's For\n${whoForText}`);
+  }
+
+  if (differentText) {
+    parts.push(`\nWhat Makes It Different\n${differentText}`);
+  }
+
+  if (questionsText) {
+    parts.push(`\nHelpful questions\n${questionsText}`);
+  }
+
+  parts.push(`\nTime to write down the below in your notebook
+
+- The Idea
+- The Purpose
+- Who It's For
+- What Makes It Different`);
+
+  return parts.join('\n');
+}
+
+function buildPurposeText(data) {
+  return data?.yourPurpose || data?.purpose || '';
+}
+
 function buildProgressText(data) {
   const intro =
     '24:1 means this: what is one thing you can do today that 24 hours from now your future self will thank you for?';
 
-  const progressText =
-    data?.progress || '';
+  const progressText = data?.progress || '';
 
   const cleaned = String(progressText)
     .split('\n')
@@ -123,15 +165,6 @@ function buildProgressText(data) {
     .join('\n');
 
   return cleaned ? `${intro}\n\n${cleaned}` : intro;
-}
-
-function buildPurposeText(data) {
-  return data?.yourPurpose || data?.purpose || '';
-}
-
-function buildProgressText(data) {
-  if (typeof data?.progress === 'string') return data.progress;
-  return '';
 }
 
 function buildPerspectiveText(data) {
