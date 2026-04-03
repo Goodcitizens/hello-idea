@@ -3,7 +3,7 @@
 import { useState } from 'react';
 
 const styles = {
-  page: {
+    page: {
     minHeight: '100vh',
     background: '#F1FF89',
     display: 'flex',
@@ -17,25 +17,23 @@ const styles = {
     minHeight: 1024,
     background: '#F1FF89',
   },
-sideLabel: {
-  position: 'absolute',
-  left: 40,
-  top: 40,
-  fontSize: 12,
-  fontWeight: 700,
-  lineHeight: '12px',
-  color: '#000000',
-},
+  sideLabel: {
+    position: 'absolute',
+    left: 40,
+    top: 40,
+    fontSize: 12,
+    fontWeight: 700,
+    lineHeight: '12px',
+    color: '#000000',
     whiteSpace: 'nowrap',
   },
   poweredWrap: {
-  position: 'absolute',
-  right: 40,
-  top: 40,
-  fontSize: 12,
-  lineHeight: '12px',
-  color: '#000000',
-},
+    position: 'absolute',
+    right: 40,
+    top: 40,
+    fontSize: 12,
+    lineHeight: '12px',
+    color: '#000000',
     whiteSpace: 'nowrap',
   },
   poweredLink: {
