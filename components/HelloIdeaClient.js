@@ -81,19 +81,19 @@ const styles = {
     justifyContent: 'center',
     padding: 0,
   },
-saveNote: {
-  position: 'absolute',
-  left: '50%',
-  transform: 'translateX(-50%)',
-  top: 986,
-  width: 420,
-  textAlign: 'center',
-  fontSize: 12,
-  fontWeight: 700,
-  lineHeight: '16px',
-  color: '#000000',
-  margin: 0,
-},
+  saveNote: {
+    position: 'absolute',
+    left: '50%',
+    transform: 'translateX(-50%)',
+    top: 986,
+    width: 420,
+    textAlign: 'center',
+    fontSize: 12,
+    fontWeight: 700,
+    lineHeight: '16px',
+    color: '#000000',
+    margin: 0,
+  },
   error: {
     position: 'absolute',
     left: 230,
@@ -112,45 +112,19 @@ saveNote: {
 function buildIdeaText(data) {
   const parts = [];
 
-  if (data?.idea?.idea) {
-    parts.push(`The Idea\n${data.idea.idea}`);
+  if (data?.yourIdea) {
+    parts.push(`The Idea\n${data.yourIdea}`);
   }
 
-  if (data?.idea?.whoFor) {
-    parts.push(`\nWho it's for\n${data.idea.whoFor}`);
+  if (data?.yourPurpose) {
+    parts.push(`\nThe Purpose\n${data.yourPurpose}`);
   }
 
-  if (data?.idea?.different) {
-    parts.push(`\nWhat makes it different\n${data.idea.different}`);
-  }
-
-  if (data?.idea?.questions) {
-    const questions = data.idea.questions
-      .split('\n')
-      .map((line) => line.trim())
-      .filter(Boolean)
-      .join('\n');
-    parts.push(`\nHelpful questions\n${questions}`);
-  }
-
-  if (data?.idea?.instructions) {
-    parts.push(`\nWrite down instructions\n${data.idea.instructions}`);
+  if (data?.nextPrompt) {
+    parts.push(`\n${data.nextPrompt}`);
   }
 
   return parts.join('\n');
-}
-
-function buildProgressText(progress) {
-  const intro =
-    '24:1 means this: what is one thing you can do today that 24 hours from now your future self will thank you for?';
-
-  const cleaned = (progress || '')
-    .split('\n')
-    .map((line) => line.trim())
-    .filter(Boolean)
-    .join('\n');
-
-  return cleaned ? `${intro}\n\n${cleaned}` : intro;
 }
 
 export default function HelloIdeaClient() {
@@ -163,7 +137,8 @@ export default function HelloIdeaClient() {
   const [loadingIdea, setLoadingIdea] = useState(false);
   const [loadingPerspective, setLoadingPerspective] = useState(false);
   const [error, setError] = useState('');
-const [hoveredButton, setHoveredButton] = useState(null);
+  const [hoveredButton, setHoveredButton] = useState(null);
+
   async function handleIdeaGo() {
     setLoadingIdea(true);
     setError('');
@@ -171,9 +146,7 @@ const [hoveredButton, setHoveredButton] = useState(null);
     try {
       const response = await fetch('/api/idea', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           mode: 'idea',
           idea: rawIdeaInput || ideaBox,
@@ -188,8 +161,10 @@ const [hoveredButton, setHoveredButton] = useState(null);
       }
 
       setIdeaBox(buildIdeaText(data));
-      setPurposeBox(data?.purpose || '');
-      setProgressBox(buildProgressText(data?.progress || ''));
+      setPurposeBox(data?.yourPurpose || '');
+
+      // clear progress box for now
+      setProgressBox('');
     } catch (err) {
       setError(err.message || 'Something went wrong');
     } finally {
@@ -204,9 +179,7 @@ const [hoveredButton, setHoveredButton] = useState(null);
     try {
       const response = await fetch('/api/idea', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           mode: 'perspective',
           idea: ideaBox || rawIdeaInput,
@@ -254,9 +227,8 @@ const [hoveredButton, setHoveredButton] = useState(null);
             top: 395,
             width: 510,
             height: 225,
-            fontWeight: 400,
           }}
-          placeholder="Type your idea. Messy is fine. Who is it for? How does it help?"
+          placeholder="Type your idea. Messy is fine."
           value={ideaBox || rawIdeaInput}
           onChange={(e) => {
             const value = e.target.value;
@@ -274,42 +246,40 @@ const [hoveredButton, setHoveredButton] = useState(null);
             width: 510,
             height: 225,
           }}
-          placeholder="Add or change anything here."
+          placeholder="Add or change anything."
           value={changeBox}
           onChange={(e) => setChangeBox(e.target.value)}
         />
 
         <button
-  style={{
-    ...styles.button,
-    left: 659,
-    top: 635,
-    background: hoveredButton === 'idea-left' ? '#5FFAB2' : '#FA625F',
-  }}
-  onMouseEnter={() => setHoveredButton('idea-left')}
-  onMouseLeave={() => setHoveredButton(null)}
-  onClick={handleIdeaGo}
-  disabled={loadingIdea}
->
-  {loadingIdea ? '...' : 'Go'}
-</button>
+          style={{
+            ...styles.button,
+            left: 659,
+            top: 635,
+            background: hoveredButton === 'idea-left' ? '#5FFAB2' : '#FA625F',
+          }}
+          onMouseEnter={() => setHoveredButton('idea-left')}
+          onMouseLeave={() => setHoveredButton(null)}
+          onClick={handleIdeaGo}
+        >
+          Go
+        </button>
 
-<button
-  style={{
-    ...styles.button,
-    left: 1179,
-    top: 635,
-    background: hoveredButton === 'idea-right' ? '#5FFAB2' : '#FA625F',
-  }}
-  onMouseEnter={() => setHoveredButton('idea-right')}
-  onMouseLeave={() => setHoveredButton(null)}
-  onClick={handleIdeaGo}
-  disabled={loadingIdea}
->
-  {loadingIdea ? '...' : 'Go'}
-</button>
+        <button
+          style={{
+            ...styles.button,
+            left: 1179,
+            top: 635,
+            background: hoveredButton === 'idea-right' ? '#5FFAB2' : '#FA625F',
+          }}
+          onMouseEnter={() => setHoveredButton('idea-right')}
+          onMouseLeave={() => setHoveredButton(null)}
+          onClick={handleIdeaGo}
+        >
+          Go
+        </button>
 
-        <p style={{ ...styles.label, left: 231, top: 708 }}>Purpose (Reason for doing it)</p>
+        <p style={{ ...styles.label, left: 231, top: 708 }}>Purpose</p>
         <textarea
           readOnly
           style={{
@@ -322,7 +292,7 @@ const [hoveredButton, setHoveredButton] = useState(null);
           value={purposeBox}
         />
 
-        <p style={{ ...styles.label, left: 575, top: 708 }}>Progress (Every small step forward is a win)</p>
+        <p style={{ ...styles.label, left: 575, top: 708 }}>Progress</p>
         <textarea
           readOnly
           style={{
@@ -335,7 +305,7 @@ const [hoveredButton, setHoveredButton] = useState(null);
           value={progressBox}
         />
 
-        <p style={{ ...styles.label, left: 921, top: 708 }}>Perspective (See your problem with fresh eyes)</p>
+        <p style={{ ...styles.label, left: 921, top: 708 }}>Perspective</p>
         <textarea
           style={{
             ...styles.box,
@@ -343,33 +313,28 @@ const [hoveredButton, setHoveredButton] = useState(null);
             top: 726,
             width: 338,
             height: 222,
-            color: perspectiveBox ? '#000000' : '#6B6B6B',
           }}
-          placeholder="Stuck? Paste your idea and purpose words here.
-Tell me the problem."
+          placeholder="Stuck? Tell me the problem."
           value={perspectiveBox}
           onChange={(e) => setPerspectiveBox(e.target.value)}
         />
 
         <button
-  style={{
-    ...styles.button,
-    left: 1179,
-    top: 962,
-    background: hoveredButton === 'perspective' ? '#5FFAB2' : '#FA625F',
-  }}
-  onMouseEnter={() => setHoveredButton('perspective')}
-  onMouseLeave={() => setHoveredButton(null)}
-  onClick={handlePerspectiveGo}
-  disabled={loadingPerspective}
->
-  {loadingPerspective ? '...' : 'Go'}
-</button>
+          style={{
+            ...styles.button,
+            left: 1179,
+            top: 962,
+            background: hoveredButton === 'perspective' ? '#5FFAB2' : '#FA625F',
+          }}
+          onMouseEnter={() => setHoveredButton('perspective')}
+          onMouseLeave={() => setHoveredButton(null)}
+          onClick={handlePerspectiveGo}
+        >
+          Go
+        </button>
 
         <p style={styles.saveNote}>
           Don’t lose this.
-          <br />
-          When you close or refresh, it’s gone.
           <br />
           Write it down or copy it now.
         </p>
