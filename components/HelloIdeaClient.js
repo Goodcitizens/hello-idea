@@ -2,45 +2,6 @@
 
 import { useState } from 'react';
 
-const IDEA_BOX = {
-  left: 193,
-  top: 389,
-  width: 518,
-  height: 225,
-};
-
-const CHANGE_BOX = {
-  left: 729,
-  top: 389,
-  width: 518,
-  height: 225,
-};
-
-const PURPOSE_BOX = {
-  left: 193,
-  top: 761,
-  width: 289,
-  height: 166,
-};
-
-const PROGRESS_BOX = {
-  left: 496,
-  top: 761,
-  width: 289,
-  height: 166,
-};
-
-const PERSPECTIVE_BOX = {
-  left: 799,
-  top: 761,
-  width: 428,
-  height: 166,
-};
-
-const BUTTON_WIDTH = 76;
-const BUTTON_HEIGHT = 31;
-const BUTTON_OFFSET_Y = 12;
-
 const styles = {
   page: {
     minHeight: '100vh',
@@ -56,40 +17,18 @@ const styles = {
     minHeight: 1024,
     background: '#F1FF89',
   },
-  topLeftNote: {
-    position: 'absolute',
-    left: 96,
-    top: 160,
-    margin: 0,
-    fontSize: 12,
-    fontWeight: 700,
-    lineHeight: '12px',
-    color: '#000000',
-    whiteSpace: 'nowrap',
-  },
   poweredWrap: {
     position: 'absolute',
-    right: 118,
+    right: 193,
     top: 160,
     fontSize: 12,
     lineHeight: '12px',
     color: '#000000',
-    whiteSpace: 'nowrap',
   },
   poweredLink: {
     color: '#000000',
     textDecoration: 'underline',
     fontWeight: 700,
-  },
-  pageTitle: {
-    position: 'absolute',
-    left: 193,
-    top: 208,
-    margin: 0,
-    fontSize: 12,
-    fontWeight: 700,
-    lineHeight: '12px',
-    color: '#000000',
   },
   label: {
     position: 'absolute',
@@ -104,7 +43,7 @@ const styles = {
     background: '#FFFFFF',
     border: '1px solid #000000',
     boxSizing: 'border-box',
-    padding: '10px',
+    padding: '8px 10px',
     fontFamily: 'Inter, Arial, sans-serif',
     fontSize: 12,
     lineHeight: '16px',
@@ -116,7 +55,7 @@ const styles = {
     background: '#FFFFFF',
     border: '1px solid #000000',
     boxSizing: 'border-box',
-    padding: '10px',
+    padding: '8px 10px',
     outline: 'none',
     resize: 'none',
     fontFamily: 'Inter, Arial, sans-serif',
@@ -125,40 +64,24 @@ const styles = {
     color: '#000000',
     overflow: 'auto',
   },
-  staticBox: {
-    whiteSpace: 'pre-wrap',
-  },
-  richSection: {
-    marginBottom: 12,
-  },
-  richHeading: {
-    fontWeight: 700,
-    marginBottom: 2,
-  },
-  richText: {
-    fontWeight: 400,
-  },
-  progressIntro: {
-    fontWeight: 700,
-    marginBottom: 10,
-  },
-  progressBody: {
-    whiteSpace: 'pre-wrap',
-  },
-  saveNote: {
-    position: 'absolute',
-    margin: 0,
+  plainInput: {
+    width: '100%',
+    height: '100%',
+    border: 'none',
+    outline: 'none',
+    resize: 'none',
+    fontFamily: 'Inter, Arial, sans-serif',
     fontSize: 12,
     lineHeight: '16px',
     color: '#000000',
-    textAlign: 'center',
-    fontWeight: 700,
-    whiteSpace: 'pre-line',
+    background: 'transparent',
+    padding: 0,
+    margin: 0,
   },
   button: {
     position: 'absolute',
-    width: BUTTON_WIDTH,
-    height: BUTTON_HEIGHT,
+    width: 76,
+    height: 31,
     borderRadius: 20,
     border: 'none',
     background: '#FA625F',
@@ -176,8 +99,8 @@ const styles = {
   error: {
     position: 'absolute',
     left: 193,
-    top: 955,
-    width: 1034,
+    top: 915,
+    width: 902,
     padding: '8px 10px',
     boxSizing: 'border-box',
     border: '1px solid #F0B8AE',
@@ -188,21 +111,7 @@ const styles = {
   },
 };
 
-function buttonPositionForBox(box) {
-  return {
-    left: box.left + box.width - BUTTON_WIDTH,
-    top: box.top + box.height + BUTTON_OFFSET_Y,
-  };
-}
-
-function splitLines(text = '') {
-  return text
-    .split('\n')
-    .map((line) => line.trim())
-    .filter(Boolean);
-}
-
-function formatIdeaSections(data) {
+function formatIdeaBox(data) {
   const sections = [];
 
   if (data?.idea?.idea) {
@@ -214,7 +123,7 @@ function formatIdeaSections(data) {
 
   if (data?.idea?.whoFor) {
     sections.push({
-      heading: 'Who it’s for',
+      heading: "Who it's for",
       body: data.idea.whoFor,
     });
   }
@@ -229,7 +138,10 @@ function formatIdeaSections(data) {
   if (data?.idea?.questions) {
     sections.push({
       heading: 'Helpful questions',
-      body: splitLines(data.idea.questions).join('\n'),
+      body: data.idea.questions
+        .split('\n')
+        .map((line) => line.trim())
+        .filter(Boolean),
     });
   }
 
@@ -243,79 +155,28 @@ function formatIdeaSections(data) {
   return sections;
 }
 
-function parseIdeaTextToSections(text) {
-  if (!text.trim()) return [];
+function renderIdeaContent(ideaSections) {
+  return ideaSections.map((section, index) => (
+    <div key={`${section.heading}-${index}`} style={{ marginBottom: 12 }}>
+      <div style={{ fontWeight: 700, marginBottom: 2 }}>{section.heading}</div>
 
-  const headings = [
-    'The Idea',
-    'Who it’s for',
-    'What makes it different',
-    'Helpful questions',
-    'Write down instructions',
-  ];
-
-  const lines = text.split('\n');
-  const sections = [];
-  let currentHeading = '';
-  let currentBody = [];
-
-  for (const rawLine of lines) {
-    const line = rawLine.trim();
-
-    if (headings.includes(line)) {
-      if (currentHeading) {
-        sections.push({
-          heading: currentHeading,
-          body: currentBody.join('\n').trim(),
-        });
-      }
-      currentHeading = line;
-      currentBody = [];
-    } else {
-      currentBody.push(rawLine);
-    }
-  }
-
-  if (currentHeading) {
-    sections.push({
-      heading: currentHeading,
-      body: currentBody.join('\n').trim(),
-    });
-  }
-
-  if (sections.length) return sections;
-
-  return [
-    {
-      heading: 'The Idea',
-      body: text,
-    },
-  ];
-}
-
-function formatProgressText(progress = '') {
-  const intro =
-    '24:1 means this: what is one thing you can do today that 24 hours from now your future self will thank you for?';
-
-  const cleaned = progress
-    .replace(/^What is the one thing you could do today that 24 hours from now you will thank yourself for\??/i, '')
-    .trim();
-
-  const lines = splitLines(cleaned);
-
-  return {
-    intro,
-    lines,
-  };
-}
-
-function renderIdeaSections(sections) {
-  return sections.map((section) => (
-    <div key={section.heading} style={styles.richSection}>
-      <div style={styles.richHeading}>{section.heading}</div>
-      <div style={{ ...styles.richText, whiteSpace: 'pre-wrap' }}>{section.body}</div>
+      {Array.isArray(section.body) ? (
+        section.body.map((line, lineIndex) => (
+          <div key={`${section.heading}-${lineIndex}`}>{line}</div>
+        ))
+      ) : (
+        <div style={{ whiteSpace: 'pre-wrap' }}>{section.body}</div>
+      )}
     </div>
   ));
+}
+
+function renderProgressLines(progressBox) {
+  return progressBox
+    .split('\n')
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .map((line, index) => <div key={`${line}-${index}`}>{line}</div>);
 }
 
 export default function HelloIdeaClient() {
@@ -328,10 +189,6 @@ export default function HelloIdeaClient() {
   const [loadingIdea, setLoadingIdea] = useState(false);
   const [loadingPerspective, setLoadingPerspective] = useState(false);
   const [error, setError] = useState('');
-
-  const ideaButton = buttonPositionForBox(IDEA_BOX);
-  const changeButton = buttonPositionForBox(CHANGE_BOX);
-  const perspectiveButton = buttonPositionForBox(PERSPECTIVE_BOX);
 
   async function handleIdeaGo() {
     setLoadingIdea(true);
@@ -356,7 +213,7 @@ export default function HelloIdeaClient() {
         throw new Error(data?.error || 'Something went wrong');
       }
 
-      setIdeaSections(formatIdeaSections(data));
+      setIdeaSections(formatIdeaBox(data));
       setPurposeBox(data?.purpose || '');
       setProgressBox(data?.progress || '');
     } catch (err) {
@@ -378,9 +235,16 @@ export default function HelloIdeaClient() {
         },
         body: JSON.stringify({
           mode: 'perspective',
-          idea: ideaSections.length
-            ? ideaSections.map((s) => `${s.heading}\n${s.body}`).join('\n\n')
-            : rawIdeaInput,
+          idea:
+            ideaSections.length > 0
+              ? ideaSections
+                  .map((section) =>
+                    Array.isArray(section.body)
+                      ? `${section.heading}\n${section.body.join('\n')}`
+                      : `${section.heading}\n${section.body}`
+                  )
+                  .join('\n\n')
+              : rawIdeaInput,
           purpose: purposeBox,
           stuck: perspectiveBox,
         }),
@@ -400,15 +264,12 @@ export default function HelloIdeaClient() {
     }
   }
 
-  const displayIdeaSections =
-    ideaSections.length > 0 ? ideaSections : parseIdeaTextToSections(rawIdeaInput);
-
-  const progressData = formatProgressText(progressBox);
-
   return (
     <div style={styles.page}>
       <div style={styles.frame}>
-        <p style={styles.topLeftNote}>Purpose+Progress+Perspective = Idea</p>
+        <p style={{ ...styles.label, left: 193, top: 160 }}>
+          Purpose+Progress+Perspective = Idea
+        </p>
 
         <div style={styles.poweredWrap}>
           Powered by{' '}
@@ -422,32 +283,22 @@ export default function HelloIdeaClient() {
           </a>
         </div>
 
-        <h1 style={styles.pageTitle}>The Idea</h1>
+        <p style={{ ...styles.label, left: 193, top: 208 }}>The Idea</p>
 
         <div
           style={{
             ...styles.box,
-            ...IDEA_BOX,
+            left: 193,
+            top: 389,
+            width: 518,
+            height: 225,
           }}
         >
-          {displayIdeaSections.length > 0 ? (
-            renderIdeaSections(displayIdeaSections)
+          {ideaSections.length > 0 ? (
+            renderIdeaContent(ideaSections)
           ) : (
             <textarea
-              style={{
-                width: '100%',
-                height: '100%',
-                border: 'none',
-                outline: 'none',
-                resize: 'none',
-                fontFamily: 'Inter, Arial, sans-serif',
-                fontSize: 12,
-                lineHeight: '16px',
-                color: '#000000',
-                background: 'transparent',
-                padding: 0,
-                margin: 0,
-              }}
+              style={styles.plainInput}
               placeholder="Type your idea. Messy is fine. Who is it for? How does it help?"
               value={rawIdeaInput}
               onChange={(e) => setRawIdeaInput(e.target.value)}
@@ -455,13 +306,16 @@ export default function HelloIdeaClient() {
           )}
         </div>
 
-        <p style={{ ...styles.label, left: CHANGE_BOX.left, top: 364 }}>
+        <p style={{ ...styles.label, left: 738, top: 364 }}>
           Want to change or add anything?
         </p>
         <textarea
           style={{
             ...styles.textarea,
-            ...CHANGE_BOX,
+            left: 729,
+            top: 389,
+            width: 518,
+            height: 225,
           }}
           placeholder="Add or change anything here."
           value={changeBox}
@@ -469,7 +323,7 @@ export default function HelloIdeaClient() {
         />
 
         <button
-          style={{ ...styles.button, ...ideaButton }}
+          style={{ ...styles.button, left: 635, top: 628 }}
           onClick={handleIdeaGo}
           disabled={loadingIdea}
         >
@@ -477,63 +331,78 @@ export default function HelloIdeaClient() {
         </button>
 
         <button
-          style={{ ...styles.button, ...changeButton }}
+          style={{ ...styles.button, left: 1171, top: 628 }}
           onClick={handleIdeaGo}
           disabled={loadingIdea}
         >
           {loadingIdea ? '...' : 'Go'}
         </button>
 
-        <p style={{ ...styles.label, left: PURPOSE_BOX.left, top: 735 }}>
+        <p style={{ ...styles.label, left: 202, top: 735 }}>
           Purpose (Reason for doing it)
         </p>
-        <div
+        <textarea
+          readOnly
           style={{
-            ...styles.box,
-            ...PURPOSE_BOX,
-            ...styles.staticBox,
+            ...styles.textarea,
+            left: 193,
+            top: 761,
+            width: 289,
+            height: 166,
           }}
-        >
-          {purposeBox}
-        </div>
+          value={purposeBox}
+        />
 
-        <p style={{ ...styles.label, left: PROGRESS_BOX.left, top: 735 }}>
+        <p style={{ ...styles.label, left: 496, top: 735 }}>
           Progress (Every small step forward is a win)
         </p>
         <div
           style={{
             ...styles.box,
-            ...PROGRESS_BOX,
+            left: 496,
+            top: 761,
+            width: 289,
+            height: 166,
           }}
         >
-          <div style={styles.progressIntro}>{progressData.intro}</div>
-          <div style={styles.progressBody}>
-            {progressData.lines.map((line, index) => (
-              <div key={`${line}-${index}`}>{line}</div>
-            ))}
+          <div style={{ fontWeight: 700, marginBottom: 8 }}>
+            24:1 means this: what is one thing you can do today that 24 hours from now
+            your future self will thank you for?
           </div>
+          {renderProgressLines(progressBox)}
         </div>
 
         <p
           style={{
-            ...styles.saveNote,
-            left: PROGRESS_BOX.left,
-            top: PROGRESS_BOX.top + PROGRESS_BOX.height + 18,
-            width: PROGRESS_BOX.width,
+            position: 'absolute',
+            left: 496,
+            top: 943,
+            width: 289,
+            textAlign: 'center',
+            fontSize: 12,
+            fontWeight: 700,
+            lineHeight: '16px',
+            color: '#000000',
+            margin: 0,
           }}
         >
-          {`Don’t lose this.
-When you close or refresh, it’s gone.
-Write it down or copy it now.`}
+          Don’t lose this.
+          <br />
+          When you close or refresh, it’s gone.
+          <br />
+          Write it down or copy it now.
         </p>
 
-        <p style={{ ...styles.label, left: PERSPECTIVE_BOX.left, top: 735 }}>
+        <p style={{ ...styles.label, left: 799, top: 735 }}>
           Perspective (See your problem with fresh eyes)
         </p>
         <textarea
           style={{
             ...styles.textarea,
-            ...PERSPECTIVE_BOX,
+            left: 799,
+            top: 761,
+            width: 428,
+            height: 166,
             color: perspectiveBox ? '#000000' : '#6B6B6B',
           }}
           placeholder="Stuck? Paste your idea and purpose words here. Tell me the problem."
@@ -542,7 +411,7 @@ Write it down or copy it now.`}
         />
 
         <button
-          style={{ ...styles.button, ...perspectiveButton }}
+          style={{ ...styles.button, left: 1151, top: 943 }}
           onClick={handlePerspectiveGo}
           disabled={loadingPerspective}
         >
