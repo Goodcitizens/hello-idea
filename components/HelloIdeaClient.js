@@ -18,26 +18,24 @@ const styles = {
     background: '#F1FF89',
   },
   sideLabel: {
-    position: 'absolute',
-    left: 28,
-    top: 417,
-    transform: 'rotate(-90deg)',
-    transformOrigin: 'left top',
-    fontSize: 12,
-    fontWeight: 700,
-    lineHeight: '12px',
-    color: '#000000',
-    whiteSpace: 'nowrap',
-  },
+  position: 'absolute',
+  left: 40,
+  top: 40,
+  fontSize: 12,
+  fontWeight: 700,
+  lineHeight: '12px',
+  color: '#000000',
+  whiteSpace: 'nowrap',
+},
   poweredWrap: {
-    position: 'absolute',
-    left: 1250,
-    top: 209,
-    fontSize: 12,
-    lineHeight: '12px',
-    color: '#000000',
-    whiteSpace: 'nowrap',
-  },
+  position: 'absolute',
+  right: 40,
+  top: 40,
+  fontSize: 12,
+  lineHeight: '12px',
+  color: '#000000',
+  whiteSpace: 'nowrap',
+},
   poweredLink: {
     color: '#000000',
     textDecoration: 'underline',
@@ -233,7 +231,7 @@ export default function HelloIdeaClient() {
   return (
     <div style={styles.page}>
       <div style={styles.frame}>
-        <div style={styles.sideLabel}>Purpose+Progress+Perspective = TEST</div>
+        <div style={styles.sideLabel}>Purpose+Progress+Perspective = IDEA</div>
 
         <div style={styles.poweredWrap}>
           Powered by{' '}
