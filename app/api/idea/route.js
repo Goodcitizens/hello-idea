@@ -74,9 +74,10 @@ Write only the reason for doing it.
 
 For progress
 Use the 24:1 rule.
-Write:
-What is the one thing you could do today that 24 hours from now you will thank yourself for?
-Then give a few simple example actions.
+Do not write a paragraph.
+Write 3 to 5 very short practical next steps.
+Put each next step on its own line.
+Do not add a heading.
 
 User idea:
 ${idea}
