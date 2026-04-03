@@ -2,42 +2,39 @@
 
 import { useState } from 'react';
 
-const PAGE_W = 1440;
-const PAGE_H = 1024;
-
 const styles = {
   page: {
     minHeight: '100vh',
     background: '#F1FF89',
-    fontFamily: 'Inter, Arial, sans-serif',
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'flex-start',
     overflowX: 'auto',
+    fontFamily: 'Inter, Arial, sans-serif',
   },
   frame: {
-    width: PAGE_W,
-    minHeight: PAGE_H,
     position: 'relative',
+    width: 1440,
+    minHeight: 1024,
     background: '#F1FF89',
   },
   sideLabel: {
     position: 'absolute',
     left: 28,
-    top: 404,
+    top: 417,
     transform: 'rotate(-90deg)',
     transformOrigin: 'left top',
     fontSize: 12,
     fontWeight: 700,
+    lineHeight: '12px',
     color: '#000000',
     whiteSpace: 'nowrap',
   },
-  powered: {
+  poweredWrap: {
     position: 'absolute',
     left: 1170,
     top: 210,
     fontSize: 12,
-    fontWeight: 400,
+    lineHeight: '12px',
     color: '#000000',
   },
   poweredLink: {
@@ -45,59 +42,61 @@ const styles = {
     textDecoration: 'underline',
     fontWeight: 700,
   },
-  title: {
+  pageTitle: {
     position: 'absolute',
     left: 202,
-    top: 210,
+    top: 243,
+    margin: 0,
     fontSize: 12,
     fontWeight: 700,
+    lineHeight: '12px',
     color: '#000000',
-    margin: 0,
   },
   label: {
     position: 'absolute',
+    margin: 0,
     fontSize: 12,
     fontWeight: 700,
-    color: '#000000',
-    margin: 0,
     lineHeight: '12px',
+    color: '#000000',
   },
   box: {
     position: 'absolute',
     background: '#FFFFFF',
     border: '1px solid #000000',
     boxSizing: 'border-box',
-    padding: '10px 10px 8px 10px',
+    padding: '8px 10px',
+    outline: 'none',
+    resize: 'none',
+    fontFamily: 'Inter, Arial, sans-serif',
     fontSize: 12,
     lineHeight: '16px',
     color: '#000000',
-    resize: 'none',
-    outline: 'none',
     overflow: 'auto',
-  },
-  placeholderBox: {
-    color: '#6B6B6B',
   },
   button: {
     position: 'absolute',
     width: 76,
     height: 31,
     borderRadius: 20,
-    background: '#FA625F',
     border: 'none',
+    background: '#FA625F',
     color: '#FFFFFF',
+    fontFamily: 'Inter, Arial, sans-serif',
     fontSize: 12,
     fontWeight: 700,
+    lineHeight: '12px',
     cursor: 'pointer',
-    lineHeight: '31px',
-    textAlign: 'center',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
     padding: 0,
   },
-  note: {
+  footer: {
     position: 'absolute',
+    top: 868,
     left: 0,
     width: '100%',
-    top: 868,
     textAlign: 'center',
     fontSize: 12,
     fontWeight: 700,
@@ -108,57 +107,55 @@ const styles = {
   error: {
     position: 'absolute',
     left: 193,
-    top: 905,
-    width: 1040,
-    fontSize: 12,
-    color: '#8A1F11',
-    background: '#FFF1EF',
-    border: '1px solid #F0B8AE',
+    top: 915,
+    width: 902,
     padding: '8px 10px',
     boxSizing: 'border-box',
+    border: '1px solid #F0B8AE',
+    background: '#FFF1EF',
+    color: '#8A1F11',
+    fontSize: 12,
+    lineHeight: '16px',
   },
 };
 
-function normaliseBullets(text) {
-  if (!text) return '';
-  return text
-    .replace(/\r/g, '')
-    .replace(/^\s*[-•]\s*/gm, '• ')
-    .trim();
-}
-
 function formatIdeaBox(data) {
-  const sections = [];
+  const parts = [];
 
   if (data?.idea?.idea) {
-    sections.push(`The idea\n${data.idea.idea}`);
-  }
-  if (data?.idea?.whoFor) {
-    sections.push(`Who it’s for\n${data.idea.whoFor}`);
-  }
-  if (data?.idea?.different) {
-    sections.push(`What makes it different\n${data.idea.different}`);
-  }
-  if (data?.idea?.questions) {
-    sections.push(`Helpful questions\n${normaliseBullets(data.idea.questions)}`);
-  }
-  if (data?.idea?.instructions) {
-    sections.push(`Write down instructions\n${data.idea.instructions}`);
-  }
-  if (data?.idea?.reflection) {
-    sections.push(`Reflection and update step\n${data.idea.reflection}`);
+    parts.push(`The idea\n${data.idea.idea}`);
   }
 
-  return sections.join('\n\n');
+  if (data?.idea?.whoFor) {
+    parts.push(`Who it’s for\n${data.idea.whoFor}`);
+  }
+
+  if (data?.idea?.different) {
+    parts.push(`What makes it different\n${data.idea.different}`);
+  }
+
+  if (data?.idea?.questions) {
+    parts.push(`Helpful questions\n${data.idea.questions}`);
+  }
+
+  if (data?.idea?.instructions) {
+    parts.push(`Write down instructions\n${data.idea.instructions}`);
+  }
+
+  if (data?.idea?.reflection) {
+    parts.push(`Reflection and update step\n${data.idea.reflection}`);
+  }
+
+  return parts.join('\n\n');
 }
 
 export default function HelloIdeaClient() {
-  const [ideaInput, setIdeaInput] = useState('');
-  const [changeInput, setChangeInput] = useState('');
+  const [rawIdeaInput, setRawIdeaInput] = useState('');
   const [ideaBox, setIdeaBox] = useState('');
+  const [changeBox, setChangeBox] = useState('');
   const [purposeBox, setPurposeBox] = useState('');
   const [progressBox, setProgressBox] = useState('');
-  const [perspectiveInput, setPerspectiveInput] = useState('');
+  const [perspectiveBox, setPerspectiveBox] = useState('');
   const [loadingIdea, setLoadingIdea] = useState(false);
   const [loadingPerspective, setLoadingPerspective] = useState(false);
   const [error, setError] = useState('');
@@ -174,8 +171,9 @@ export default function HelloIdeaClient() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          idea: ideaInput,
-          extra: changeInput,
+          mode: 'idea',
+          idea: rawIdeaInput || ideaBox,
+          change: changeBox,
         }),
       });
 
@@ -207,9 +205,9 @@ export default function HelloIdeaClient() {
         },
         body: JSON.stringify({
           mode: 'perspective',
-          idea: ideaBox || ideaInput,
+          idea: ideaBox || rawIdeaInput,
           purpose: purposeBox,
-          stuck: perspectiveInput,
+          stuck: perspectiveBox,
         }),
       });
 
@@ -219,7 +217,7 @@ export default function HelloIdeaClient() {
         throw new Error(data?.error || 'Something went wrong');
       }
 
-      setPerspectiveInput(data?.output || '');
+      setPerspectiveBox(data?.output || '');
     } catch (err) {
       setError(err.message || 'Something went wrong');
     } finally {
@@ -232,7 +230,7 @@ export default function HelloIdeaClient() {
       <div style={styles.frame}>
         <div style={styles.sideLabel}>Purpose+Progress+Perspective = Idea</div>
 
-        <div style={styles.powered}>
+        <div style={styles.poweredWrap}>
           Powered by{' '}
           <a
             href="https://www.goodcitizens.com.au/"
@@ -244,38 +242,46 @@ export default function HelloIdeaClient() {
           </a>
         </div>
 
-        <h1 style={styles.title}>Your idea</h1>
+        <h1 style={styles.pageTitle}>Your idea</h1>
 
-        <p style={{ ...styles.label, left: 202, top: 243 }}>Your idea</p>
+        <p style={{ ...styles.label, left: 202, top: 364 }}>Your idea</p>
         <textarea
           style={{
             ...styles.box,
             left: 193,
-            top: 233,
+            top: 389,
             width: 518,
             height: 225,
           }}
           placeholder="Type your idea. Messy is fine. Who is it for? How does it help?"
-          value={ideaInput}
-          onChange={(e) => setIdeaInput(e.target.value)}
+          value={ideaBox || rawIdeaInput}
+          onChange={(e) => {
+            const value = e.target.value;
+            setRawIdeaInput(value);
+            if (!ideaBox) {
+              setIdeaBox(value);
+            } else {
+              setIdeaBox(value);
+            }
+          }}
         />
 
-        <p style={{ ...styles.label, left: 584, top: 243 }}>Want to change or add anything?</p>
+        <p style={{ ...styles.label, left: 738, top: 364 }}>Want to change or add anything?</p>
         <textarea
           style={{
             ...styles.box,
-            left: 577,
-            top: 233,
+            left: 729,
+            top: 389,
             width: 518,
             height: 225,
           }}
           placeholder="Add or change anything here."
-          value={changeInput}
-          onChange={(e) => setChangeInput(e.target.value)}
+          value={changeBox}
+          onChange={(e) => setChangeBox(e.target.value)}
         />
 
         <button
-          style={{ ...styles.button, left: 635, top: 463 }}
+          style={{ ...styles.button, left: 660, top: 628 }}
           onClick={handleIdeaGo}
           disabled={loadingIdea}
         >
@@ -283,63 +289,63 @@ export default function HelloIdeaClient() {
         </button>
 
         <button
-          style={{ ...styles.button, left: 1017, top: 463 }}
+          style={{ ...styles.button, left: 1195, top: 628 }}
           onClick={handleIdeaGo}
           disabled={loadingIdea}
         >
           {loadingIdea ? '...' : 'Go'}
         </button>
 
-        <p style={{ ...styles.label, left: 202, top: 564 }}>Purpose (Reason for doing it)</p>
+        <p style={{ ...styles.label, left: 202, top: 735 }}>Purpose (Reason for doing it)</p>
         <textarea
           readOnly
           style={{
             ...styles.box,
             left: 193,
-            top: 554,
+            top: 761,
             width: 366,
             height: 211,
           }}
           value={purposeBox}
         />
 
-        <p style={{ ...styles.label, left: 583, top: 564 }}>Progress (Every small step forward is a win)</p>
+        <p style={{ ...styles.label, left: 582, top: 735 }}>Progress (Every small step forward is a win)</p>
         <textarea
           readOnly
           style={{
             ...styles.box,
             left: 576,
-            top: 554,
+            top: 761,
             width: 366,
             height: 211,
           }}
           value={progressBox}
         />
 
-        <p style={{ ...styles.label, left: 963, top: 564 }}>Perspective (See your problem with fresh eyes)</p>
+        <p style={{ ...styles.label, left: 962, top: 735 }}>Perspective (See your problem with fresh eyes)</p>
         <textarea
           style={{
             ...styles.box,
             left: 956,
-            top: 554,
+            top: 761,
             width: 366,
             height: 211,
-            color: perspectiveInput ? '#000000' : '#6B6B6B',
+            color: perspectiveBox ? '#000000' : '#6B6B6B',
           }}
           placeholder="Stuck? Paste your idea and purpose words here. Tell me the problem."
-          value={perspectiveInput}
-          onChange={(e) => setPerspectiveInput(e.target.value)}
+          value={perspectiveBox}
+          onChange={(e) => setPerspectiveBox(e.target.value)}
         />
 
         <button
-          style={{ ...styles.button, left: 1170, top: 780 }}
+          style={{ ...styles.button, left: 1170, top: 987 }}
           onClick={handlePerspectiveGo}
           disabled={loadingPerspective}
         >
           {loadingPerspective ? '...' : 'Go'}
         </button>
 
-        <p style={styles.note}>
+        <p style={styles.footer}>
           Don’t lose this.
           <br />
           When you close or refresh, it’s gone.
