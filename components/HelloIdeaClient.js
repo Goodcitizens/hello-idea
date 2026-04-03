@@ -235,7 +235,7 @@ export default function HelloIdeaClient() {
   return (
     <div style={styles.page}>
       <div style={styles.frame}>
-        <div style={styles.sideLabel}>Purpose+Progress+Perspective = IDEA</div>
+        <div style={styles.sideLabel}>Purpose + Progress + Perspective = IDEA</div>
 
         <div style={styles.poweredWrap}>
           Powered by{' '}
