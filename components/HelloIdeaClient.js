@@ -19,10 +19,10 @@ const styles = {
   },
 sideLabel: {
   position: 'fixed',
-  left: 40,
+  left: 38,
   top: 40,
   fontSize: 12,
-  fontWeight: 700,
+  fontWeight: 500,
   color: '#000000',
   transform: 'rotate(-90deg) translateX(-100%)',
   transformOrigin: 'top left',
