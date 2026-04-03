@@ -85,7 +85,7 @@ const styles = {
     position: 'absolute',
     left: 636,
     top: 986,
-    width: 366,
+    width: 420,
     textAlign: 'center',
 display: 'flex',
 flexDirection: 'column',
