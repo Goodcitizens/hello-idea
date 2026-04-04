@@ -540,14 +540,13 @@ export default function HelloIdeaClient() {
           font-family: Inter, Arial, sans-serif;
         }
 
-        .mobileFrame {
-          width: 100%;
-          max-width: 390px;
-          min-height: 100vh;
-          background: #f1ff89;
-          padding: 10px 12px 20px;
-          box-sizing: border-box;
-        }
+     .mobileFrame {
+  width: 100%;
+  min-height: 100vh;
+  background: #f1ff89;
+  padding: 10px 8px 20px;
+  box-sizing: border-box;
+}
 
         .mobileTopRow {
           display: flex;
