@@ -258,16 +258,17 @@ export default function HelloIdeaClient() {
         <div style={styles.sideLabel}>Purpose + Progress + Perspective = IDEA</div>
 
         <div style={styles.poweredWrap}>
-          Powered by{' '}
-          <a
-            href="https://www.goodcitizens.com.au/"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={styles.poweredLink}
-          >
-            Good Citizens
-          </a>
-        </div>
+  Powered by{' '}
+  <a
+    href="https://www.goodcitizens.com.au/"
+    target="_blank"
+    rel="noopener noreferrer"
+    style={styles.poweredLink}
+  >
+    Good Citizens
+  </a>
+  . 2,503 failed attempts led to this process, shared through TEDx, with our thinking now in school curriculum.
+</div>
 
         <p style={{ ...styles.label, left: 231, top: 378 }}>Your idea</p>
         <textarea
