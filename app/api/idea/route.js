@@ -92,7 +92,7 @@ Rules for the second part:
 Format purpose exactly like this:
 [first practical purpose sentence]
 
-(blank line)
+Leave one full blank line.
 
 Why it matters:
 [deeper human reason]
