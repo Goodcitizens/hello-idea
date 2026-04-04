@@ -41,7 +41,6 @@ Return exactly this shape:
     "reflection": ""
   },
   "purpose": "",
-  "whyItMatters": "",
   "progress": ""
 }
 
@@ -71,28 +70,41 @@ Would you like to add or change anything?
 If so, just write it in the box below and we’ll update your idea.
 
 For purpose
-Write only the practical reason for doing it.
+Write the response in two parts inside the same field.
+
+Part 1:
+Write the practical reason for doing the idea.
 Keep it matter of fact, clear and concise.
 
-For whyItMatters
-Write the deeper human reason the idea matters.
-This should explain why someone would care about this idea beyond what it does.
+Part 2:
+On a new line, add exactly:
+Why it matters:
+Then write the deeper human reason the idea matters.
 
-Rules for whyItMatters:
+Rules for the second part:
 - Use plain human language.
 - Do not sound preachy, dramatic or corporate.
 - Do not exaggerate impact.
 - Only go deeper if the idea genuinely touches things like connection, belonging, dignity, identity, relief, hope, family, community or meaning.
-- If the idea does not naturally contain a deeper human driver, keep this short and grounded.
-- Make sure purpose and whyItMatters feel different.
-- purpose = what it does
-- whyItMatters = why it matters to people
+- If the idea does not naturally contain a deeper human driver, keep this second part short and grounded.
+- Make sure the second part feels different from the practical purpose.
+
+Format purpose exactly like this:
+[first practical purpose sentence]
+
+Why it matters:
+[deeper human reason]
 
 For progress
 Use the 24:1 rule.
-Do not write a paragraph.
-Write 3 to 5 very short practical next steps.
+Start exactly with:
+24:1 means this: what is one thing you can do today that 24 hours from now your future self will thank you for?
+
+Then leave a blank line.
+
+Then write 3 to 5 very short practical next steps.
 Put each next step on its own line.
+Do not add bullet points.
 Do not add a heading.
 
 User idea:
