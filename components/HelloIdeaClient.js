@@ -2,113 +2,6 @@
 
 import { useState } from 'react';
 
-const styles = {
-  page: {
-    minHeight: '100vh',
-    background: '#F1FF89',
-    display: 'flex',
-    justifyContent: 'center',
-    overflowX: 'auto',
-    fontFamily: 'Inter, Arial, sans-serif',
-  },
-  frame: {
-    position: 'relative',
-    width: 1440,
-    minHeight: 1024,
-    background: '#F1FF89',
-  },
-  sideLabel: {
-    position: 'fixed',
-    left: 38,
-    top: 40,
-    fontSize: 12,
-    fontWeight: 500,
-    color: '#000000',
-    transform: 'rotate(-90deg) translateX(-100%)',
-    transformOrigin: 'top left',
-    whiteSpace: 'nowrap',
-  },
-  poweredWrap: {
-    position: 'fixed',
-    right: 40,
-    top: 40,
-    fontSize: 12,
-    color: '#000000',
-    whiteSpace: 'nowrap',
-  },
-  poweredLink: {
-    color: '#000000',
-    textDecoration: 'underline',
-    fontWeight: 700,
-  },
-  label: {
-    position: 'absolute',
-    margin: 0,
-    fontSize: 12,
-    fontWeight: 700,
-    lineHeight: '12px',
-    color: '#000000',
-  },
-  box: {
-    position: 'absolute',
-    background: '#FFFFFF',
-    border: '1px solid #000000',
-    boxSizing: 'border-box',
-    padding: '8px 10px',
-    outline: 'none',
-    resize: 'none',
-    fontFamily: 'Inter, Arial, sans-serif',
-    fontSize: 12,
-    lineHeight: '16px',
-    color: '#000000',
-    overflow: 'auto',
-  },
-  button: {
-    position: 'absolute',
-    width: 76,
-    height: 31,
-    borderRadius: 20,
-    border: 'none',
-    background: '#FA625F',
-    color: '#FFFFFF',
-    fontFamily: 'Inter, Arial, sans-serif',
-    fontSize: 12,
-    fontWeight: 700,
-    lineHeight: '12px',
-    cursor: 'pointer',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 0,
-  },
-  saveNote: {
-    position: 'absolute',
-    left: '50%',
-    transform: 'translateX(-50%)',
-    top: 986,
-    width: 420,
-    textAlign: 'center',
-    fontSize: 12,
-    fontWeight: 700,
-    lineHeight: '16px',
-    color: '#000000',
-    margin: 0,
-  },
-  error: {
-    position: 'absolute',
-    left: 224,
-    top: 640,
-    width: 1030,
-    padding: '10px 12px',
-    boxSizing: 'border-box',
-    border: '1px solid #F0B8AE',
-    background: '#FFF1EF',
-    color: '#8A1F11',
-    fontSize: 12,
-    lineHeight: '16px',
-  },
-};
-
 function buildIdeaText(data) {
   const ideaText =
     data?.yourIdea ||
@@ -153,18 +46,13 @@ function buildPurposeText(data) {
 }
 
 function buildProgressText(data) {
-  const intro =
-    '24:1 means this: what is one thing you can do today that 24 hours from now your future self will thank you for?';
-
   const progressText = data?.progress || '';
 
-  const cleaned = String(progressText)
+  return String(progressText)
     .split('\n')
     .map((line) => line.trim())
     .filter(Boolean)
     .join('\n');
-
-  return cleaned ? `${intro}\n\n${cleaned}` : intro;
 }
 
 function buildPerspectiveText(data) {
@@ -181,7 +69,6 @@ export default function HelloIdeaClient() {
   const [loadingIdea, setLoadingIdea] = useState(false);
   const [loadingPerspective, setLoadingPerspective] = useState(false);
   const [error, setError] = useState('');
-  const [hoveredButton, setHoveredButton] = useState(null);
 
   async function handleIdeaGo() {
     setLoadingIdea(true);
@@ -253,155 +140,329 @@ export default function HelloIdeaClient() {
   }
 
   return (
-    <div style={styles.page}>
-      <div style={styles.frame}>
-        <div style={styles.sideLabel}>Purpose + Progress + Perspective = IDEA</div>
+    <>
+      <div className="ppp-page">
+        <div className="ppp-shell">
+          <header className="ppp-topbar">
+            <div className="ppp-top-left">Purpose+Progress+Perspective</div>
+            <div className="ppp-top-right">
+              Powered by{' '}
+              <a
+                href="https://www.goodcitizens.com.au/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Good Citizens
+              </a>
+            </div>
+          </header>
 
-        <div style={styles.poweredWrap}>
-  Powered by{' '}
-  <a
-    href="https://www.goodcitizens.com.au/"
-    target="_blank"
-    rel="noopener noreferrer"
-    style={styles.poweredLink}
-  >
-    Good Citizens
-  </a>
-  . 2,503 failed attempts led to this process, shared through TEDx, with our thinking now in school & higher education curriculum.
-</div>
+          <main className="ppp-main">
+            <section className="ppp-section ppp-section-wide">
+              <label className="ppp-label">Your idea</label>
+              <textarea
+                className="ppp-box ppp-box-lg"
+                placeholder="Type your idea. Messy is fine. Who is it for? How does it help?"
+                value={ideaBox || rawIdeaInput}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setRawIdeaInput(value);
+                  setIdeaBox(value);
+                }}
+              />
+              <div className="ppp-button-row">
+                <button
+                  className="ppp-button"
+                  onClick={handleIdeaGo}
+                  disabled={loadingIdea}
+                  type="button"
+                >
+                  {loadingIdea ? '...' : 'Go'}
+                </button>
+              </div>
+            </section>
 
-        <p style={{ ...styles.label, left: 231, top: 378 }}>Your idea</p>
-        <textarea
-          style={{
-            ...styles.box,
-            left: 224,
-            top: 395,
-            width: 510,
-            height: 225,
-            fontWeight: 400,
-          }}
-          placeholder="Type your idea. Messy is fine. Who is it for? How does it help?"
-          value={ideaBox || rawIdeaInput}
-          onChange={(e) => {
-            const value = e.target.value;
-            setRawIdeaInput(value);
-            setIdeaBox(value);
-          }}
-        />
+            <section className="ppp-section ppp-section-wide">
+              <label className="ppp-label">Want to change or add anything?</label>
+              <textarea
+                className="ppp-box ppp-box-md"
+                placeholder="Add or change anything here."
+                value={changeBox}
+                onChange={(e) => setChangeBox(e.target.value)}
+              />
+              <div className="ppp-button-row">
+                <button
+                  className="ppp-button"
+                  onClick={handleIdeaGo}
+                  disabled={loadingIdea}
+                  type="button"
+                >
+                  {loadingIdea ? '...' : 'Go'}
+                </button>
+              </div>
+            </section>
 
-        <p style={{ ...styles.label, left: 752, top: 378 }}>Want to change or add anything?</p>
-        <textarea
-          style={{
-            ...styles.box,
-            left: 744,
-            top: 395,
-            width: 510,
-            height: 225,
-          }}
-          placeholder="Add or change anything here."
-          value={changeBox}
-          onChange={(e) => setChangeBox(e.target.value)}
-        />
+            <section className="ppp-section">
+              <label className="ppp-label">Purpose (Reason for doing it)</label>
+              <textarea
+                readOnly
+                className="ppp-box ppp-box-sm"
+                value={purposeBox}
+              />
+            </section>
 
-        <button
-          style={{
-            ...styles.button,
-            left: 659,
-            top: 635,
-            background: hoveredButton === 'idea-left' ? '#5FFAB2' : '#FA625F',
-          }}
-          onMouseEnter={() => setHoveredButton('idea-left')}
-          onMouseLeave={() => setHoveredButton(null)}
-          onClick={handleIdeaGo}
-          disabled={loadingIdea}
-          type="button"
-        >
-          {loadingIdea ? '...' : 'Go'}
-        </button>
+            <section className="ppp-section">
+              <label className="ppp-label">Progress (Every small step forward is a win)</label>
+              <textarea
+                readOnly
+                className="ppp-box ppp-box-sm"
+                value={progressBox}
+              />
+            </section>
 
-        <button
-          style={{
-            ...styles.button,
-            left: 1179,
-            top: 635,
-            background: hoveredButton === 'idea-right' ? '#5FFAB2' : '#FA625F',
-          }}
-          onMouseEnter={() => setHoveredButton('idea-right')}
-          onMouseLeave={() => setHoveredButton(null)}
-          onClick={handleIdeaGo}
-          disabled={loadingIdea}
-          type="button"
-        >
-          {loadingIdea ? '...' : 'Go'}
-        </button>
+            <section className="ppp-section">
+              <label className="ppp-label">Perspective (See your problem with fresh eyes)</label>
+              <textarea
+                className="ppp-box ppp-box-sm"
+                placeholder="Stuck? Paste your idea and purpose words here.
 
-        <p style={{ ...styles.label, left: 231, top: 708 }}>Purpose (Reason for doing it)</p>
-        <textarea
-          readOnly
-          style={{
-            ...styles.box,
-            left: 224,
-            top: 726,
-            width: 330,
-            height: 222,
-          }}
-          value={purposeBox}
-        />
+Tell me the problem."
+                value={perspectiveBox}
+                onChange={(e) => setPerspectiveBox(e.target.value)}
+              />
+              <div className="ppp-button-row">
+                <button
+                  className="ppp-button"
+                  onClick={handlePerspectiveGo}
+                  disabled={loadingPerspective}
+                  type="button"
+                >
+                  {loadingPerspective ? '...' : 'Go'}
+                </button>
+              </div>
+            </section>
 
-        <p style={{ ...styles.label, left: 575, top: 708 }}>Progress (Every small step forward is a win)</p>
-        <textarea
-          readOnly
-          style={{
-            ...styles.box,
-            left: 569,
-            top: 726,
-            width: 330,
-            height: 222,
-          }}
-          value={progressBox}
-        />
+            <div className="ppp-footer-note">
+              Don’t lose this.
+              <br />
+              Close or refresh the browser and it’s gone.
+              <br />
+              Write it down or copy it now.
+            </div>
 
-        <p style={{ ...styles.label, left: 921, top: 708 }}>Perspective (See your problem with fresh eyes)</p>
-        <textarea
-          style={{
-            ...styles.box,
-            left: 916,
-            top: 726,
-            width: 338,
-            height: 222,
-            color: perspectiveBox ? '#000000' : '#6B6B6B',
-          }}
-          placeholder="Stuck? Paste your idea and purpose words here. Tell me the problem."
-          value={perspectiveBox}
-          onChange={(e) => setPerspectiveBox(e.target.value)}
-        />
+            <div className="ppp-footer-copy">
+              Good Citizens had 2,503 failed attempts that led to this process, later shared through TEDx, with our thinking now part of school and higher education curricula.
+            </div>
 
-        <button
-          style={{
-            ...styles.button,
-            left: 1179,
-            top: 962,
-            background: hoveredButton === 'perspective' ? '#5FFAB2' : '#FA625F',
-          }}
-          onMouseEnter={() => setHoveredButton('perspective')}
-          onMouseLeave={() => setHoveredButton(null)}
-          onClick={handlePerspectiveGo}
-          disabled={loadingPerspective}
-          type="button"
-        >
-          {loadingPerspective ? '...' : 'Go'}
-        </button>
-
-        <p style={styles.saveNote}>
-          Don’t lose this.
-          <br />
-          When you close or refresh, it’s gone.
-          <br />
-          Write it down or copy it now.
-        </p>
-
-        {error ? <div style={styles.error}>{error}</div> : null}
+            {error ? <div className="ppp-error">{error}</div> : null}
+          </main>
+        </div>
       </div>
-    </div>
+
+      <style jsx>{`
+        .ppp-page {
+          min-height: 100vh;
+          background: #f1ff89;
+          font-family: Inter, Arial, sans-serif;
+          color: #000;
+        }
+
+        .ppp-shell {
+          width: 100%;
+          max-width: 1440px;
+          margin: 0 auto;
+          padding: 24px 16px 32px;
+          box-sizing: border-box;
+        }
+
+        .ppp-topbar {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-start;
+          gap: 16px;
+          margin-bottom: 56px;
+        }
+
+        .ppp-top-left,
+        .ppp-top-right {
+          font-size: 12px;
+          line-height: 1.2;
+          font-weight: 500;
+        }
+
+        .ppp-top-right {
+          text-align: right;
+          max-width: 220px;
+        }
+
+        .ppp-top-right a {
+          color: #000;
+          text-decoration: underline;
+          font-weight: 700;
+        }
+
+        .ppp-main {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 22px;
+          max-width: 390px;
+          margin: 0 auto;
+        }
+
+        .ppp-section {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+        }
+
+        .ppp-section-wide {
+          gap: 10px;
+        }
+
+        .ppp-label {
+          font-size: 12px;
+          line-height: 1.2;
+          font-weight: 700;
+        }
+
+        .ppp-box {
+          width: 100%;
+          background: #f5f5f5;
+          border: 1px solid #000;
+          box-sizing: border-box;
+          padding: 12px 10px;
+          resize: none;
+          outline: none;
+          border-radius: 0;
+          font-family: Inter, Arial, sans-serif;
+          font-size: 12px;
+          line-height: 1.35;
+          font-weight: 400;
+          color: #000;
+          white-space: pre-wrap;
+        }
+
+        .ppp-box::placeholder {
+          color: #6b6b6b;
+          font-weight: 400;
+        }
+
+        .ppp-box-lg {
+          min-height: 180px;
+        }
+
+        .ppp-box-md {
+          min-height: 92px;
+        }
+
+        .ppp-box-sm {
+          min-height: 86px;
+        }
+
+        .ppp-button-row {
+          display: flex;
+          justify-content: flex-end;
+        }
+
+        .ppp-button {
+          width: 66px;
+          height: 31px;
+          border: none;
+          border-radius: 999px;
+          background: #fa625f;
+          color: #fff;
+          font-family: Inter, Arial, sans-serif;
+          font-size: 12px;
+          line-height: 1;
+          font-weight: 700;
+          cursor: pointer;
+        }
+
+        .ppp-button:hover:not(:disabled) {
+          background: #5ffab2;
+        }
+
+        .ppp-button:disabled {
+          opacity: 0.7;
+          cursor: default;
+        }
+
+        .ppp-footer-note {
+          margin-top: 8px;
+          text-align: center;
+          font-size: 12px;
+          line-height: 1.3;
+          font-weight: 700;
+        }
+
+        .ppp-footer-copy {
+          text-align: center;
+          font-size: 9px;
+          line-height: 1.25;
+          font-weight: 400;
+          max-width: 320px;
+          margin: 0 auto;
+        }
+
+        .ppp-error {
+          border: 1px solid #f0b8ae;
+          background: #fff1ef;
+          color: #8a1f11;
+          padding: 10px 12px;
+          font-size: 12px;
+          line-height: 1.4;
+        }
+
+        @media (min-width: 900px) {
+          .ppp-shell {
+            padding: 40px 60px 60px;
+          }
+
+          .ppp-topbar {
+            margin-bottom: 120px;
+          }
+
+          .ppp-main {
+            max-width: 1040px;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 28px 24px;
+          }
+
+          .ppp-section-wide {
+            grid-column: span 3;
+          }
+
+          .ppp-section:not(.ppp-section-wide) {
+            grid-column: span 2;
+          }
+
+          .ppp-box-lg {
+            min-height: 165px;
+          }
+
+          .ppp-box-md {
+            min-height: 110px;
+          }
+
+          .ppp-box-sm {
+            min-height: 168px;
+          }
+
+          .ppp-footer-note {
+            grid-column: 1 / -1;
+            margin-top: 6px;
+          }
+
+          .ppp-footer-copy {
+            grid-column: 1 / -1;
+            max-width: 560px;
+          }
+
+          .ppp-error {
+            grid-column: 1 / -1;
+          }
+        }
+      `}</style>
+    </>
   );
 }
