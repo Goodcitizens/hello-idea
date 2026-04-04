@@ -182,6 +182,7 @@ export default function HelloIdeaClient() {
   const [loadingPerspective, setLoadingPerspective] = useState(false);
   const [error, setError] = useState('');
   const [hoveredButton, setHoveredButton] = useState(null);
+  const [showPopup, setShowPopup] = useState(true);
 
   async function handleIdeaGo() {
     setLoadingIdea(true);
@@ -254,6 +255,54 @@ export default function HelloIdeaClient() {
 
   return (
     <>
+      {showPopup ? (
+        <div className="popupOverlay">
+          <div className="popupBox popupDesktopBox">
+            <div className="popupText">
+              Your idea stays with you.
+              <br />
+              No login. No saving.
+              <br />
+              Close or refresh and it’s gone.
+              <br />
+              Keep anything useful.
+              <br />
+              Write it down or copy it now.
+            </div>
+
+            <button
+              className="popupButton"
+              type="button"
+              onClick={() => setShowPopup(false)}
+            >
+              Go it
+            </button>
+          </div>
+
+          <div className="popupBox popupMobileBox">
+            <div className="popupText">
+              Your idea stays with you.
+              <br />
+              No login. No saving.
+              <br />
+              Close or refresh and it’s gone.
+              <br />
+              Keep anything useful.
+              <br />
+              Write it down or copy it now.
+            </div>
+
+            <button
+              className="popupButton"
+              type="button"
+              onClick={() => setShowPopup(false)}
+            >
+              Go it
+            </button>
+          </div>
+        </div>
+      ) : null}
+
       <div className="desktop-only">
         <div style={styles.page}>
           <div style={styles.frame}>
@@ -524,6 +573,60 @@ export default function HelloIdeaClient() {
       </div>
 
       <style jsx>{`
+        .popupOverlay {
+          position: fixed;
+          inset: 0;
+          z-index: 9999;
+          background: rgba(241, 255, 137, 0.96);
+        }
+
+        .popupBox {
+          position: fixed;
+          width: 302px;
+          height: 259px;
+          background: transparent;
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-start;
+        }
+
+        .popupDesktopBox {
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%);
+        }
+
+        .popupMobileBox {
+          display: none;
+        }
+
+        .popupText {
+          font-family: Inter, Arial, sans-serif;
+          font-size: 20px;
+          font-weight: 400;
+          line-height: 1.35;
+          color: #000000;
+          margin: 0 0 18px 0;
+        }
+
+        .popupButton {
+          width: 78px;
+          height: 31px;
+          border-radius: 20px;
+          border: none;
+          background: #fa625f;
+          color: #ffffff;
+          font-family: Inter, Arial, sans-serif;
+          font-size: 12px;
+          font-weight: 700;
+          line-height: 12px;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 0;
+        }
+
         .desktop-only {
           display: block;
         }
@@ -540,13 +643,13 @@ export default function HelloIdeaClient() {
           font-family: Inter, Arial, sans-serif;
         }
 
-     .mobileFrame {
-  width: 100%;
-  min-height: 100vh;
-  background: #f1ff89;
-  padding: 24px 24px 24px;
-  box-sizing: border-box;
-}
+        .mobileFrame {
+          width: 100%;
+          min-height: 100vh;
+          background: #f1ff89;
+          padding: 24px 24px 24px;
+          box-sizing: border-box;
+        }
 
         .mobileTopRow {
           display: flex;
@@ -651,31 +754,31 @@ export default function HelloIdeaClient() {
           cursor: default;
         }
 
-       .mobileSaveNote {
-  margin: 30px auto 20px;
-  width: 100%;
-  max-width: 280px;
-  padding: 0 8px;
-  text-align: center;
-  font-size: 12px;
-  font-weight: 700;
-  line-height: 16px;
-  color: #000000;
-  box-sizing: border-box;
-}
+        .mobileSaveNote {
+          margin: 30px auto 20px;
+          width: 100%;
+          max-width: 280px;
+          padding: 0 8px;
+          text-align: center;
+          font-size: 12px;
+          font-weight: 700;
+          line-height: 16px;
+          color: #000000;
+          box-sizing: border-box;
+        }
 
-.mobileFooterCopy {
-  margin: 0 auto;
-  width: 100%;
-  max-width: 290px;
-  padding: 0 8px;
-  text-align: center;
-  font-size: 9px;
-  font-weight: 400;
-  line-height: 11px;
-  color: #000000;
-  box-sizing: border-box;
-}
+        .mobileFooterCopy {
+          margin: 0 auto;
+          width: 100%;
+          max-width: 290px;
+          padding: 0 8px;
+          text-align: center;
+          font-size: 9px;
+          font-weight: 400;
+          line-height: 11px;
+          color: #000000;
+          box-sizing: border-box;
+        }
 
         .mobileError {
           margin-top: 16px;
@@ -696,6 +799,22 @@ export default function HelloIdeaClient() {
 
           .mobile-only {
             display: block;
+          }
+
+          .popupDesktopBox {
+            display: none;
+          }
+
+          .popupMobileBox {
+            display: flex;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+          }
+
+          .popupText {
+            font-size: 20px;
+            line-height: 1.35;
           }
         }
       `}</style>
