@@ -651,27 +651,31 @@ export default function HelloIdeaClient() {
           cursor: default;
         }
 
-        .mobileSaveNote {
-          margin: 30px auto 20px;
-          width: 100%;
-          max-width: 280px;
-          text-align: center;
-          font-size: 12px;
-          font-weight: 700;
-          line-height: 16px;
-          color: #000000;
-        }
+       .mobileSaveNote {
+  margin: 30px auto 20px;
+  width: 100%;
+  max-width: 280px;
+  padding: 0 8px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 16px;
+  color: #000000;
+  box-sizing: border-box;
+}
 
-        .mobileFooterCopy {
-          margin: 0 auto;
-          width: 100%;
-          max-width: 290px;
-          text-align: center;
-          font-size: 9px;
-          font-weight: 400;
-          line-height: 11px;
-          color: #000000;
-        }
+.mobileFooterCopy {
+  margin: 0 auto;
+  width: 100%;
+  max-width: 290px;
+  padding: 0 8px;
+  text-align: center;
+  font-size: 9px;
+  font-weight: 400;
+  line-height: 11px;
+  color: #000000;
+  box-sizing: border-box;
+}
 
         .mobileError {
           margin-top: 16px;
