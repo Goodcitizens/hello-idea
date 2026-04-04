@@ -22,7 +22,7 @@ const styles = {
     left: 38,
     top: 40,
     fontSize: 12,
-    fontWeight: 500,
+    fontWeight: 600,
     color: '#000000',
     transform: 'rotate(-90deg) translateX(-100%)',
     transformOrigin: 'top left',
@@ -35,6 +35,7 @@ const styles = {
     fontSize: 12,
     color: '#000000',
     whiteSpace: 'nowrap',
+    fontWeight: 600,
   },
   poweredLink: {
     color: '#000000',
@@ -59,9 +60,14 @@ const styles = {
     resize: 'none',
     fontFamily: 'Inter, Arial, sans-serif',
     fontSize: 12,
+    fontWeight: 300,
     lineHeight: '16px',
     color: '#000000',
     overflow: 'auto',
+    whiteSpace: 'pre-wrap',
+  },
+  outputBox: {
+    fontWeight: 400,
   },
   button: {
     position: 'absolute',
@@ -153,18 +159,13 @@ function buildPurposeText(data) {
 }
 
 function buildProgressText(data) {
-  const intro =
-    '24:1 means this: what is one thing you can do today that 24 hours from now your future self will thank you for?';
-
   const progressText = data?.progress || '';
 
-  const cleaned = String(progressText)
+  return String(progressText)
     .split('\n')
     .map((line) => line.trim())
     .filter(Boolean)
     .join('\n');
-
-  return cleaned ? `${intro}\n\n${cleaned}` : intro;
 }
 
 function buildPerspectiveText(data) {
@@ -277,7 +278,6 @@ export default function HelloIdeaClient() {
             top: 395,
             width: 510,
             height: 225,
-            fontWeight: 400,
           }}
           placeholder="Type your idea. Messy is fine. Who is it for? How does it help?"
           value={ideaBox || rawIdeaInput}
@@ -339,6 +339,7 @@ export default function HelloIdeaClient() {
           readOnly
           style={{
             ...styles.box,
+            ...styles.outputBox,
             left: 224,
             top: 726,
             width: 330,
@@ -352,6 +353,7 @@ export default function HelloIdeaClient() {
           readOnly
           style={{
             ...styles.box,
+            ...styles.outputBox,
             left: 569,
             top: 726,
             width: 330,
@@ -364,6 +366,7 @@ export default function HelloIdeaClient() {
         <textarea
           style={{
             ...styles.box,
+            ...styles.outputBox,
             left: 916,
             top: 726,
             width: 338,
