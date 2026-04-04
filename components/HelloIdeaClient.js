@@ -253,155 +253,449 @@ export default function HelloIdeaClient() {
   }
 
   return (
-    <div style={styles.page}>
-      <div style={styles.frame}>
-        <div style={styles.sideLabel}>Purpose + Progress + Perspective = IDEA</div>
+    <>
+      <div className="desktop-only">
+        <div style={styles.page}>
+          <div style={styles.frame}>
+            <div style={styles.sideLabel}>Purpose + Progress + Perspective = IDEA</div>
 
-        <div style={styles.poweredWrap}>
-  Powered by{' '}
-  <a
-    href="https://www.goodcitizens.com.au/"
-    target="_blank"
-    rel="noopener noreferrer"
-    style={styles.poweredLink}
-  >
-    Good Citizens
-  </a>
-  . 2,503 failed attempts led to this process, shared through TEDx, with our thinking now in school & higher education curriculum.
-</div>
+            <div style={styles.poweredWrap}>
+              Powered by{' '}
+              <a
+                href="https://www.goodcitizens.com.au/"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={styles.poweredLink}
+              >
+                Good Citizens
+              </a>
+              . 2,503 failed attempts led to this process, shared through TEDx, with our thinking now in school & higher education curriculum.
+            </div>
 
-        <p style={{ ...styles.label, left: 231, top: 378 }}>Your idea</p>
-        <textarea
-          style={{
-            ...styles.box,
-            left: 224,
-            top: 395,
-            width: 510,
-            height: 225,
-            fontWeight: 400,
-          }}
-          placeholder="Type your idea. Messy is fine. Who is it for? How does it help?"
-          value={ideaBox || rawIdeaInput}
-          onChange={(e) => {
-            const value = e.target.value;
-            setRawIdeaInput(value);
-            setIdeaBox(value);
-          }}
-        />
+            <p style={{ ...styles.label, left: 231, top: 378 }}>Your idea</p>
+            <textarea
+              style={{
+                ...styles.box,
+                left: 224,
+                top: 395,
+                width: 510,
+                height: 225,
+                fontWeight: 400,
+              }}
+              placeholder="Type your idea. Messy is fine. Who is it for? How does it help?"
+              value={ideaBox || rawIdeaInput}
+              onChange={(e) => {
+                const value = e.target.value;
+                setRawIdeaInput(value);
+                setIdeaBox(value);
+              }}
+            />
 
-        <p style={{ ...styles.label, left: 752, top: 378 }}>Want to change or add anything?</p>
-        <textarea
-          style={{
-            ...styles.box,
-            left: 744,
-            top: 395,
-            width: 510,
-            height: 225,
-          }}
-          placeholder="Add or change anything here."
-          value={changeBox}
-          onChange={(e) => setChangeBox(e.target.value)}
-        />
+            <p style={{ ...styles.label, left: 752, top: 378 }}>Want to change or add anything?</p>
+            <textarea
+              style={{
+                ...styles.box,
+                left: 744,
+                top: 395,
+                width: 510,
+                height: 225,
+              }}
+              placeholder="Add or change anything here."
+              value={changeBox}
+              onChange={(e) => setChangeBox(e.target.value)}
+            />
 
-        <button
-          style={{
-            ...styles.button,
-            left: 659,
-            top: 635,
-            background: hoveredButton === 'idea-left' ? '#5FFAB2' : '#FA625F',
-          }}
-          onMouseEnter={() => setHoveredButton('idea-left')}
-          onMouseLeave={() => setHoveredButton(null)}
-          onClick={handleIdeaGo}
-          disabled={loadingIdea}
-          type="button"
-        >
-          {loadingIdea ? '...' : 'Go'}
-        </button>
+            <button
+              style={{
+                ...styles.button,
+                left: 659,
+                top: 635,
+                background: hoveredButton === 'idea-left' ? '#5FFAB2' : '#FA625F',
+              }}
+              onMouseEnter={() => setHoveredButton('idea-left')}
+              onMouseLeave={() => setHoveredButton(null)}
+              onClick={handleIdeaGo}
+              disabled={loadingIdea}
+              type="button"
+            >
+              {loadingIdea ? '...' : 'Go'}
+            </button>
 
-        <button
-          style={{
-            ...styles.button,
-            left: 1179,
-            top: 635,
-            background: hoveredButton === 'idea-right' ? '#5FFAB2' : '#FA625F',
-          }}
-          onMouseEnter={() => setHoveredButton('idea-right')}
-          onMouseLeave={() => setHoveredButton(null)}
-          onClick={handleIdeaGo}
-          disabled={loadingIdea}
-          type="button"
-        >
-          {loadingIdea ? '...' : 'Go'}
-        </button>
+            <button
+              style={{
+                ...styles.button,
+                left: 1179,
+                top: 635,
+                background: hoveredButton === 'idea-right' ? '#5FFAB2' : '#FA625F',
+              }}
+              onMouseEnter={() => setHoveredButton('idea-right')}
+              onMouseLeave={() => setHoveredButton(null)}
+              onClick={handleIdeaGo}
+              disabled={loadingIdea}
+              type="button"
+            >
+              {loadingIdea ? '...' : 'Go'}
+            </button>
 
-        <p style={{ ...styles.label, left: 231, top: 708 }}>Purpose (Reason for doing it)</p>
-        <textarea
-          readOnly
-          style={{
-            ...styles.box,
-            left: 224,
-            top: 726,
-            width: 330,
-            height: 222,
-          }}
-          value={purposeBox}
-        />
+            <p style={{ ...styles.label, left: 231, top: 708 }}>Purpose (Reason for doing it)</p>
+            <textarea
+              readOnly
+              style={{
+                ...styles.box,
+                left: 224,
+                top: 726,
+                width: 330,
+                height: 222,
+              }}
+              value={purposeBox}
+            />
 
-        <p style={{ ...styles.label, left: 575, top: 708 }}>Progress (Every small step forward is a win)</p>
-        <textarea
-          readOnly
-          style={{
-            ...styles.box,
-            left: 569,
-            top: 726,
-            width: 330,
-            height: 222,
-          }}
-          value={progressBox}
-        />
+            <p style={{ ...styles.label, left: 575, top: 708 }}>Progress (Every small step forward is a win)</p>
+            <textarea
+              readOnly
+              style={{
+                ...styles.box,
+                left: 569,
+                top: 726,
+                width: 330,
+                height: 222,
+              }}
+              value={progressBox}
+            />
 
-        <p style={{ ...styles.label, left: 921, top: 708 }}>Perspective (See your problem with fresh eyes)</p>
-        <textarea
-          style={{
-            ...styles.box,
-            left: 916,
-            top: 726,
-            width: 338,
-            height: 222,
-            color: perspectiveBox ? '#000000' : '#6B6B6B',
-          }}
-          placeholder="Stuck? Paste your idea and purpose words here. Tell me the problem."
-          value={perspectiveBox}
-          onChange={(e) => setPerspectiveBox(e.target.value)}
-        />
+            <p style={{ ...styles.label, left: 921, top: 708 }}>Perspective (See your problem with fresh eyes)</p>
+            <textarea
+              style={{
+                ...styles.box,
+                left: 916,
+                top: 726,
+                width: 338,
+                height: 222,
+                color: perspectiveBox ? '#000000' : '#6B6B6B',
+              }}
+              placeholder="Stuck? Paste your idea and purpose words here. Tell me the problem."
+              value={perspectiveBox}
+              onChange={(e) => setPerspectiveBox(e.target.value)}
+            />
 
-        <button
-          style={{
-            ...styles.button,
-            left: 1179,
-            top: 962,
-            background: hoveredButton === 'perspective' ? '#5FFAB2' : '#FA625F',
-          }}
-          onMouseEnter={() => setHoveredButton('perspective')}
-          onMouseLeave={() => setHoveredButton(null)}
-          onClick={handlePerspectiveGo}
-          disabled={loadingPerspective}
-          type="button"
-        >
-          {loadingPerspective ? '...' : 'Go'}
-        </button>
+            <button
+              style={{
+                ...styles.button,
+                left: 1179,
+                top: 962,
+                background: hoveredButton === 'perspective' ? '#5FFAB2' : '#FA625F',
+              }}
+              onMouseEnter={() => setHoveredButton('perspective')}
+              onMouseLeave={() => setHoveredButton(null)}
+              onClick={handlePerspectiveGo}
+              disabled={loadingPerspective}
+              type="button"
+            >
+              {loadingPerspective ? '...' : 'Go'}
+            </button>
 
-        <p style={styles.saveNote}>
-          Don’t lose this.
-          <br />
-          When you close or refresh, it’s gone.
-          <br />
-          Write it down or copy it now.
-        </p>
+            <p style={styles.saveNote}>
+              Don’t lose this.
+              <br />
+              When you close or refresh, it’s gone.
+              <br />
+              Write it down or copy it now.
+            </p>
 
-        {error ? <div style={styles.error}>{error}</div> : null}
+            {error ? <div style={styles.error}>{error}</div> : null}
+          </div>
+        </div>
       </div>
-    </div>
+
+      <div className="mobile-only">
+        <div className="mobilePage">
+          <div className="mobileFrame">
+            <div className="mobileTopRow">
+              <div className="mobileTopLeft">Purpose+Progress+Perspective</div>
+              <div className="mobileTopRight">
+                Powered by{' '}
+                <a
+                  href="https://www.goodcitizens.com.au/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Good Citizens
+                </a>
+              </div>
+            </div>
+
+            <div className="mobileSection">
+              <p className="mobileLabel">Your idea</p>
+              <textarea
+                className="mobileBox mobileIdeaBox"
+                placeholder="Type your idea. Messy is fine. Who is it for? How does it help?"
+                value={ideaBox || rawIdeaInput}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setRawIdeaInput(value);
+                  setIdeaBox(value);
+                }}
+              />
+              <div className="mobileButtonRow">
+                <button
+                  className="mobileButton"
+                  onClick={handleIdeaGo}
+                  disabled={loadingIdea}
+                  type="button"
+                >
+                  {loadingIdea ? '...' : 'Go'}
+                </button>
+              </div>
+            </div>
+
+            <div className="mobileSection">
+              <p className="mobileLabel">Want to change or add anything?</p>
+              <textarea
+                className="mobileBox mobileChangeBox"
+                placeholder="Add or change anything here."
+                value={changeBox}
+                onChange={(e) => setChangeBox(e.target.value)}
+              />
+              <div className="mobileButtonRow">
+                <button
+                  className="mobileButton"
+                  onClick={handleIdeaGo}
+                  disabled={loadingIdea}
+                  type="button"
+                >
+                  {loadingIdea ? '...' : 'Go'}
+                </button>
+              </div>
+            </div>
+
+            <div className="mobileSection">
+              <p className="mobileLabel">Purpose (Reason for doing it)</p>
+              <textarea
+                readOnly
+                className="mobileBox mobileSmallBox"
+                value={purposeBox}
+              />
+            </div>
+
+            <div className="mobileSection">
+              <p className="mobileLabel">Progress (Every small step forward is a win)</p>
+              <textarea
+                readOnly
+                className="mobileBox mobileSmallBox"
+                value={progressBox}
+              />
+            </div>
+
+            <div className="mobileSection">
+              <p className="mobileLabel">Perspective (See your problem with fresh eyes)</p>
+              <textarea
+                className="mobileBox mobilePerspectiveBox"
+                placeholder={`Stuck? Paste your idea and purpose words here.\n\nTell me the problem.`}
+                value={perspectiveBox}
+                onChange={(e) => setPerspectiveBox(e.target.value)}
+              />
+              <div className="mobileButtonRow">
+                <button
+                  className="mobileButton"
+                  onClick={handlePerspectiveGo}
+                  disabled={loadingPerspective}
+                  type="button"
+                >
+                  {loadingPerspective ? '...' : 'Go'}
+                </button>
+              </div>
+            </div>
+
+            <div className="mobileSaveNote">
+              Don’t lose this.
+              <br />
+              Close or refresh the browser and it’s gone.
+              <br />
+              Write it down or copy it now.
+            </div>
+
+            <div className="mobileFooterCopy">
+              Good Citizens had 2,503 failed attempts that led to this process, later shared through TEDx, with our thinking now part of school and higher education curricula.
+            </div>
+
+            {error ? <div className="mobileError">{error}</div> : null}
+          </div>
+        </div>
+      </div>
+
+      <style jsx>{`
+        .desktop-only {
+          display: block;
+        }
+
+        .mobile-only {
+          display: none;
+        }
+
+        .mobilePage {
+          min-height: 100vh;
+          background: #f1ff89;
+          display: flex;
+          justify-content: center;
+          font-family: Inter, Arial, sans-serif;
+        }
+
+        .mobileFrame {
+          width: 100%;
+          max-width: 390px;
+          min-height: 100vh;
+          background: #a0a753;
+          padding: 10px 12px 20px;
+          box-sizing: border-box;
+        }
+
+        .mobileTopRow {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-start;
+          gap: 12px;
+          margin-bottom: 58px;
+        }
+
+        .mobileTopLeft,
+        .mobileTopRight {
+          font-size: 10px;
+          line-height: 1.2;
+          color: #000000;
+        }
+
+        .mobileTopRight {
+          text-align: right;
+        }
+
+        .mobileTopRight a {
+          color: #000000;
+          text-decoration: underline;
+          font-weight: 700;
+        }
+
+        .mobileSection {
+          margin-bottom: 16px;
+        }
+
+        .mobileLabel {
+          margin: 0 0 8px 8px;
+          font-size: 12px;
+          font-weight: 700;
+          line-height: 1.2;
+          color: #000000;
+        }
+
+        .mobileBox {
+          width: 100%;
+          background: #ffffff;
+          border: 1px solid #000000;
+          box-sizing: border-box;
+          padding: 10px;
+          outline: none;
+          resize: none;
+          font-family: Inter, Arial, sans-serif;
+          font-size: 12px;
+          line-height: 16px;
+          color: #000000;
+          overflow: auto;
+          white-space: pre-wrap;
+          border-radius: 0;
+        }
+
+        .mobileBox::placeholder {
+          color: #6b6b6b;
+        }
+
+        .mobileIdeaBox {
+          height: 180px;
+        }
+
+        .mobileChangeBox {
+          height: 86px;
+        }
+
+        .mobileSmallBox {
+          height: 86px;
+        }
+
+        .mobilePerspectiveBox {
+          height: 108px;
+        }
+
+        .mobileButtonRow {
+          display: flex;
+          justify-content: flex-end;
+          margin-top: 10px;
+        }
+
+        .mobileButton {
+          width: 66px;
+          height: 31px;
+          border-radius: 20px;
+          border: none;
+          background: #fa625f;
+          color: #ffffff;
+          font-family: Inter, Arial, sans-serif;
+          font-size: 12px;
+          font-weight: 700;
+          line-height: 12px;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 0;
+        }
+
+        .mobileButton:disabled {
+          opacity: 0.8;
+          cursor: default;
+        }
+
+        .mobileSaveNote {
+          margin: 30px auto 20px;
+          width: 100%;
+          max-width: 280px;
+          text-align: center;
+          font-size: 12px;
+          font-weight: 700;
+          line-height: 16px;
+          color: #000000;
+        }
+
+        .mobileFooterCopy {
+          margin: 0 auto;
+          width: 100%;
+          max-width: 290px;
+          text-align: center;
+          font-size: 9px;
+          font-weight: 400;
+          line-height: 11px;
+          color: #000000;
+        }
+
+        .mobileError {
+          margin-top: 16px;
+          width: 100%;
+          padding: 10px 12px;
+          box-sizing: border-box;
+          border: 1px solid #f0b8ae;
+          background: #fff1ef;
+          color: #8a1f11;
+          font-size: 12px;
+          line-height: 16px;
+        }
+
+        @media (max-width: 768px) {
+          .desktop-only {
+            display: none;
+          }
+
+          .mobile-only {
+            display: block;
+          }
+        }
+      `}</style>
+    </>
   );
 }
