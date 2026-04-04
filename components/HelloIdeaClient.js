@@ -544,7 +544,7 @@ export default function HelloIdeaClient() {
           width: 100%;
           max-width: 390px;
           min-height: 100vh;
-          background: #a0a753;
+          background: #f1ff89;
           padding: 10px 12px 20px;
           box-sizing: border-box;
         }
