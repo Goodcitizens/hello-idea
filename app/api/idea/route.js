@@ -41,6 +41,7 @@ Return exactly this shape:
     "reflection": ""
   },
   "purpose": "",
+  "whyItMatters": "",
   "progress": ""
 }
 
@@ -62,7 +63,7 @@ For idea.instructions
 Write simple write down instructions.
 
 For idea.reflection
-Write:
+Write exactly:
 Do you think this is a true reflection of your idea?
 
 Would you like to add or change anything?
@@ -70,7 +71,22 @@ Would you like to add or change anything?
 If so, just write it in the box below and we’ll update your idea.
 
 For purpose
-Write only the reason for doing it.
+Write only the practical reason for doing it.
+Keep it matter of fact, clear and concise.
+
+For whyItMatters
+Write the deeper human reason the idea matters.
+This should explain why someone would care about this idea beyond what it does.
+
+Rules for whyItMatters:
+- Use plain human language.
+- Do not sound preachy, dramatic or corporate.
+- Do not exaggerate impact.
+- Only go deeper if the idea genuinely touches things like connection, belonging, dignity, identity, relief, hope, family, community or meaning.
+- If the idea does not naturally contain a deeper human driver, keep this short and grounded.
+- Make sure purpose and whyItMatters feel different.
+- purpose = what it does
+- whyItMatters = why it matters to people
 
 For progress
 Use the 24:1 rule.
