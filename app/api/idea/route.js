@@ -97,15 +97,21 @@ Why it matters:
 
 For progress
 Use the 24:1 rule.
-Start exactly with:
-24:1 means this: what is one thing you can do today that 24 hours from now your future self will thank you for?
 
-Then leave a blank line.
+Write 3 to 5 very short practical next steps.
 
-Then write 3 to 5 very short practical next steps.
-Put each next step on its own line.
-Do not add bullet points.
-Do not add a heading.
+Format rules:
+- Number each step starting from 1.
+- Put each step on its own line.
+- Do not use bullet points.
+- Do not add a heading.
+- Do not repeat or include the 24:1 explanation sentence.
+- Keep each step short and practical.
+
+Example format:
+1. Find a suitable venue
+2. Set a regular schedule
+3. Reach out to local groups
 
 User idea:
 ${idea}
