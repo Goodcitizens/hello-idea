@@ -414,14 +414,15 @@ export default function HelloIdeaClient() {
 
             <p style={{ ...styles.label, left: 921, top: 708 }}>Perspective (See your problem with fresh eyes)</p>
             <textarea
-              style={{
-                ...styles.box,
-                left: 916,
-                top: 726,
-                width: 338,
-                height: 222,
-                color: perspectiveBox ? '#000000' : '#6B6B6B',
-              }}
+       style={{
+  ...styles.box,
+  left: 916,
+  top: 726,
+  width: 338,
+  height: 222,
+  color: perspectiveBox ? '#000000' : '#6B6B6B',
+  whiteSpace: 'pre-wrap',
+}}
               placeholder="Stuck? Paste your idea and purpose words here. Tell me the problem."
               value={perspectiveBox}
               onChange={(e) => setPerspectiveBox(e.target.value)}
