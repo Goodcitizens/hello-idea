@@ -275,7 +275,7 @@ export default function HelloIdeaClient() {
               type="button"
               onClick={() => setShowPopup(false)}
             >
-              Go it
+              Got it
             </button>
           </div>
 
