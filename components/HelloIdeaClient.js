@@ -138,7 +138,7 @@ const questionsText = String(data?.idea?.questions || '')
   }
 
   if (questionsText) {
-    parts.push(`\nHelpful questions\n${questionsText}`);
+    parts.push(`\n\nHelpful questions\n\n${questionsText}`);
   }
 
   parts.push(`\nTime to write down the below in your notebook
@@ -171,7 +171,10 @@ function buildProgressText(data) {
 }
 
 function buildPerspectiveText(data) {
-  return data?.perspective || data?.output || '';
+  return String(data?.perspective || data?.output || '')
+    .replace(/\.\s+/g, '.\n\n')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
 }
 
 export default function HelloIdeaClient() {
