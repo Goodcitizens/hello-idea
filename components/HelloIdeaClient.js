@@ -706,7 +706,7 @@ export default function HelloIdeaClient() {
           resize: none;
           font-family: Inter, Arial, sans-serif;
           font-size: 12px;
-          line-height: 16px;
+          line-height: 20px;
           color: #000000;
           overflow: auto;
           white-space: pre-wrap;
@@ -718,19 +718,19 @@ export default function HelloIdeaClient() {
         }
 
         .mobileIdeaBox {
-          height: 180px;
+          height: 260px;
         }
 
         .mobileChangeBox {
-          height: 86px;
+          height: 120px;
         }
 
         .mobileSmallBox {
-          height: 86px;
+          height: 190px;
         }
 
         .mobilePerspectiveBox {
-          height: 108px;
+          height: 220px;
         }
 
         .mobileButtonRow {
