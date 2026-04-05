@@ -706,7 +706,7 @@ export default function HelloIdeaClient() {
           resize: none;
           font-family: Inter, Arial, sans-serif;
           font-size: 12px;
-          line-height: 20px;
+          line-height: 16px;
           color: #000000;
           overflow: auto;
           white-space: pre-wrap;
