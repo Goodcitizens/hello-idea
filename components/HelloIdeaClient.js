@@ -259,9 +259,9 @@ export default function HelloIdeaClient() {
         <div className="popupOverlay">
           <div className="popupBox popupDesktopBox">
             <div className="popupText">
-              Your idea stays with you.
+              Your idea is private.
               <br />
-              No login. No saving.
+              Nothing is saved.
               <br />
               Close or refresh and it’s gone.
               <br />
@@ -281,9 +281,9 @@ export default function HelloIdeaClient() {
 
           <div className="popupBox popupMobileBox">
             <div className="popupText">
-              Your idea stays with you.
+              Your idea is private.
               <br />
-              No login. No saving.
+              Nothing is saved.
               <br />
               Close or refresh and it’s gone.
               <br />
