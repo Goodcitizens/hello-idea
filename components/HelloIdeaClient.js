@@ -118,7 +118,9 @@ function buildIdeaText(data) {
     '';
 
   const whoForText = data?.idea?.whoFor || '';
-  const differentText = data?.idea?.different || '';
+const questionsText = String(data?.idea?.questions || '')
+  .replace(/\?\s+/g, '?\n')
+  .trim();
   const questionsText = data?.idea?.questions || '';
 
   const parts = [];
