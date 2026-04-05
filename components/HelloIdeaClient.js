@@ -58,7 +58,7 @@ const styles = {
   outline: 'none',
   resize: 'none',
   fontFamily: 'Inter, Arial, sans-serif',
-  fontSize: 15,
+  fontSize: 12,
   lineHeight: '16px',
   color: '#000000',
   overflow: 'auto',
