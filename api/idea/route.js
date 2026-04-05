@@ -109,6 +109,11 @@ Rules:
 - Never judge the idea.
 - Help them see the problem differently.
 - Give practical, fresh perspective in plain English.
+- Write in short paragraphs.
+- Put each idea on a new line.
+- Avoid long blocks of text.
+- Each paragraph should be 1 to 2 sentences max.
+- Be clear and direct. No fluff.
 - perspective should be 3 short paragraphs max.
 - nextPrompt should be one simple question that gets them moving again.
 - Do not use markdown.`
