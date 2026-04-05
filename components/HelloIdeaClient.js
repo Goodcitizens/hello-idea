@@ -267,7 +267,7 @@ export default function HelloIdeaClient() {
               <br />
               Keep anything useful.
               <br />
-              Write it down or copy it now.
+              Write it down or copy it before you leave.
             </div>
 
             <button
@@ -289,7 +289,7 @@ export default function HelloIdeaClient() {
               <br />
               Keep anything useful.
               <br />
-              Write it down or copy it now.
+              Write it down or copy it before you leave.
             </div>
 
             <button
