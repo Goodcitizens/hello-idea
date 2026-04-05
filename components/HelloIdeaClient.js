@@ -166,7 +166,7 @@ function buildProgressText(data) {
     .split('\n')
     .map((line) => line.trim())
     .filter(Boolean)
-    .join('\n');
+    .join('\n\n');
 
   return cleaned ? `${intro}\n\n${cleaned}` : intro;
 }
