@@ -120,7 +120,8 @@ function buildIdeaText(data) {
 const whoForText = data?.idea?.whoFor || '';
 const differentText = data?.idea?.different || '';
 const questionsText = String(data?.idea?.questions || '')
-  .replace(/\?\s+/g, '?\n')
+  .replace(/\?\s+/g, '?\n\n')
+  .replace(/\n{3,}/g, '\n\n')
   .trim();
 
   const parts = [];
