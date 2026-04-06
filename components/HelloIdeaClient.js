@@ -164,26 +164,15 @@ function buildProgressText(data) {
 
   const extraSection = `Let’s imagine, just for a moment, this is up and running. Not perfectly. Just real.
 
-- Someone has experienced it
-- You have real feedback
-- It exists outside your head
+function buildProgressText(data) {
+  const intro =
+    '24:1 means this: what is one thing you can do today that 24 hours from now your future self will thank you for?';
 
-A message you receive:
+  const progressText = data?.progress || '';
 
-"I didn’t think I could do this, but I did."
-
-What is the smallest version of this that proves it’s real?
-If this existed, would that be enough to be proud of?`;
-
-  if (!progressText) {
-    return `${intro}\n\n${extraSection}`;
-  }
-
-  if (!progressText.includes('Let’s imagine, just for a moment, this is up and running. Not perfectly. Just real.')) {
-    progressText = `${progressText}\n\n${extraSection}`;
-  }
-
-  return `${intro}\n\n${progressText}`;
+  return progressText
+    ? `${intro}\n\n${progressText}`
+    : intro;
 }
 
 function buildPerspectiveText(data) {
