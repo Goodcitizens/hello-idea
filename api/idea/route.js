@@ -71,14 +71,17 @@ For yourPurpose:
 
 For progress:
 - Write 3 to 4 short practical next steps, each on its own new line.
+
 - Then leave a blank line and write exactly:
 Let’s imagine, just for a moment, this is up and running. Not perfectly. Just real.
 
 - Then leave a blank line and write 2 to 3 short lines about what has actually happened.
+
 - Then leave a blank line and write exactly:
 A message you receive:
 
 - Then on the next line write one short believable message in quote marks.
+
 - Then leave a blank line and end with exactly these two lines:
 What is the smallest version of this that proves it’s real?
 If this existed, would that be enough to be proud of?
@@ -115,6 +118,28 @@ What would make this feel simple enough to start?`
       });
 
       const content = JSON.parse(response.output_text);
+
+      // 🔥 THIS IS THE FIX
+      if (
+        content.progress &&
+        !content.progress.includes('Let’s imagine, just for a moment, this is up and running. Not perfectly. Just real.')
+      ) {
+        content.progress = `${content.progress}
+
+Let’s imagine, just for a moment, this is up and running. Not perfectly. Just real.
+
+- Someone has experienced it
+- You have real feedback
+- It exists outside your head
+
+A message you receive:
+
+"I didn’t think I could do this, but I did."
+
+What is the smallest version of this that proves it’s real?
+If this existed, would that be enough to be proud of?`;
+      }
+
       return jsonResponse(content);
     }
 
