@@ -50,20 +50,20 @@ const styles = {
     color: '#000000',
   },
   box: {
-    position: 'absolute',
-    background: '#FFFFFF',
-    border: '1px solid #000000',
-    boxSizing: 'border-box',
-    padding: '8px 10px',
-    outline: 'none',
-    resize: 'none',
-    fontFamily: 'Inter, Arial, sans-serif',
-    fontSize: 12,
-    lineHeight: '16px',
-    color: '#000000',
-    overflow: 'auto',
-    whiteSpace: 'pre-wrap',
-  },
+  position: 'absolute',
+  background: '#FFFFFF',
+  border: '1px solid #000000',
+  boxSizing: 'border-box',
+  padding: '8px 10px',
+  outline: 'none',
+  resize: 'none',
+  fontFamily: 'Inter, Arial, sans-serif',
+  fontSize: 12,
+  lineHeight: '16px',
+  color: '#000000',
+  overflow: 'auto',
+  whiteSpace: 'pre-wrap',
+},
   button: {
     position: 'absolute',
     width: 76,
@@ -117,12 +117,12 @@ function buildIdeaText(data) {
     data?.idea ||
     '';
 
-  const whoForText = data?.idea?.whoFor || '';
-  const differentText = data?.idea?.different || '';
-  const questionsText = String(data?.idea?.questions || '')
-    .replace(/\?\s+/g, '?\n\n')
-    .replace(/\n{3,}/g, '\n\n')
-    .trim();
+const whoForText = data?.idea?.whoFor || '';
+const differentText = data?.idea?.different || '';
+const questionsText = String(data?.idea?.questions || '')
+  .replace(/\?\s+/g, '?\n\n')
+  .replace(/\n{3,}/g, '\n\n')
+  .trim();
 
   const parts = [];
 
@@ -162,9 +162,13 @@ function buildProgressText(data) {
 
   const progressText = data?.progress || '';
 
-  return progressText
-    ? `${intro}\n\n${progressText}`
-    : intro;
+  const cleaned = String(progressText)
+    .split('\n')
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .join('\n\n');
+
+  return cleaned ? `${intro}\n\n${cleaned}` : intro;
 }
 
 function buildPerspectiveText(data) {
@@ -417,15 +421,15 @@ export default function HelloIdeaClient() {
 
             <p style={{ ...styles.label, left: 921, top: 708 }}>Perspective (See your problem with fresh eyes)</p>
             <textarea
-              style={{
-                ...styles.box,
-                left: 916,
-                top: 726,
-                width: 338,
-                height: 222,
-                color: perspectiveBox ? '#000000' : '#6B6B6B',
-                whiteSpace: 'pre-wrap',
-              }}
+       style={{
+  ...styles.box,
+  left: 916,
+  top: 726,
+  width: 338,
+  height: 222,
+  color: perspectiveBox ? '#000000' : '#6B6B6B',
+  whiteSpace: 'pre-wrap',
+}}
               placeholder="Stuck? Paste your idea and purpose words here. Tell me the problem."
               value={perspectiveBox}
               onChange={(e) => setPerspectiveBox(e.target.value)}
@@ -763,7 +767,7 @@ export default function HelloIdeaClient() {
           width: 100%;
           max-width: 280px;
           padding: 0 8px;
-          textAlign: center;
+          text-align: center;
           font-size: 12px;
           font-weight: 700;
           line-height: 16px;
