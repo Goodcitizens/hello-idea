@@ -37,59 +37,27 @@ export async function POST(request) {
 Return valid JSON with exactly these keys:
 - yourIdea
 - yourPurpose
-- progress
 - nextPrompt
 
 Rules:
 - Keep it encouraging, simple and clear.
 - Do not sound corporate.
 - Do not say the idea is good or bad.
-- Do not give steps, instructions, actions, recommendations, or suggestions in yourIdea or yourPurpose.
+- Do not give steps, instructions, actions, recommendations, or suggestions.
 - Do not write a numbered list.
-- Do not tell the user what to do next in yourIdea or yourPurpose.
-- Do not use markdown.
+- Do not tell the user what to do next.
+- yourIdea should be a clean plain-English version of the user's idea in 2 to 4 sentences max.
+- yourPurpose should explain why the idea matters and who it helps in 1 to 3 sentences max.
+- nextPrompt must be this exact text and nothing else:
 
-For yourIdea:
-- Write a clean plain-English version of the user's idea in 2 to 4 sentences max.
-- Then include these exact section headings in this order:
-Who It's For
-What Makes It Different
-Helpful questions
 Time to write down the below in your notebook
-- Under Who It's For, write 1 short paragraph.
-- Under What Makes It Different, write 1 short paragraph.
-- Under Helpful questions, write 3 to 4 short questions, each on a new line.
-- After Time to write down the below in your notebook, include exactly these lines:
 
 - The Idea
 - The Purpose
-- Who It's For
+- Who It’s For
 - What Makes It Different
 
-For yourPurpose:
-- Explain why the idea matters and who it helps in 1 to 3 short paragraphs max.
-
-For progress:
-- Write 3 to 4 short practical next steps, each on its own new line.
-
-- Then leave a blank line and write exactly:
-Let’s imagine, just for a moment, this is up and running. Not perfectly. Just real.
-
-- Then leave a blank line and write 2 to 3 short lines about what has actually happened.
-
-- Then leave a blank line and write exactly:
-A message you receive:
-
-- Then on the next line write one short believable message in quote marks.
-
-- Then leave a blank line and end with exactly these two lines:
-What is the smallest version of this that proves it’s real?
-If this existed, would that be enough to be proud of?
-
-For nextPrompt:
-- nextPrompt must be this exact text and nothing else:
-
-What would make this feel simple enough to start?`
+- Do not use markdown.`
               }
             ]
           },
@@ -108,38 +76,15 @@ What would make this feel simple enough to start?`
               properties: {
                 yourIdea: { type: 'string' },
                 yourPurpose: { type: 'string' },
-                progress: { type: 'string' },
                 nextPrompt: { type: 'string' }
               },
-              required: ['yourIdea', 'yourPurpose', 'progress', 'nextPrompt']
+              required: ['yourIdea', 'yourPurpose', 'nextPrompt']
             }
           }
         }
       });
 
       const content = JSON.parse(response.output_text);
-
-      // 🔥 THIS IS THE FIX
-      if (
-        content.progress &&
-        !content.progress.includes('Let’s imagine, just for a moment, this is up and running. Not perfectly. Just real.')
-      ) {
-        content.progress = `${content.progress}
-
-Let’s imagine, just for a moment, this is up and running. Not perfectly. Just real.
-
-- Someone has experienced it
-- You have real feedback
-- It exists outside your head
-
-A message you receive:
-
-"I didn’t think I could do this, but I did."
-
-What is the smallest version of this that proves it’s real?
-If this existed, would that be enough to be proud of?`;
-      }
-
       return jsonResponse(content);
     }
 
