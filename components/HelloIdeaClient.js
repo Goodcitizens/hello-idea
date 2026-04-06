@@ -50,20 +50,20 @@ const styles = {
     color: '#000000',
   },
   box: {
-  position: 'absolute',
-  background: '#FFFFFF',
-  border: '1px solid #000000',
-  boxSizing: 'border-box',
-  padding: '8px 10px',
-  outline: 'none',
-  resize: 'none',
-  fontFamily: 'Inter, Arial, sans-serif',
-  fontSize: 12,
-  lineHeight: '16px',
-  color: '#000000',
-  overflow: 'auto',
-  whiteSpace: 'pre-wrap',
-},
+    position: 'absolute',
+    background: '#FFFFFF',
+    border: '1px solid #000000',
+    boxSizing: 'border-box',
+    padding: '8px 10px',
+    outline: 'none',
+    resize: 'none',
+    fontFamily: 'Inter, Arial, sans-serif',
+    fontSize: 12,
+    lineHeight: '16px',
+    color: '#000000',
+    overflow: 'auto',
+    whiteSpace: 'pre-wrap',
+  },
   button: {
     position: 'absolute',
     width: 76,
@@ -117,12 +117,12 @@ function buildIdeaText(data) {
     data?.idea ||
     '';
 
-const whoForText = data?.idea?.whoFor || '';
-const differentText = data?.idea?.different || '';
-const questionsText = String(data?.idea?.questions || '')
-  .replace(/\?\s+/g, '?\n\n')
-  .replace(/\n{3,}/g, '\n\n')
-  .trim();
+  const whoForText = data?.idea?.whoFor || '';
+  const differentText = data?.idea?.different || '';
+  const questionsText = String(data?.idea?.questions || '')
+    .replace(/\?\s+/g, '?\n\n')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
 
   const parts = [];
 
@@ -152,6 +152,10 @@ const questionsText = String(data?.idea?.questions || '')
   return parts.join('\n');
 }
 
+function buildPurposeText(data) {
+  return data?.yourPurpose || data?.purpose || '';
+}
+
 function buildProgressText(data) {
   const intro =
     '24:1 means this: what is one thing you can do today that 24 hours from now your future self will thank you for?';
@@ -163,12 +167,6 @@ function buildProgressText(data) {
     : intro;
 }
 
-function buildPerspectiveText(data) {
-  return String(data?.perspective || data?.output || '')
-    .replace(/\.\s+/g, '.\n\n')
-    .replace(/\n{3,}/g, '\n\n')
-    .trim();
-}
 function buildPerspectiveText(data) {
   return String(data?.perspective || data?.output || '')
     .replace(/\.\s+/g, '.\n\n')
@@ -212,13 +210,13 @@ export default function HelloIdeaClient() {
         throw new Error(data?.error || 'Something went wrong');
       }
 
-const builtIdea = buildIdeaText(data);
-const builtPurpose = buildPurposeText(data);
-const builtProgress = buildProgressText(data);
+      const builtIdea = buildIdeaText(data);
+      const builtPurpose = buildPurposeText(data);
+      const builtProgress = buildProgressText(data);
 
-setIdeaBox(builtIdea || rawIdeaInput || '');
-setPurposeBox(builtPurpose);
-setProgressBox(builtProgress);
+      setIdeaBox(builtIdea || rawIdeaInput || '');
+      setPurposeBox(builtPurpose);
+      setProgressBox(builtProgress);
     } catch (err) {
       setError(err.message || 'Something went wrong');
     } finally {
@@ -419,15 +417,15 @@ setProgressBox(builtProgress);
 
             <p style={{ ...styles.label, left: 921, top: 708 }}>Perspective (See your problem with fresh eyes)</p>
             <textarea
-       style={{
-  ...styles.box,
-  left: 916,
-  top: 726,
-  width: 338,
-  height: 222,
-  color: perspectiveBox ? '#000000' : '#6B6B6B',
-  whiteSpace: 'pre-wrap',
-}}
+              style={{
+                ...styles.box,
+                left: 916,
+                top: 726,
+                width: 338,
+                height: 222,
+                color: perspectiveBox ? '#000000' : '#6B6B6B',
+                whiteSpace: 'pre-wrap',
+              }}
               placeholder="Stuck? Paste your idea and purpose words here. Tell me the problem."
               value={perspectiveBox}
               onChange={(e) => setPerspectiveBox(e.target.value)}
@@ -765,7 +763,7 @@ setProgressBox(builtProgress);
           width: 100%;
           max-width: 280px;
           padding: 0 8px;
-          text-align: center;
+          textAlign: center;
           font-size: 12px;
           font-weight: 700;
           line-height: 16px;
