@@ -37,27 +37,58 @@ export async function POST(request) {
 Return valid JSON with exactly these keys:
 - yourIdea
 - yourPurpose
+- progress
 - nextPrompt
 
 Rules:
 - Keep it encouraging, simple and clear.
 - Do not sound corporate.
 - Do not say the idea is good or bad.
-- Do not give steps, instructions, actions, recommendations, or suggestions.
+- Do not use markdown.
 - Do not write a numbered list.
-- Do not tell the user what to do next.
-- yourIdea should be a clean plain-English version of the user's idea in 2 to 4 sentences max.
-- yourPurpose should explain why the idea matters and who it helps in 1 to 3 sentences max.
-- nextPrompt must be this exact text and nothing else:
+- Keep everything in plain English.
+- Avoid hype, fluff, or motivational language.
+- Keep it grounded and believable.
 
+For yourIdea:
+- Write a clean plain-English version of the user's idea in 2 to 4 sentences max.
+- Then include these sections in this exact order:
+Who It's For
+What Makes It Different
+Helpful questions
 Time to write down the below in your notebook
+- For Who It's For, write 1 short paragraph.
+- For What Makes It Different, write 1 short paragraph.
+- For Helpful questions, write 3 to 4 short useful questions, each on a new line.
+- After Time to write down the below in your notebook, include exactly these lines:
 
 - The Idea
 - The Purpose
-- Who It’s For
+- Who It's For
 - What Makes It Different
 
-- Do not use markdown.`
+For yourPurpose:
+- Explain why the idea matters and who it helps.
+- Keep it to 1 to 3 short paragraphs max.
+
+For progress:
+- Give 3 to 4 simple, practical next steps.
+- Keep each step short and achievable.
+- After the steps, add this exact line:
+Let’s imagine, just for a moment, this is up and running. Not perfectly. Just real.
+
+- Then add 2 to 3 short lines describing what has actually happened in a grounded way.
+- Then add this label exactly:
+A message you receive:
+
+- Then write one short believable message in quotes that someone might send after experiencing the idea.
+- Then end with these exact two lines:
+What is the smallest version of this that proves it’s real?
+If this existed, would that be enough to be proud of?
+
+For nextPrompt:
+- Make it one short simple question that helps the user keep building.
+- Do not tell them to do multiple things.`
               }
             ]
           },
@@ -76,9 +107,10 @@ Time to write down the below in your notebook
               properties: {
                 yourIdea: { type: 'string' },
                 yourPurpose: { type: 'string' },
+                progress: { type: 'string' },
                 nextPrompt: { type: 'string' }
               },
-              required: ['yourIdea', 'yourPurpose', 'nextPrompt']
+              required: ['yourIdea', 'yourPurpose', 'progress', 'nextPrompt']
             }
           }
         }
