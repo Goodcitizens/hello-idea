@@ -152,18 +152,6 @@ const questionsText = String(data?.idea?.questions || '')
   return parts.join('\n');
 }
 
-function buildPurposeText(data) {
-  return data?.yourPurpose || data?.purpose || '';
-}
-
-function buildProgressText(data) {
-  const intro =
-    '24:1 means this: what is one thing you can do today that 24 hours from now your future self will thank you for?';
-
-  let progressText = String(data?.progress || '').trim();
-
-  const extraSection = `Let’s imagine, just for a moment, this is up and running. Not perfectly. Just real.
-
 function buildProgressText(data) {
   const intro =
     '24:1 means this: what is one thing you can do today that 24 hours from now your future self will thank you for?';
@@ -173,6 +161,13 @@ function buildProgressText(data) {
   return progressText
     ? `${intro}\n\n${progressText}`
     : intro;
+}
+
+function buildPerspectiveText(data) {
+  return String(data?.perspective || data?.output || '')
+    .replace(/\.\s+/g, '.\n\n')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
 }
 function buildPerspectiveText(data) {
   return String(data?.perspective || data?.output || '')
