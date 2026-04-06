@@ -17,7 +17,7 @@ function buildProgressString(progress) {
   const parts = [];
 
   if (steps.length) {
-    parts.push(steps.map((step) => `- ${step}`).join('\n'));
+    parts.push(steps.map((step) => `- ${step}`).join('\n\n'));
   }
 
   parts.push('Let’s imagine, just for a moment, this is up and running. Not perfectly. Just real.');
@@ -148,15 +148,11 @@ For nextPrompt:
                   properties: {
                     steps: {
                       type: 'array',
-                      items: { type: 'string' },
-                      minItems: 3,
-                      maxItems: 4
+                      items: { type: 'string' }
                     },
                     reality: {
                       type: 'array',
-                      items: { type: 'string' },
-                      minItems: 2,
-                      maxItems: 3
+                      items: { type: 'string' }
                     },
                     message: { type: 'string' }
                   },
