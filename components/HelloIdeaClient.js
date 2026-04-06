@@ -422,7 +422,7 @@ export default function HelloIdeaClient() {
   left: 916,
   top: 726,
   width: 338,
-  height: 222,
+  height: 320,
   color: perspectiveBox ? '#000000' : '#6B6B6B',
   whiteSpace: 'pre-wrap',
 }}
