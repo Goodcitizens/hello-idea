@@ -325,7 +325,7 @@ export default function HelloIdeaClient() {
               >
                 Good Citizens
               </a>
-              . 2,503 failed attempts led to this process, shared through TEDx, with our thinking now in school & higher education curriculum.
+              . 2,503 failed attempts led to this process, shared through TEDx, with our thinking <br> now in school & higher education curriculum.
             </div>
 
             <p style={{ ...styles.label, left: 231, top: 378 }}>Your idea</p>
