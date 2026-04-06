@@ -9,6 +9,35 @@ function jsonResponse(body, status = 200) {
   });
 }
 
+function buildProgressString(progress) {
+  const steps = Array.isArray(progress?.steps) ? progress.steps.filter(Boolean) : [];
+  const reality = Array.isArray(progress?.reality) ? progress.reality.filter(Boolean) : [];
+  const message = String(progress?.message || '').trim();
+
+  const parts = [];
+
+  if (steps.length) {
+    parts.push(steps.map((step) => `- ${step}`).join('\n'));
+  }
+
+  parts.push('Let’s imagine, just for a moment, this is up and running. Not perfectly. Just real.');
+
+  if (reality.length) {
+    parts.push(reality.map((line) => `- ${line}`).join('\n'));
+  }
+
+  parts.push('A message you receive:');
+
+  if (message) {
+    parts.push(`"${message}"`);
+  }
+
+  parts.push('What is the smallest version of this that proves it’s real?');
+  parts.push('If this existed, would that be enough to be proud of?');
+
+  return parts.join('\n\n');
+}
+
 export async function POST(request) {
   try {
     const { mode, idea = '', change = '', purpose = '', stuck = '' } = await request.json();
@@ -72,19 +101,25 @@ For yourPurpose:
 - Keep it to 1 to 3 short paragraphs max.
 
 For progress:
-- Give 3 to 4 simple, practical next steps.
-- Keep each step short and achievable.
-- After the steps, add this exact line:
-Let’s imagine, just for a moment, this is up and running. Not perfectly. Just real.
+Return an object with exactly these keys:
+- steps
+- reality
+- message
 
-- Then add 2 to 3 short lines describing what has actually happened in a grounded way.
-- Then add this label exactly:
-A message you receive:
+For progress.steps:
+- Return 3 to 4 simple, practical next steps.
+- Each step should be short and achievable.
+- Do not number them.
 
-- Then write one short believable message in quotes that someone might send after experiencing the idea.
-- Then end with these exact two lines:
-What is the smallest version of this that proves it’s real?
-If this existed, would that be enough to be proud of?
+For progress.reality:
+- Return 2 to 3 short lines describing what has actually happened once a first real version exists.
+- Keep it grounded, specific, and believable.
+- This is not a huge success story.
+- It is just enough proof that the idea is now real.
+
+For progress.message:
+- Return one short believable message that someone might send after experiencing the idea.
+- Do not include quote marks in the value.
 
 For nextPrompt:
 - Make it one short simple question that helps the user keep building.
@@ -107,7 +142,26 @@ For nextPrompt:
               properties: {
                 yourIdea: { type: 'string' },
                 yourPurpose: { type: 'string' },
-                progress: { type: 'string' },
+                progress: {
+                  type: 'object',
+                  additionalProperties: false,
+                  properties: {
+                    steps: {
+                      type: 'array',
+                      items: { type: 'string' },
+                      minItems: 3,
+                      maxItems: 4
+                    },
+                    reality: {
+                      type: 'array',
+                      items: { type: 'string' },
+                      minItems: 2,
+                      maxItems: 3
+                    },
+                    message: { type: 'string' }
+                  },
+                  required: ['steps', 'reality', 'message']
+                },
                 nextPrompt: { type: 'string' }
               },
               required: ['yourIdea', 'yourPurpose', 'progress', 'nextPrompt']
@@ -116,7 +170,13 @@ For nextPrompt:
         }
       });
 
-      const content = JSON.parse(response.output_text);
+      const rawContent = JSON.parse(response.output_text);
+
+      const content = {
+        ...rawContent,
+        progress: buildProgressString(rawContent.progress),
+      };
+
       return jsonResponse(content);
     }
 
