@@ -162,13 +162,9 @@ function buildProgressText(data) {
 
   const progressText = data?.progress || '';
 
-  const cleaned = String(progressText)
-    .split('\n')
-    .map((line) => line.trim())
-    .filter(Boolean)
-    .join('\n\n');
-
-  return cleaned ? `${intro}\n\n${cleaned}` : intro;
+  return progressText
+    ? `${intro}\n\n${progressText}`
+    : intro;
 }
 
 function buildPerspectiveText(data) {
