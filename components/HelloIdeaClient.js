@@ -210,12 +210,13 @@ export default function HelloIdeaClient() {
         throw new Error(data?.error || 'Something went wrong');
       }
 
-    const builtIdea = buildIdeaText(data);
-const builtPurpose = buildPurposeText(data);
-
 const builtIdea = buildIdeaText(data);
 const builtPurpose = buildPurposeText(data);
 const builtProgress = buildProgressText(data);
+
+setIdeaBox(builtIdea || rawIdeaInput || '');
+setPurposeBox(builtPurpose);
+setProgressBox(builtProgress);
 
 setIdeaBox(builtIdea || rawIdeaInput || '');
 setPurposeBox(builtPurpose);
