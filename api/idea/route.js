@@ -9,35 +9,6 @@ function jsonResponse(body, status = 200) {
   });
 }
 
-function buildProgressString(progress) {
-  const steps = Array.isArray(progress?.steps) ? progress.steps.filter(Boolean) : [];
-  const reality = Array.isArray(progress?.reality) ? progress.reality.filter(Boolean) : [];
-  const message = String(progress?.message || '').trim();
-
-  const parts = [];
-
-  if (steps.length) {
-    parts.push(steps.map((step) => `- ${step}`).join('\n\n'));
-  }
-
-  parts.push('Let’s imagine, just for a moment, this is up and running. Not perfectly. Just real.');
-
-  if (reality.length) {
-    parts.push(reality.map((line) => `- ${line}`).join('\n'));
-  }
-
-  parts.push('A message you receive:');
-
-  if (message) {
-    parts.push(`"${message}"`);
-  }
-
-  parts.push('What is the smallest version of this that proves it’s real?');
-  parts.push('If this existed, would that be enough to be proud of?');
-
-  return parts.join('\n\n');
-}
-
 export async function POST(request) {
   try {
     const { mode, idea = '', change = '', purpose = '', stuck = '' } = await request.json();
@@ -73,22 +44,21 @@ Rules:
 - Keep it encouraging, simple and clear.
 - Do not sound corporate.
 - Do not say the idea is good or bad.
-- Do not use markdown.
+- Do not give steps, instructions, actions, recommendations, or suggestions in yourIdea or yourPurpose.
 - Do not write a numbered list.
-- Keep everything in plain English.
-- Avoid hype, fluff, or motivational language.
-- Keep it grounded and believable.
+- Do not tell the user what to do next in yourIdea or yourPurpose.
+- Do not use markdown.
 
 For yourIdea:
 - Write a clean plain-English version of the user's idea in 2 to 4 sentences max.
-- Then include these sections in this exact order:
+- Then include these exact section headings in this order:
 Who It's For
 What Makes It Different
 Helpful questions
 Time to write down the below in your notebook
-- For Who It's For, write 1 short paragraph.
-- For What Makes It Different, write 1 short paragraph.
-- For Helpful questions, write 3 to 4 short useful questions, each on a new line.
+- Under Who It's For, write 1 short paragraph.
+- Under What Makes It Different, write 1 short paragraph.
+- Under Helpful questions, write 3 to 4 short questions, each on a new line.
 - After Time to write down the below in your notebook, include exactly these lines:
 
 - The Idea
@@ -97,33 +67,26 @@ Time to write down the below in your notebook
 - What Makes It Different
 
 For yourPurpose:
-- Explain why the idea matters and who it helps.
-- Keep it to 1 to 3 short paragraphs max.
+- Explain why the idea matters and who it helps in 1 to 3 short paragraphs max.
 
 For progress:
-Return an object with exactly these keys:
-- steps
-- reality
-- message
+- Write 3 to 4 short practical next steps, each on its own new line.
+- Then leave a blank line and write exactly:
+Let’s imagine, just for a moment, this is up and running. Not perfectly. Just real.
 
-For progress.steps:
-- Return 3 to 4 simple, practical next steps.
-- Each step should be short and achievable.
-- Do not number them.
+- Then leave a blank line and write 2 to 3 short lines about what has actually happened.
+- Then leave a blank line and write exactly:
+A message you receive:
 
-For progress.reality:
-- Return 2 to 3 short lines describing what has actually happened once a first real version exists.
-- Keep it grounded, specific, and believable.
-- This is not a huge success story.
-- It is just enough proof that the idea is now real.
-
-For progress.message:
-- Return one short believable message that someone might send after experiencing the idea.
-- Do not include quote marks in the value.
+- Then on the next line write one short believable message in quote marks.
+- Then leave a blank line and end with exactly these two lines:
+What is the smallest version of this that proves it’s real?
+If this existed, would that be enough to be proud of?
 
 For nextPrompt:
-- Make it one short simple question that helps the user keep building.
-- Do not tell them to do multiple things.`
+- nextPrompt must be this exact text and nothing else:
+
+What would make this feel simple enough to start?`
               }
             ]
           },
@@ -142,22 +105,7 @@ For nextPrompt:
               properties: {
                 yourIdea: { type: 'string' },
                 yourPurpose: { type: 'string' },
-                progress: {
-                  type: 'object',
-                  additionalProperties: false,
-                  properties: {
-                    steps: {
-                      type: 'array',
-                      items: { type: 'string' }
-                    },
-                    reality: {
-                      type: 'array',
-                      items: { type: 'string' }
-                    },
-                    message: { type: 'string' }
-                  },
-                  required: ['steps', 'reality', 'message']
-                },
+                progress: { type: 'string' },
                 nextPrompt: { type: 'string' }
               },
               required: ['yourIdea', 'yourPurpose', 'progress', 'nextPrompt']
@@ -166,13 +114,7 @@ For nextPrompt:
         }
       });
 
-      const rawContent = JSON.parse(response.output_text);
-
-      const content = {
-        ...rawContent,
-        progress: buildProgressString(rawContent.progress),
-      };
-
+      const content = JSON.parse(response.output_text);
       return jsonResponse(content);
     }
 
