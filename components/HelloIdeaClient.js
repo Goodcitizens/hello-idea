@@ -174,7 +174,6 @@ function buildProgressText(data) {
     ? `${intro}\n\n${progressText}`
     : intro;
 }
-
 function buildPerspectiveText(data) {
   return String(data?.perspective || data?.output || '')
     .replace(/\.\s+/g, '.\n\n')
