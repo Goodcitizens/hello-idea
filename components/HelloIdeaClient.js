@@ -217,10 +217,6 @@ const builtProgress = buildProgressText(data);
 setIdeaBox(builtIdea || rawIdeaInput || '');
 setPurposeBox(builtPurpose);
 setProgressBox(builtProgress);
-
-setIdeaBox(builtIdea || rawIdeaInput || '');
-setPurposeBox(builtPurpose);
-setProgressBox(builtProgress);
     } catch (err) {
       setError(err.message || 'Something went wrong');
     } finally {
