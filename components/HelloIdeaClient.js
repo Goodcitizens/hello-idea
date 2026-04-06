@@ -213,26 +213,13 @@ export default function HelloIdeaClient() {
     const builtIdea = buildIdeaText(data);
 const builtPurpose = buildPurposeText(data);
 
+const builtIdea = buildIdeaText(data);
+const builtPurpose = buildPurposeText(data);
+const builtProgress = buildProgressText(data);
+
 setIdeaBox(builtIdea || rawIdeaInput || '');
 setPurposeBox(builtPurpose);
-setProgressBox(`24:1 means this: what is one thing you can do today that 24 hours from now your future self will thank you for?
-
-- Test step one
-
-- Test step two
-
-Let’s imagine, just for a moment, this is up and running. Not perfectly. Just real.
-
-- Someone has used it
-- You have real feedback
-- It exists outside your head
-
-A message you receive:
-
-"I didn’t think I could do this, but I did."
-
-What is the smallest version of this that proves it’s real?
-If this existed, would that be enough to be proud of?`);
+setProgressBox(builtProgress);
     } catch (err) {
       setError(err.message || 'Something went wrong');
     } finally {
