@@ -51,8 +51,8 @@ const styles = {
   },
   box: {
   position: 'absolute',
-  background: '#f1ff89',
-  border: '1px solid #FFFFFF',
+  background: '#f1ffb2',
+  border: '1px solid #000000',
   boxSizing: 'border-box',
   padding: '8px 10px',
   outline: 'none',
