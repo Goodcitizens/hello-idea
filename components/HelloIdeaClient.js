@@ -452,7 +452,11 @@ export default function HelloIdeaClient() {
             </button>
 
           <p style={styles.saveNote}>
-  Don’t lose this. When you close or refresh, it’s gone. Write it down or copy it now.
+  Don’t lose this.
+  <br />
+  When you close or refresh, it’s gone.
+  <br />
+  Write it down or copy it now.
 </p>
 
             {error ? <div style={styles.error}>{error}</div> : null}
