@@ -52,7 +52,7 @@ const styles = {
   box: {
   position: 'absolute',
   background: '#f1ff89',
-  border: '4px solid #000000',
+  border: '0.5px solid #000000',
   boxSizing: 'border-box',
   padding: '8px 10px',
   outline: 'none',
