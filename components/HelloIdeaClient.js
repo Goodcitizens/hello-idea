@@ -316,7 +316,7 @@ export default function HelloIdeaClient() {
             <div style={styles.sideLabel}>Purpose + Progress + Perspective</div>
 
             <div style={styles.poweredWrap}>
-              Powered by{' '}
+              Made by{' '}
               <a
                 href="https://www.goodcitizens.com.au/"
                 target="_blank"
