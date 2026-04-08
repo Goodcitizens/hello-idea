@@ -313,7 +313,7 @@ export default function HelloIdeaClient() {
       <div className="desktop-only">
         <div style={styles.page}>
           <div style={styles.frame}>
-            <div style={styles.sideLabel}>Purpose + Progress + Perspective = IDEA</div>
+            <div style={styles.sideLabel}>Purpose + Progress + Perspective</div>
 
             <div style={styles.poweredWrap}>
               Powered by{' '}
